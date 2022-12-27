@@ -1,0 +1,55 @@
+# macOS
+.DS_Store
+
+others/
+
+# Env
+env/
+*.env*
+!sample.env*
+*.lock
+
+# Pack
+*.zip
+*.tar.*
+*.gz
+
+# Vim
+tags
+
+# Documentation Doxygen
+doc/**
+!doc/Doxyfile
+
+# Documentation Latex
+**out/
+#!thesis
+!thesis/out
+!**.pdf
+*.dvi
+*.log
+*.blg
+*.bbl
+*.toc
+*.aux
+*.out
+*.lof
+*.ptc
+*.bcf
+*.eps
+*.bak0
+
+# IDE
+**.idea/
+**.vscode/
+
+# Caches
+**.cache**
+
+# Logs
+logs/
+
+# Images
+*.jpg
+*.jpeg
+*.png
