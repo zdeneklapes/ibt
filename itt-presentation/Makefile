@@ -1,3 +1,9 @@
+# usage: make filename.pdf
+#%.pdf: %.tex
+#	pdflatex $<
+#	pdflatex $<
+
+
 # makefile pro preklad LaTeX verze Bc. prace
 # makefile for compilation of the thesis
 # (c) 2008 Michal Bidlo
@@ -5,7 +11,7 @@
 # Edited by: dytrych AT fit vutbr cz
 #===========================================
 # asi budete chtit prejmenovat / you will probably rename:
-CO=xlapes02
+CO=prezentace
 CMD_PDFLATEX=pdflatex
 CMD_BIBTEX=bibtex
 OUT_DIR=./out
@@ -20,8 +26,6 @@ $(CO).ps: $(CO).dvi
 	dvips $(CO)
 
 $(CO).pdf: clean setup
-	$(CMD_PDFLATEX) $(FLAGS) $(CO)
-	-$(CMD_BIBTEX) $(CO)
 	$(CMD_PDFLATEX) $(FLAGS) $(CO)
 	$(CMD_PDFLATEX) $(FLAGS) $(CO)
 

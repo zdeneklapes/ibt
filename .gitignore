@@ -23,8 +23,8 @@ doc/**
 
 # Documentation Latex
 **out/
-#!thesis
 !thesis/out
+!itt-presentation/out
 !**.pdf
 *.dvi
 *.log
@@ -38,6 +38,43 @@ doc/**
 *.bcf
 *.eps
 *.bak0
+*.nav
+*.snm
+*.vrb
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+*.xdv
+*.synctex(busy)
+*.synctex.gz(busy)
+*.aux(busy)
+*.toc(busy)
+*.out(busy)
+*.log(busy)
+*.bbl(busy)
+*.blg(busy)
+*.lof(busy)
+*.lot(busy)
+*.idx(busy)
+*.ind(busy)
+*.ilg(busy)
+*.nlo(busy)
+*.nls(busy)
+*.glo(busy)
+*.gls(busy)
+*.acn(busy)
+*.acr(busy)
+*.alg(busy)
+*.glg(busy)
+*.glsdefs(busy)
+*.ist(busy)
+*.xdy(busy)
+*.tdo(busy)
+*.run.xml(busy)
+*.bcf(busy)
+*.fls(busy)
+*.fdb_latexmk(busy)
+
 
 # IDE
 **.idea/
