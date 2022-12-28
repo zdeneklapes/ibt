@@ -14,128 +14,128 @@
 The portfolio allocation task has been studied for a long time.
 The problem is to find the optimal allocation of the finite
 budget into a range of financial
-instruments/assets, such as stocks.\cite{Model-Free-Reinforcement-Learning-for-Asset-Allocation}
+instruments/assets, e.g. stocks.\cite{Model-Free-Reinforcement-Learning-for-Asset-Allocation}
 
-This problem involves making crucial decisions about the allocating capital into
-different securities (stocks, ...).
-Goal is to allocates securities instead of cash which will be able to
+This problem involves making crucial decisions about allocating capital into
+different securities (stocks, bonds, ...).
+The goal is to allocate assets instead of cash which will be able
+to constantly in a selected investing horizon valorize the initial capital and
 maximize the expected return of the
 portfolio, while minimizing the risk.
 
-The portfolio management is the most important task for
-finance institutions, like banks, hedge funds and asset management companies
+Portfolio management is the most important task for
+finance institutions, like banks, hedge funds, and asset management companies
 and there exist various existing portfolio management strategies, such as the
 Markowitz mean-variance portfolio optimization proposed by Hanry Markowitz\cite[p.~4]{sirucek-2015},
 the Black-Litterman model and the CAPM model.
 
-The approaches based on predictive models are not suitable for the portfolio
-management, because the market is highly stochastic and the models are not able to
-predict the future market conditions in an accurate way.
+The approaches based on predictive models are not appropriate for portfolio management,
+because the stock market is stochastic, volatile, quickly changing, and uncertain environment.
+Predictive models are not able to predict future market conditions in an accurate way.
 
-The stock market environment is stochastic and very uncertain environment, which is
-really hard to predict with the current strategies and models, which rely
-on the historical data.
+Also, the current strategies and models, which rely on
+historical data are not suitable for that type of environment.
 
-So, the most recent state-of-the-art portfolio management strategies are based on
-machine learning techniques, such as the deep reinforcement learning (DRL), which
-shows promising results in the financial domain, such as the stock trading and
+So, the most recent state-of-the-art portfolio management strategies
+are based on machine learning techniques, such as deep reinforcement learning (DRL),
+which shows promising results in the financial domain, such as stock trading and
 portfolio management tasks.
 
-Reinforcement learning (RL) is becoming more popular in the last decade because it
-is able to learn from the large
+Reinforcement learning (RL) is becoming more popular in the last decade because it is able to learn from the large
 environment and make decisions based on the
-experience gained from the environment.
+experience gained from the environment.a
 
-The Reinforcement Learning is a
-subfield of machine learning, which is
-concerned with how an agent can learn to make decisions in an
-environment to maximize the expected cumulative reward.\cite{Model-Free-Reinforcement-Learning-for-Asset-Allocation}
+Reinforcement Learning is a
+subfield of machine learning, concerned with how
+an agent can learn to make decisions in an
+environment to maximize the expected cumulative
+reward.\cite{Model-Free-Reinforcement-Learning-for-Asset-Allocation}
 
-Benefits of RL have been using in many different
+The benefits of RL have been used in many different
 fields, such as robotics and games.
 
-RL methods was studied how much a change
-in input would influence the output and
-what contributes to the decision making process of the DRL agents.\cite{finrl-portfolio-allocation-2020}
+Reinforcement learning methods have been studied
+on how much a change in input would influence the output and what contributes to
+the decision-making process of the DRL agents.\cite{finrl-portfolio-allocation-2020}
 
-Deep Reinforcement Learning (DRL) is a subfield of RL, which uses deep neural
-networks to approximate the large and complex state-action spaces and
-help to understand the mostly stochastic environments.
+For large and complex environments with
+huge state space, the breakthrough was Deep Reinforcement Learning (DRL)
+which is a subfield of RL using deep neural networks
+to approximate the large and complex state-action spaces and help
+to understand the stochastic environments.
 
 
 \section{Problem Statement}\label{sec:problem-statement}
-There are a lot of different portfolio management strategies, such as
-Markowitz mean-variance portfolio optimization
-or modern portfolio theory (MPT)\cite{modern-portfolio-theory} is
-limited by the fact that they are all based on the historical data such as
-the historical prices of the stocks, which include a lot of noise and are not
-able to predict the future market conditions, because of the stochastic nature
+There are a lot of different portfolio management strategies,
+such as Markowitz mean-variance portfolio optimization
+called as modern portfolio theory (MPT)\cite{modern-portfolio-theory} is
+limited by the fact that they are all based on historical data such as
+the historical prices of the stocks, which include a lot
+of noise and are not able to predict the future market conditions,
+because of the stochastic nature
 of the market.
+Markowitz's theory goal is on a well-diversified portfolio, which is for minimizing risk.
 
-The reinforcement learning has advantages, such as flexibility, adaptability and
-utilization of the various information like e.q.\ experience gained from the environment
-under teh certain conditions.
+Reinforcement learning has advantages, such as flexibility, adaptability, and utilization
+of various information like e.q.\ experience gained from the environment
+under certain conditions.
 
 However, the existing RL approaches do not consider all of these factors:
 
 \begin{itemize}
-    \item \textbf{State space design}\\
-    The actions computed by the model should change only the portfolio operated
-    by the agent, but not the financial market itself.
-    \item \textbf{Action space design } \\
-    Action space should be designed in a way that the agent weights the
-    assets in the portfolio.
-    How much of the budget should be allocated to
-    each asset?
+    \item \textbf{State space}\\
+    The actions computed by the model should change only the portfolio
+    managed by the agent, but not the conditions of the financial market itself.
+    \item \textbf{Action space} \\
+    Action space should be designed in a way that the agent weights the assets in the portfolio.
+    How much of the budget should be allocated to each asset and should be this asset in the portfolio?
     These design decisions are crucial for the performance of the agent.
-    It is really difficult to find the optimal policy for the portfolio allocation,
-    because agent has to choose the between multiple assets with
-    various differences in information about the assets.
+    It is really difficult to find the optimal policy for the portfolio allocation because the
+    agent has to choose between multiple assets with various differences in information about the assets.
     Also, actions should be considered profitable and safe in the long term,
-    which means that the
-    agent has to make decisions based on the long-term rewards.
-    \item \textbf{Reward design}\\
-    The reward should be able to reflect the agent's performance in the
-    environment.
-    Is the current portfolio value increasing or decreasing after
-    the actions are taken by the agent?
+    which means that the agent has to make decisions based on long-term rewards.
+    \item \textbf{Reward function}\\
+    The reward should be able to reflect the agent's performance in the environment.
+    Is the current portfolio value increasing or decreasing after the agent takes actions proposed by the policy?
     \item \textbf{Model Overfitting}\\
-    The model should be able to generalize the environment and not overfit
-    to the training data.
-    The dataset should be large enough to generalize
-    the environment and split into the training and testing dataset.
+    The model should be able to generalize the environment and not overfit the training data.
+    The dataset should be large enough to generalize the environment
+    and split into the training and testing dataset.
 \end{itemize}
 
-The current model approaches of FinRL-Meta are based on the deep reinforcement
-learning (DRL) methods, which are able to learn from the environment, but
-they are not follow all of the above-mentioned factors and rely on the
-technical analysis and covariances between the assets, which
-do not helps so much in prediction and understanding the market and
-quality of each asset in the portfolio, on top of that, increasing the
-complexity of the model far more than is its worth.
+
+The current model approaches of FinRL-Meta are based on the deep reinforcement learning (DRL) methods,
+which are able to learn from the environment, but they are not following
+all of the above-mentioned factors and rely on the technical analysis and covariance
+between the assets.
+These objectives do not help so much in predicting and understanding
+the market and quality of each asset, on top of that,
+increasing the complexity of the model far more.
 
 
 \section{Aim of the Thesis}\label{sec:aim-of-the-thesis}
 
-This thesis focus on deep reinforcement learning agents, which are able to
-learn optimal portfolio management strategies from the environment
+This thesis focus on learning deep reinforcement
+learning agents, which are able to learn optimal portfolio management
+strategies from the environment.
 
-The specific objectives of this thesis are:
+The objectives of this thesis are:
 \begin{itemize}
-    \item Create a suitable dataset for the portfolio allocation problem with
-    finite set of stocks.
+    \item Create a suitable dataset for the portfolio allocation
+    problem with a finite set of stocks.
     \item Implement and Train RL agents on the dataset with a finite cash budget.
-    \item Evaluate the performance of the RL agents comparing them with the
-    baseline portfolio management strategies, such as mean-variance optimization
-    and indexes such as S\&P 500, etc....
+    \item Evaluate the performance of the RL agents by comparing
+    them with the baseline portfolio management strategies,
+    such as mean-variance optimization and baseline indexes such as DJI30 etc...
 \end{itemize}
 
-Using programming language Python and the open-source libraries such as numpy, pandas, stable-baselines3, gym, etc...
-I will implement the RL agents and evaluate their performance on the dataset.
+Using the programming language Python and open-source libraries such as NumPy, Pandas,
+Stable Baselines3, OpenAI gym, etc... I will implement
+the RL agents and evaluate their performance on the created dataset.
 
-This thesis aims to discover if RL can learn optimal portfolio management strategies
-that yields better results than the current state-of-the-art portfolio management
-methods and will focus on the objectives mentioned above.
+This thesis aims to discover if RL can learn optimal portfolio management
+strategies that yield better results than the current
+state-of-the-art portfolio management method focusing on the objectives mentioned above.
 
 
 \if 0
