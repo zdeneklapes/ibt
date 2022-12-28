@@ -17,15 +17,27 @@
 
 % Portfolio Allocation
 The portfolio allocation is a problem that has been studied for a long time. The
-problem is to find the optimal allocation of the portfolio, given a
-specific set of securities.
+problem is to find the optimal allocation of the finite budget into a range of financial
+instruments/assets, such as stocks.\cite{Model-Free-Reinforcement-Learning-for-Asset-Allocation}
 
-The portfolio management task is basically the most important to the
+This problem involves making crucial decisions about the allocating capital into
+different instruments. Basically, the goal is to maximize the expected return of the
+portfolio, while minimizing the risk.
+
+The portfolio management is the most important task for
 finance institutions, like banks, hedge funds and asset management companies.
-It help traders understand the market and its risks.\cite{finrl-portfolio-allocation-2020}
 
-The portfolio allocation was widely studied in a standart ways, like the
-Markowitz portfolio theory\cite[p.~4]{sirucek-2015}, the CAPM model and the Black-Litterman model.
+There are various existing portfolio management strategies, such as the
+Markowitz portfolio theory\cite[p.~4]{sirucek-2015} and the CAPM model.
+
+The approaches based on predictive models are not suitable for the portfolio
+management, because the market is highly stochastic and the models are not able to
+predict the future market conditions in an accurate way.
+
+So, the most recent state-of-the-art portfolio management strategies are based on
+machine learning techniques, such as the deep reinforcement learning (DRL), which
+shows promising results in the financial domain, such as the stock trading and
+portfolio management.
 
 The stock market is a wide and quick changing environment and people are
 emotionally based, which means, that behave based on their emotions and only
@@ -45,6 +57,7 @@ in input would influence the output is important to understand what
 contributes to the decision making process of the DRL agents.\cite{finrl-portfolio-allocation-2020}
 
 \if 0
+
 
 \chapter{Gaps and Goals}\label{ch:gaps-and-goals}
 TODO
@@ -80,7 +93,7 @@ I will try to find out what is the best way to represent the reward function.
 I will try to find out what is the best way to represent the action space.
 And I will benchmark and compare the results with the baseline indexes.
 
-
+Implement data engineering process, that will be able to prepare the data for the DRL agent.
 
 
 % MC & MDP
