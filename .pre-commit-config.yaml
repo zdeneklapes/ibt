@@ -16,6 +16,18 @@ repos:
       - id: identity
 
   ##########################################################################################
+  # Local hooks
+  ##########################################################################################
+#  - repo: local
+#    hooks:
+#      - id: compile-thesis
+#        name: Compile thesis
+#        entry: "make -C thesis"
+#        language: system
+#        pass_filenames: false
+#        files: "thesis/.*.tex"
+
+  ##########################################################################################
   # Standard hooks
   ##########################################################################################
   - repo: https://github.com/pre-commit/pre-commit-hooks
