@@ -11,134 +11,85 @@
 
 \section{Background}\label{sec:background}
 % Portfolio Allocation
-The portfolio allocation task has been studied for a long time.
-The problem is to find the optimal allocation of the finite
-budget into a range of financial
-instruments/assets, e.g. stocks.\cite{Model-Free-Reinforcement-Learning-for-Asset-Allocation}
+Portfolio allocation has been studied for a long time.
+The problem is to find the optimal allocation of the finite cash budget into a range of financial instruments/assets, e.g.\ stocks~\cite{Model-Free-Reinforcement-Learning-for-Asset-Allocation}.
+This problem involves making crucial decisions about allocating capital into different securities (stocks, bonds, ...).
+The goal is to allocate assets instead of cash and thanks to constantly valorize the initial capital on a selected investing horizon.
+It is important to think about the minimization of risk while maximizing the expected return on the investment.
+Portfolio management is the most important task for financial institutions, like banks, hedge funds, and asset management companies.
+There exist various existing portfolio management strategies, such as the Markowitz mean-variance portfolio optimization proposed by Hanry Markowitz~\cite{sirucek-2015}, the Black-Litterman model~\cite{he-2002} and the CAPM model~\cite{fama-2004}.
 
-This problem involves making crucial decisions about allocating capital into
-different securities (stocks, bonds, ...).
-The goal is to allocate assets instead of cash which will be able
-to constantly in a selected investing horizon valorize the initial capital and
-maximize the expected return of the
-portfolio, while minimizing the risk.
+The earlier approaches based on predictive models (unsupervised learning methods) are not too appropriate for portfolio management, because the stock market is stochastic, volatile, quickly changing, and uncertain environment.
+Predictive models are not flexible enough to adapt to the changing environment like the stock market and are not able to predict future market conditions accurately.
+The current strategies and models are limited by the fact that they are based on historical data which includes a huge noise.
 
-Portfolio management is the most important task for
-finance institutions, like banks, hedge funds, and asset management companies
-and there exist various existing portfolio management strategies, such as the
-Markowitz mean-variance portfolio optimization proposed by Hanry Markowitz\cite[p.~4]{sirucek-2015},
-the Black-Litterman model and the CAPM model.
+% Reinforcement learning
+So, the most recent state-of-the-art portfolio management strategies are based on machine learning techniques, such as deep reinforcement learning (DRL), which shows promising results in the financial domain, such as stock trading and portfolio management tasks.
+The benefits of RL have been used in many different fields, such as robotics, and games, and a lot of people are interested in applying RL to the financial domain.
+Reinforcement Learning is a subfield of machine learning, concerned with how an agent can learn to act in an environment to maximize the cumulative reward~\cite{Model-Free-Reinforcement-Learning-for-Asset-Allocation}.
+In the last decade Reinforcement learning (RL) has become popular, because it can learn difficult tasks in a variety of domains without knowing the environment model or the model is too complex to be defined.~\cite{sutton-2018}.
+The agent is trained in a particular environment, which is modeled using MDPs.
 
-The approaches based on predictive models are not appropriate for portfolio management,
-because the stock market is stochastic, volatile, quickly changing, and uncertain environment.
-Predictive models are not able to predict future market conditions in an accurate way.
+% Markov Decision Processes
+MDPs (Markov Decision Processes) is a mathematical framework for modeling decision-making (do actions) in specific situations (called states)~\cite{rao-2022}.
+MDPs are the next level of MRP (Markov Reward Processes) and it is the next level of MP (Markov Processes)~\cite{rao-2022}.
+In the real world, the transition matrix of the MDP model for a particular environment is unknown, so the agent must learn it from experience, and here comes into play the Reinforcement Learning with its methods~\cite{sutton-2018}.
+Reinforcement learning methods have been studied on how much a change in input would influence the output and what contributes to the decision-making process of the RL agents~\cite{finrl-portfolio-allocation-2020}.
 
-Also, the current strategies and models, which rely on
-historical data are not suitable for that type of environment.
-
-So, the most recent state-of-the-art portfolio management strategies
-are based on machine learning techniques, such as deep reinforcement learning (DRL),
-which shows promising results in the financial domain, such as stock trading and
-portfolio management tasks.
-
-Reinforcement learning (RL) is becoming more popular in the last decade because it is able to learn from the large
-environment and make decisions based on the
-experience gained from the environment.a
-
-Reinforcement Learning is a
-subfield of machine learning, concerned with how
-an agent can learn to make decisions in an
-environment to maximize the expected cumulative
-reward.\cite{Model-Free-Reinforcement-Learning-for-Asset-Allocation}
-
-The benefits of RL have been used in many different
-fields, such as robotics and games.
-
-Reinforcement learning methods have been studied
-on how much a change in input would influence the output and what contributes to
-the decision-making process of the DRL agents.\cite{finrl-portfolio-allocation-2020}
-
-For large and complex environments with
-huge state space, the breakthrough was Deep Reinforcement Learning (DRL)
-which is a subfield of RL using deep neural networks
-to approximate the large and complex state-action spaces and help
-to understand the stochastic environments.
+% Deep Reinforcement learning
+Deep Reinforcement Learning (DRL) was a breakthrough in training RL agents, which is a subfield of RL using deep neural networks to approximate the large and complex state-action spaces and help to understand the stochastic environments\cite{ai4finance-Optimistic-Bull-or-Pessimistic-Bear}.
 
 
 \section{Problem Statement}\label{sec:problem-statement}
-There are a lot of different portfolio management strategies,
-such as Markowitz mean-variance portfolio optimization
-called as modern portfolio theory (MPT)\cite{modern-portfolio-theory} is
-limited by the fact that they are all based on historical data such as
-the historical prices of the stocks, which include a lot
-of noise and are not able to predict the future market conditions,
-because of the stochastic nature
-of the market.
-Markowitz's theory goal is on a well-diversified portfolio, which is for minimizing risk.
-
-Reinforcement learning has advantages, such as flexibility, adaptability, and utilization
-of various information like e.q.\ experience gained from the environment
-under certain conditions.
-
-However, the existing RL approaches do not consider all of these factors:
+Reinforcement learning has advantages, such as flexibility, adaptability, and utilization of various information like e.q.\ experience gained from the environment under certain conditions.
+The RL agents have huge potential to perform pretty well, while he following factors are considered:
 
 \begin{itemize}
     \item \textbf{State space}\\
-    The actions computed by the model should change only the portfolio
-    managed by the agent, but not the conditions of the financial market itself.
+    The actions computed by the model should change only the portfolio managed by the agent, but not the conditions of the financial market itself.
     \item \textbf{Action space} \\
     Action space should be designed in a way that the agent weights the assets in the portfolio.
     How much of the budget should be allocated to each asset and should be this asset in the portfolio?
     These design decisions are crucial for the performance of the agent.
-    It is really difficult to find the optimal policy for the portfolio allocation because the
-    agent has to choose between multiple assets with various differences in information about the assets.
-    Also, actions should be considered profitable and safe in the long term,
-    which means that the agent has to make decisions based on long-term rewards.
+    It is really difficult to find the optimal policy for the portfolio allocation because the agent has to choose between multiple assets with various differences in information about the assets.
+    Also, actions should be considered profitable and safe in the long term, which means that the agent has to make decisions based on long-term rewards.
     \item \textbf{Reward function}\\
     The reward should be able to reflect the agent's performance in the environment.
     Is the current portfolio value increasing or decreasing after the agent takes actions proposed by the policy?
     \item \textbf{Model Overfitting}\\
     The model should be able to generalize the environment and not overfit the training data.
-    The dataset should be large enough to generalize the environment
-    and split into the training and testing dataset.
+    The dataset should be large enough to generalize the environment and split into the training and testing dataset.
 \end{itemize}
 
 
-The current model approaches of FinRL-Meta are based on the deep reinforcement learning (DRL) methods,
-which are able to learn from the environment, but they are not following
-all of the above-mentioned factors and rely on the technical analysis and covariance
-between the assets.
+\section{Limitations}\label{sec:limitations}
 
-These objectives put a large complexity into environment and
-I suppose it should be possible to solve the portfolio allocation task
-in a simpler way, which will result in better agent's performance.
+The current solutions, such as from FinRL~\cite{finrl-portfolio-allocation-2020}, consider the technical indicators and covariances of the assets as the state space.
+This puts the agent at a disadvantage because the agent has to learn the relationship between the technical indicators and the covariances of the assets and the portfolio value.
+However, the covariance matrix is great for portfolio optimization, but I suppose it is not the best choice for the state space because it puts a huge amount of noise and complexity into it.
+
+I suppose it should be possible to solve the portfolio allocation task in a simpler way, using fundamental data about the company, which should result in better agent performance.
+
+The environment should be designed in a way that the agent can learn the relationship between the state space and the portfolio value according to the lowest level of complexity.
+Otherwise, the agent will not be able to learn the best policy for the portfolio allocation task in an efficient way.
 
 
 \section{Aim of the Thesis}\label{sec:aim-of-the-thesis}
-
-This thesis focus on learning deep reinforcement
-learning agents, which are able to learn optimal portfolio management
-strategies from the environment.
+This thesis focus on experimental comparison of existing portfolio allocation agents, including testing and benchmarking of the portfolio allocation agents on real-world data.
+The agents will be experimentally changed for different input data, which should be able to improve the agent's performance, considering the factors mentioned in the previous section.
 
 The objectives of this thesis are:
 \begin{itemize}
-    \item Create a suitable dataset for the portfolio allocation
-    problem with a finite set of stocks.
-    \item Implement and Train RL agents on the dataset with a finite cash budget.
-    \item Evaluate the performance of the RL agents by comparing
-    them with the baseline portfolio management strategies,
-    such as mean-variance optimization and baseline indexes such as DJI30 etc...
+    \item Experimental evaluation and benchmarking of the existing portfolio allocation agents.
+    \item Create a suitable dataset for the portfolio allocation problem with a finite set of stocks.
+    Dataset would consists from financial data, such as fundamental analysis and technical analysis data.
+    \item Reimplement and Train RL agents with a finite cash budget on the datasets.
+    \item Evaluate the performance of the RL agents by comparing them with the baseline portfolio management strategies (mean-variance optimization and baseline indexes such as DJI30 etc...), and compare the performance of the RL agents with the existing RL agents including the FinRL-Meta Portfolio Allocation agent.
 \end{itemize}
 
-Using the programming language Python and open-source libraries such as NumPy, Pandas,
-Stable Baselines3, OpenAI gym, etc... I will implement
-the RL agents and evaluate their performance on the created dataset.
+Using the programming language Python and open-source libraries such as NumPy, Pandas, Stable Baselines3, OpenAI gym, etc... I will implement the RL agents and evaluate their performance on the created dataset.
 
-This thesis aims to discover if RL can learn optimal portfolio management
-strategies that yield better results than the current
-state-of-the-art portfolio management method focusing on the objectives mentioned above,
-such as Data engineering, Data analysis, and Data visualization.
-
+This thesis aims to discover if RL can learn optimal portfolio management strategies that yield same or even better results than the current state-of-the-art portfolio management method focusing on the objectives mentioned above, such as Data engineering, Data analysis, and Data visualization.
 
 \if 0
 
