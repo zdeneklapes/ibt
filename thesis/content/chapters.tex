@@ -26,15 +26,18 @@ The current strategies and models are limited by the fact that they are based on
 % Reinforcement learning
 So, the most recent state-of-the-art portfolio management strategies are based on machine learning techniques, such as deep reinforcement learning (DRL), which shows promising results in the financial domain, such as stock trading and portfolio management tasks.
 The benefits of RL have been used in many different fields, such as robotics, and games, and a lot of people are interested in applying RL to the financial domain.
+
 Reinforcement Learning is a subfield of machine learning, concerned with how an agent can learn to act in an environment to maximize the cumulative reward~\cite{Model-Free-Reinforcement-Learning-for-Asset-Allocation}.
-In the last decade Reinforcement learning (RL) has become popular, because it can learn difficult tasks in a variety of domains without knowing the environment model or the model is too complex to be defined.~\cite{sutton-2018}.
+In the last decade, RL has become popular, because of its ability to learn difficult tasks in a variety of domains without knowing the environment model~\cite{sutton-2018}.
 The agent is trained in a particular environment, which is modeled using MDPs.
 
 % Markov Decision Processes
-MDPs (Markov Decision Processes) is a mathematical framework for modeling decision-making (do actions) in specific situations (called states)~\cite{rao-2022}.
-MDPs are the next level of MRP (Markov Reward Processes) and it is the next level of MP (Markov Processes)~\cite{rao-2022}.
-In the real world, the transition matrix of the MDP model for a particular environment is unknown, so the agent must learn it from experience, and here comes into play the Reinforcement Learning with its methods~\cite{sutton-2018}.
-Reinforcement learning methods have been studied on how much a change in input would influence the output and what contributes to the decision-making process of the RL agents~\cite{finrl-portfolio-allocation-2020}.
+MDPs (Markov Decision Processes) is a mathematical framework for modeling decision-making (actions) in specific situations (called states)~\cite[p.~93]{rao-2022}.
+MDPs are the next level of MRP (Markov Reward Processes)~\cite[p.~84]{rao-2022} and it is the next level of MP (Markov Processes)~\cite[p.~59]{rao-2022}.
+In the real world, the transition matrix of the MDP model for a particular environment is unknown, so the agent must learn it from experience, and here comes into play the RL algorithms~\cite{sutton-2018}.
+RL algorithms are divided into two categories: model-based\cite{rl-model-based} and model-free\cite{rl-model-free}.
+These algorithms have been studied on how much a change in input would influence the output and what contributes to the decision-making process of the RL agents~\cite{finrl-portfolio-allocation-2020}.
+This thesis experiments with multiple RL algorithms, such as DDPG, TD3, SAC, PPO, A2C, ..., and compare their performance in the same environment.
 
 % Deep Reinforcement learning
 Deep Reinforcement Learning (DRL) was a breakthrough in training RL agents, which is a subfield of RL using deep neural networks to approximate the large and complex state-action spaces and help to understand the stochastic environments\cite{ai4finance-Optimistic-Bull-or-Pessimistic-Bear}.
@@ -48,13 +51,13 @@ The RL agents have huge potential to perform pretty well, while he following fac
     \item \textbf{State space}\\
     The actions computed by the model should change only the portfolio managed by the agent, but not the conditions of the financial market itself.
     \item \textbf{Action space} \\
-    Action space should be designed in a way that the agent weights the assets in the portfolio.
+    Action space should be designed so that the agent weights the assets in the portfolio.
     How much of the budget should be allocated to each asset and should be this asset in the portfolio?
     These design decisions are crucial for the performance of the agent.
     It is really difficult to find the optimal policy for the portfolio allocation because the agent has to choose between multiple assets with various differences in information about the assets.
     Also, actions should be considered profitable and safe in the long term, which means that the agent has to make decisions based on long-term rewards.
     \item \textbf{Reward function}\\
-    The reward should be able to reflect the agent's performance in the environment.
+    The reward should reflect the agent's performance in the environment.
     Is the current portfolio value increasing or decreasing after the agent takes actions proposed by the policy?
     \item \textbf{Model Overfitting}\\
     The model should be able to generalize the environment and not overfit the training data.
@@ -75,21 +78,21 @@ Otherwise, the agent will not be able to learn the best policy for the portfolio
 
 
 \section{Aim of the Thesis}\label{sec:aim-of-the-thesis}
-This thesis focus on experimental comparison of existing portfolio allocation agents, including testing and benchmarking of the portfolio allocation agents on real-world data.
+This thesis focus on the experimental comparison of existing portfolio allocation agents, including testing and benchmarking of the portfolio allocation agents on real-world data.
 The agents will be experimentally changed for different input data, which should be able to improve the agent's performance, considering the factors mentioned in the previous section.
 
 The objectives of this thesis are:
 \begin{itemize}
-    \item Experimental evaluation and benchmarking of the existing portfolio allocation agents.
+    \item Experimental evaluation and benchmark of the existing portfolio allocation agents.
     \item Create a suitable dataset for the portfolio allocation problem with a finite set of stocks.
-    Dataset would consists from financial data, such as fundamental analysis and technical analysis data.
+    Dataset consists of financial data, such as fundamental and technical analysis data.
     \item Reimplement and Train RL agents with a finite cash budget on the datasets.
-    \item Evaluate the performance of the RL agents by comparing them with the baseline portfolio management strategies (mean-variance optimization and baseline indexes such as DJI30 etc...), and compare the performance of the RL agents with the existing RL agents including the FinRL-Meta Portfolio Allocation agent.
+    \item Evaluate the performance of the RL agents by comparing them with the baseline portfolio management strategies (mean-variance optimization and baseline indexes such as DJI30 etc...) and compare the performance of the RL agents with the existing RL agents including the FinRL-Meta Portfolio Allocation agent.
 \end{itemize}
 
 Using the programming language Python and open-source libraries such as NumPy, Pandas, Stable Baselines3, OpenAI gym, etc... I will implement the RL agents and evaluate their performance on the created dataset.
 
-This thesis aims to discover if RL can learn optimal portfolio management strategies that yield same or even better results than the current state-of-the-art portfolio management method focusing on the objectives mentioned above, such as Data engineering, Data analysis, and Data visualization.
+This thesis aims to discover if RL can learn optimal portfolio management that yields the same or even better results than the current state-of-the-art portfolio management strategies focusing on the objectives mentioned above, such as Data Engineering, Data analysis, and Data visualization.
 
 \if 0
 
