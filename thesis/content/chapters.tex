@@ -11,13 +11,41 @@
 
 \section{Background}\label{sec:background}
 % Portfolio Allocation
+Portfolio allocation problem is to spread appropriate finite cash budget into financial instruments e.g.\ stocks~\cite{Model-Free-Reinforcement-Learning-for-Asset-Allocation}.
 Portfolio allocation has been studied for a long time.
-The problem is to find the optimal allocation of the finite cash budget into a range of financial instruments/assets, e.g.\ stocks~\cite{Model-Free-Reinforcement-Learning-for-Asset-Allocation}.
-This problem involves making crucial decisions about allocating capital into different securities (stocks, bonds, ...).
-The goal is to allocate assets instead of cash and thanks to constantly valorize the initial capital on a selected investing horizon.
-It is important to think about the minimization of risk while maximizing the expected return on the investment.
-Portfolio management is the most important task for financial institutions, like banks, hedge funds, and asset management companies.
-There exist various existing portfolio management strategies, such as the Markowitz mean-variance portfolio optimization proposed by Hanry Markowitz~\cite{sirucek-2015}, the Black-Litterman model~\cite{he-2002} and the CAPM model~\cite{fama-2004}.
+Under the financial instruments we can imagine:
+%stocks, bonds, commodities, and so on.
+\begin{enumerate}[label=\textbf{\arabic*}., ref=\arabic*]
+    \item \textbf{Stocks:} Stocks represent ownership in a company and can provide a source of income through dividends and capital appreciation.
+    \item \textbf{Bonds:} Bonds are debt securities that pay a fixed or variable rate of interest to bondholders. They can provide a more stable source of income compared to stocks.
+    \item \textbf{Mutual Funds:} Mutual funds are investment vehicles that pool money from multiple investors to buy a diversified portfolio of stocks, bonds, or other securities.
+    \item \textbf{Options:} Options are financial derivatives that give the holder the right, but not the obligation, to buy or sell an underlying asset at a certain price and time.
+    \item \textbf{Futures:} Futures are financial derivatives that obligate the holder to buy or sell an underlying asset at a certain price and time in the future.
+    \item \textbf{Currency:} Currency trading, also known as forex, involves buying and selling different currencies in the foreign exchange market.
+    \item \textbf{Commodities:} Commodities are raw materials and primary products that can be bought and sold, such as gold, oil, and agricultural products.
+    \item \textbf{Derivatives:} Derivatives, such as options and futures, are financial products that derive their value from an underlying asset.
+    \item \textbf{Real Estate Investment Trusts (REITs):} REITs are investment vehicles that own and operate income-producing real estate properties.
+    \item \textbf{Exchange-Traded Funds (ETFs):} ETFs are investment funds that are traded on stock exchanges, similar to stocks. They provide exposure to a diversified portfolio of assets, such as stocks, bonds, or commodities.
+    \item \textbf{Certificates of Deposit (CDs):} CDs are deposit accounts with banks or other financial institutions that pay a fixed rate of interest. They are considered a low-risk investment option.
+    \item \textbf{Savings Accounts:} Savings accounts are deposit accounts with banks or other financial institutions that pay a low rate of interest. They are considered a low-risk investment option.
+\end{enumerate}
+This work focuses on the stocks.
+Allocation assets instead of cash is the goal, but important is to think about the minimization of risk, also, while maximizing the expected return on the investment.
+And an outcome should constantly be valorizing the initial capital on a selected investing horizon.
+%Portfolio management is the most important task for financial institutions, like banks, hedge funds, and asset management companies.
+The portfolio allocation problem is important for investors, particularly those who manage large sums of money such as institutional investors, pension funds, and wealthy individuals. These investors need to make decisions about how to allocate their assets among different investments in order to achieve their financial goals while also managing risk.
+Assets allocation has been studies for a long time.
+The most common strategies for portfolio allocation include diversification, asset allocation, and rebalancing.
+\begin{enumerate}[label=\textbf{\arabic*}., ref=\arabic*]
+    \item \textbf{Diversification:} This strategy involves investing in a variety of assets, such as stocks, bonds, and real estate, to spread out risk and reduce the impact of any one investment on the overall portfolio.
+    \item \textbf{Asset allocation:}  This strategy involves dividing a portfolio among different asset classes, such as stocks, bonds, and cash, based on an individual's investment goals, risk tolerance, and time horizon.
+    \item \textbf{Rebalancing:} This strategy involves periodically adjusting the allocations of assets in a portfolio to maintain the desired level of risk and return, as the values of the assets in the portfolio will change over time.
+\end{enumerate}
+It is also worth mentioning that investors can use modern portfolio theory (MPT) to optimally allocate assets in a portfolio.
+MPT uses statistical tools to determine the efficient frontier, which is the set of optimal portfolios that offer the highest expected return for a given level of risk, or the lowest risk for a given level of expected return.~\cite{sirucek-2015}
+%There exist various existing portfolio management strategies, such as the Markowitz mean-variance portfolio optimization proposed by Hanry Markowitz, the Black-Litterman model~\cite{he-2002} and the CAPM model~\cite{fama-2004}.
+
+% TODO continue
 
 The earlier approaches based on predictive models (unsupervised learning methods) are not too appropriate for portfolio management, because the stock market is stochastic, volatile, quickly changing, and uncertain environment.
 Predictive models are not flexible enough to adapt to the changing environment like the stock market and are not able to predict future market conditions accurately.
