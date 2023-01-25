@@ -11,118 +11,134 @@
 
 \section{Background}\label{sec:background}
 % Portfolio Allocation
-Portfolio allocation problem is to spread appropriate finite cash budget into financial instruments e.g.\ stocks~\cite{Model-Free-Reinforcement-Learning-for-Asset-Allocation}.
-Portfolio allocation has been studied for a long time.
-Under the financial instruments we can imagine:
-%stocks, bonds, commodities, and so on.
-\begin{enumerate}[label=\textbf{\arabic*}., ref=\arabic*]
-    \item \textbf{Stocks:} Stocks represent ownership in a company and can provide a source of income through dividends and capital appreciation.
-    \item \textbf{Bonds:} Bonds are debt securities that pay a fixed or variable rate of interest to bondholders. They can provide a more stable source of income compared to stocks.
-    \item \textbf{Mutual Funds:} Mutual funds are investment vehicles that pool money from multiple investors to buy a diversified portfolio of stocks, bonds, or other securities.
-    \item \textbf{Options:} Options are financial derivatives that give the holder the right, but not the obligation, to buy or sell an underlying asset at a certain price and time.
-    \item \textbf{Futures:} Futures are financial derivatives that obligate the holder to buy or sell an underlying asset at a certain price and time in the future.
-    \item \textbf{Currency:} Currency trading, also known as forex, involves buying and selling different currencies in the foreign exchange market.
-    \item \textbf{Commodities:} Commodities are raw materials and primary products that can be bought and sold, such as gold, oil, and agricultural products.
-    \item \textbf{Derivatives:} Derivatives, such as options and futures, are financial products that derive their value from an underlying asset.
-    \item \textbf{Real Estate Investment Trusts (REITs):} REITs are investment vehicles that own and operate income-producing real estate properties.
-    \item \textbf{Exchange-Traded Funds (ETFs):} ETFs are investment funds that are traded on stock exchanges, similar to stocks. They provide exposure to a diversified portfolio of assets, such as stocks, bonds, or commodities.
-    \item \textbf{Certificates of Deposit (CDs):} CDs are deposit accounts with banks or other financial institutions that pay a fixed rate of interest. They are considered a low-risk investment option.
-    \item \textbf{Savings Accounts:} Savings accounts are deposit accounts with banks or other financial institutions that pay a low rate of interest. They are considered a low-risk investment option.
-\end{enumerate}
-This work focuses on the stocks.
-Allocation assets instead of cash is the goal, but important is to think about the minimization of risk, also, while maximizing the expected return on the investment.
-And an outcome should constantly be valorizing the initial capital on a selected investing horizon.
-%Portfolio management is the most important task for financial institutions, like banks, hedge funds, and asset management companies.
-The portfolio allocation problem is important for investors, particularly those who manage large sums of money such as institutional investors, pension funds, and wealthy individuals. These investors need to make decisions about how to allocate their assets among different investments in order to achieve their financial goals while also managing risk.
-Assets allocation has been studies for a long time.
+The portfolio allocation problem is to spread appropriate finite cash budget into financial instruments with the goal of maximizing returns while minimizing risk~\cite{Model-Free-Reinforcement-Learning-for-Asset-Allocation}.
+One of the key considerations in portfolio allocation is diversification, which involves spreading investments across different instrument classes and markets in order to reduce the overall risk of the portfolio.
+Under the financial instruments we can imagine: Stocks, Bonds, Mutual Funds, Commodities, Derivatives, Real Estate Investments Trusts (REITs), Exchange-Traded Funds (ETFs), and many more.
+%\begin{enumerate}[label=\textbf{\arabic*}., ref=\arabic*]
+%    \item \textbf{Stocks:} Stocks represent ownership in a company and can provide a source of income through dividends and capital appreciation.
+%    \item \textbf{Bonds:} Bonds are debt securities that pay a fixed or variable rate of interest to bondholders.
+%    They can provide a more stable source of income compared to stocks.
+%    \item \textbf{Mutual Funds:} Mutual funds are investment vehicles that pool money from multiple investors to buy a diversified portfolio of stocks, bonds, or other securities.
+%    \item \textbf{Options:} Options are financial derivatives that give the holder the right, but not the obligation, to buy or sell an underlying asset at a specific price and time.
+%    \item \textbf{Futures:} Futures are financial derivatives that obligate the holder to buy or sell an underlying asset at a specific price and time in the future.
+%    \item \textbf{Currency:} Currency trading, also known as forex, involves buying and selling different currencies in the foreign exchange market.
+%    \item \textbf{Commodities:} Commodities are raw materials and primary products that can be bought and sold, such as gold, oil, and agricultural products.
+%    \item \textbf{Derivatives:} Derivatives, such as options and futures, are financial products that derive their value from an underlying asset.
+%    \item \textbf{Real Estate Investment Trusts (REITs):} REITs are investment vehicles that own and operate income-producing real estate properties.
+%    \item \textbf{Exchange-Traded Funds (ETFs):} ETFs are investment funds that are traded on stock exchanges, similar to stocks.
+%    They provide exposure to a diversified portfolio of assets, such as stocks, bonds, or commodities.
+%    \item \textbf{Certificates of Deposit (CDs):} CDs are deposit accounts with banks or other financial institutions that pay a fixed rate of interest.
+%    \item \textbf{Savings Accounts:} Savings accounts are deposit accounts with banks or other financial institutions that pay a low rate of interest.
+%\end{enumerate}
+%While allocating assets instead of cash one must think about the minimization of risk, also, while maximizing the expected return on the investment.
+And an outcome should be increasing the initial capital over the course of a selected investing horizon.
+The portfolio allocation problem is important for investors, particularly those who manage large sums of money such as institutional investors, pension funds, and wealthy individuals.
+These investors need to decide how to allocate their assets among different investments to achieve their financial goals while also managing risk.
+Assets allocation has been studied for a long time.
 The most common strategies for portfolio allocation include diversification, asset allocation, and rebalancing.
+
+When allocating a portfolio, it is important to consider the investor's risk tolerance, investment time horizon, and financial goals.
+For example, a conservative investor with a short time horizon may prefer a portfolio that is heavily weighted towards fixed income securities such as bonds, while a more aggressive investor with a longer time horizon may prefer a portfolio that is heavily weighted towards equities.
+Overall, portfolio allocation is an ongoing process that requires continuous monitoring and rebalancing to ensure that the portfolio remains aligned with the investor's goals and risk tolerance.
+
 \begin{enumerate}[label=\textbf{\arabic*}., ref=\arabic*]
-    \item \textbf{Diversification:} This strategy involves investing in a variety of assets, such as stocks, bonds, and real estate, to spread out risk and reduce the impact of any one investment on the overall portfolio.
-    \item \textbf{Asset allocation:}  This strategy involves dividing a portfolio among different asset classes, such as stocks, bonds, and cash, based on an individual's investment goals, risk tolerance, and time horizon.
+    \item \textbf{Diversification:} This strategy involves investing in various assets, such as stocks, bonds, and real estate, to spread out risk and reduce the impact of any one investment on the overall portfolio.
+    \item \textbf{Asset allocation:}  This strategy involves dividing a portfolio among different asset classes based on an individual's investment goals, risk tolerance, and time horizon.
     \item \textbf{Rebalancing:} This strategy involves periodically adjusting the allocations of assets in a portfolio to maintain the desired level of risk and return, as the values of the assets in the portfolio will change over time.
 \end{enumerate}
-It is also worth mentioning that investors can use modern portfolio theory (MPT) to optimally allocate assets in a portfolio.
+It is also worth mentioning that investors can use \textbf{Modern portfolio theory (MPT)} to optimally allocate assets in a portfolio~\cite{modern-portfolio-theory}.
 MPT uses statistical tools to determine the efficient frontier, which is the set of optimal portfolios that offer the highest expected return for a given level of risk, or the lowest risk for a given level of expected return.~\cite{sirucek-2015}
-%There exist various existing portfolio management strategies, such as the Markowitz mean-variance portfolio optimization proposed by Hanry Markowitz, the Black-Litterman model~\cite{he-2002} and the CAPM model~\cite{fama-2004}.
+Another approach is \textbf{Mean-variance optimization}, which uses mathematical models to determine the optimal portfolio based on an investor's risk tolerance and expected returns~\cite{meanvarianceportfoliooptimazation}.
 
-% TODO continue
+These approaches are not too appropriate for portfolio management, because the stock market is stochastic, volatile, quickly changing, and uncertain environment.
+These strategies are not flexible enough to adapt to the changing environment like the stock market, because they assume the future will be similar to the past, which may not always be accurate.
 
-The earlier approaches based on predictive models (unsupervised learning methods) are not too appropriate for portfolio management, because the stock market is stochastic, volatile, quickly changing, and uncertain environment.
-Predictive models are not flexible enough to adapt to the changing environment like the stock market and are not able to predict future market conditions accurately.
-The current strategies and models are limited by the fact that they are based on historical data which includes a huge noise.
 
 % Reinforcement learning
-So, the most recent state-of-the-art portfolio management strategies are based on machine learning techniques, such as deep reinforcement learning (DRL), which shows promising results in the financial domain, such as stock trading and portfolio management tasks.
-The benefits of RL have been used in many different fields, such as robotics, and games, and a lot of people are interested in applying RL to the financial domain.
+So, the most recent state-of-the-art portfolio management strategies are based on machine learning techniques.
+\textbf{Reinforcement learning (RL)} is a type of machine learning that is well-suited for solving problems involving decision-making and control~\cite{sutton2018reinforcement}.
+In the context of portfolio allocation, RL can be used to optimize the allocation of assets in a portfolio in order to maximize returns or minimize risk.
+RL algorithms can learn from historical data and adapt to changing market conditions, which can lead to more efficient and profitable portfolio management.
+The benefits of RL have been used in many different fields, such as robotics, games, and finances.
 
-Reinforcement Learning is a subfield of machine learning, concerned with how an agent can learn to act in an environment to maximize the cumulative reward~\cite{Model-Free-Reinforcement-Learning-for-Asset-Allocation}.
-In the last decade, RL has become popular, because of its ability to learn difficult tasks in a variety of domains without knowing the environment model~\cite{sutton-2018}.
-The agent is trained in a particular environment, which is modeled using MDPs.
-
-% Markov Decision Processes
-MDPs (Markov Decision Processes) is a mathematical framework for modeling decision-making (actions) in specific situations (called states)~\cite[p.~93]{rao-2022}.
-MDPs are the next level of MRP (Markov Reward Processes)~\cite[p.~84]{rao-2022} and it is the next level of MP (Markov Processes)~\cite[p.~59]{rao-2022}.
-In the real world, the transition matrix of the MDP model for a particular environment is unknown, so the agent must learn it from experience, and here comes into play the RL algorithms~\cite{sutton-2018}.
-RL algorithms are divided into two categories: model-based\cite{rl-model-based} and model-free\cite{rl-model-free}.
-These algorithms have been studied on how much a change in input would influence the output and what contributes to the decision-making process of the RL agents~\cite{finrl-portfolio-allocation-2020}.
-This thesis experiments with multiple RL algorithms, such as DDPG, TD3, SAC, PPO, A2C, ..., and compare their performance in the same environment.
-
-% Deep Reinforcement learning
-Deep Reinforcement Learning (DRL) was a breakthrough in training RL agents, which is a subfield of RL using deep neural networks to approximate the large and complex state-action spaces and help to understand the stochastic environments\cite{ai4finance-Optimistic-Bull-or-Pessimistic-Bear}.
-
-
-\section{Problem Statement}\label{sec:problem-statement}
-Reinforcement learning has advantages, such as flexibility, adaptability, and utilization of various information like e.q.\ experience gained from the environment under certain conditions.
-The RL agents have huge potential to perform pretty well, via follow these factors:
-
+In the last decade, RL has become popular, because of its ability to learn difficult tasks in a variety of domains without knowing the environment model~\cite{sutton2018reinforcement}.
+RL has advantages, such as flexibility, adaptability, and utilization of various information like e.q.\ experience gained from the environment under certain conditions.
+The agent is trained under a certain policy in a particular environment, which is modeled using \textbf{Markov Decision Process (MDP)}.
+MDP is a mathematical framework for modeling sequential decision-making problems~\cite{rao2022foundations}.
+MDP can be used to model the fully observable environment, where the agent can observe the state of the environment.
+If the environment is not fully observable, then the agent can observe only a part of the state of the environment, which is called \textbf{partially observable Markov decision process (POMDP)}~\cite{sutton2018reinforcement}.
+In finances, the environment is usually fully observable, because the agent can observe the state of the environment.
+MDP is composed of the following elements:
+\begin{enumerate}[label=\textbf{\arabic*}., ref=\arabic*]
+    \item \textbf{State:} The state is the current situation of the environment.
+    \item \textbf{Action:} The action is the decision that the agent can take.
+    \item \textbf{Reward:} The reward is the feedback that the agent receives after taking an action.
+    \item \textbf{Transition:} The transition is the change of the state after taking an action.
+\end{enumerate}
+In agent training we handle the following problems:
 \begin{itemize}
     \item \textbf{State space}\\
-    The actions computed by the model should change only the portfolio managed by the agent, but not the conditions of the financial market itself.
+    The state space is a finite set of all possible configurations of the environment.
+    In the context of portfolio allocation, the state space can be defined as the finite set of all possible instrument features (fundamental and technical analysis) and their weights in the portfolio.
     \item \textbf{Action space} \\
     Action space should be designed so that the agent weights the assets in the portfolio.
-    How much of the budget should be allocated to each asset and should be this asset in the portfolio?
-    These design decisions are crucial for the performance of the agent.
+    Here the question is: Should be this asset in the portfolio and if yes, what is the weight of this asset in the portfolio?
+    These decisions are crucial for the performance of the agent.
     It is really difficult to find the optimal policy for the portfolio allocation because the agent has to choose between multiple assets with various differences in information about the assets.
-    Also, actions should be considered profitable and safe in the long term, which means that the agent has to make decisions based on long-term rewards.
+    Also, actions should be considered profitable and safe in the long term, which means that the agent usually has to make decisions based on long-term rewards or on the defined investment horizon.
     \item \textbf{Reward function}\\
     The reward should reflect the agent's performance in the environment.
     Is the current portfolio value increasing or decreasing after the agent takes actions proposed by the policy?
-    \item \textbf{Model Overfitting}\\
-    The model should be able to generalize the environment and not overfit the training data.
-    The dataset should be large enough to generalize the environment and split into the training and testing dataset.
 \end{itemize}
+
+When the state space is too large, then is merely impossible to be explored with the limited computational resources \textbf{Deep Reinforcement Learning (DRL)} can be used.
+%DRL was a breakthrough in training RL agents. It is a subfield of RL using deep neural networks to approximate the large and complex state-action spaces and help to understand the stochastic environments\cite{}.
+DRL is a subfield of Reinforcement Learning (RL) that combines the use of deep neural networks with RL algorithms.
+In traditional RL, the agent's policy and value functions are typically represented by simple, hand-designed features or a small number of parameters.
+In contrast, DRL uses deep neural networks to represent these functions, allowing the agent to learn from high-dimensional and complex inputs.
+DRL algorithms are used to train agents to perform a wide range of tasks, such as playing video games, controlling robotic arms, and driving cars.
+There are several popular algorithms in DRL, such as:
+\textbf{Deep Q-Network (DQN)},
+\textbf{Deep Deterministic Policy Gradient (DDPG)},
+\textbf{Proximal Policy Optimization (PPO)},
+\textbf{Soft Actor-Critic (SAC)},
+and \textbf{Twin Delayed Deep Deterministic Policy Gradient (TD3)}.
 
 
 \section{Limitations}\label{sec:limitations}
 
-The current solutions, such as from FinRL~\cite{finrl-portfolio-allocation-2020}, consider the technical indicators and covariances of the assets as the state space.
-This puts the agent at a disadvantage because the agent has to learn the relationship between the technical indicators and the covariances of the assets and the portfolio value.
-However, the covariance matrix is great for portfolio optimization, but I suppose it is not the best choice for the state space because it puts a huge amount of noise and complexity into it.
-
-I suppose it should be possible to solve the portfolio allocation task in a simpler way, using fundamental data about the company, which should result in better agent performance.
-
-The environment should be designed in a way that the agent can learn the relationship between the state space and the portfolio value according to the lowest level of complexity.
-Otherwise, the agent will not be able to learn the best policy for the portfolio allocation task in an efficient way.
+\begin{enumerate}
+    \item \textbf{Data availability:} DRL models require large amounts of historical data to train effectively, which may be difficult to obtain for certain assets or markets.
+    \item \textbf{Model Overfitting:} DRL models can easily overfit to the training data, leading to poor performance on unseen data.
+    \item \textbf{High computational cost:} DRL models can require significant computational resources to train agents.
+    \item \textbf{Risk management:} DRL models may not be able to effectively handle risk management, such as different market situations (Market sentiment, Bull and Bear markets).
+\end{enumerate}
 
 
 \section{Aim of the Thesis}\label{sec:aim-of-the-thesis}
-This thesis focus on the experimental comparison of existing portfolio allocation agents, including testing and benchmarking of the portfolio allocation agents on real-world data.
-The agents will be experimentally changed for different input data, which should be able to improve the agent's performance, considering the factors mentioned in the previous section.
+We will evaluate the performance of portfolio allocation methods based on DRL and compare them to traditional portfolio optimization techniques (MPT, Mean-Variance).
+Our goal is to determine the potential of DRL for portfolio allocation and identify the limitations of DRL-based portfolio allocation methods for future research.
 
-The objectives of this thesis are:
+The thesis objectives are:
 \begin{itemize}
-    \item Experimental evaluation and benchmark of the existing portfolio allocation agents.
-    \item Create a suitable dataset for the portfolio allocation problem with a finite set of stocks.
-    Dataset consists of financial data, such as fundamental and technical analysis data.
-    \item Reimplement and Train RL agents with a finite cash budget on the datasets.
-    \item Evaluate the performance of the RL agents by comparing them with the baseline portfolio management strategies (mean-variance optimization and baseline indexes such as DJI30 etc...) and compare the performance of the RL agents with the existing RL agents including the FinRL-Meta Portfolio Allocation agent.
+    \item \textbf{Experimental evaluation \& Benchmarks}\\
+    Compare existing portfolio allocation agents.
+    Evaluate the performance of the RL agents by comparing them with the baseline portfolio management strategies, such as MPT, Mean-Variance Optimization, and indexes (DJI, Nasdaq-100).
+    \item \textbf{Dataset}\\
+    Create a suitable dataset for the portfolio allocation problem.
+    Datasets will be focused on the company's financial data, such as fundamental and technical analysis data.
+    \item \textbf{Reimplementation}\\
+    Try to improve current agents (Portfolio Allocation agent from \textbf{FinRL}~\cite{finrl-portfolio-allocation-2020}) with new datasets, focusing on Data Engineering and different DRL algorithms.
 \end{itemize}
 
-Using the programming language Python and open-source libraries such as NumPy, Pandas, Stable Baselines3, OpenAI gym, etc... I will implement the RL agents and evaluate their performance on the created dataset.
+The thesis will be implemented using the programming language Python3 and open-source libraries such as NumPy, Pandas, Stable Baselines3, and OpenAI Gym.
 
-This thesis aims to discover if RL can learn optimal portfolio management that yields the same or even better results than the current state-of-the-art portfolio management strategies focusing on the objectives mentioned above, such as Data Engineering, Data analysis, and Data visualization.
 
 \if 0
+
+
+\chapter{Preliminaries}\label{sec:preliminaries}
+\textbf{TODO}
 
 
 \chapter{Gaps and Goals}\label{ch:gaps-and-goals}
@@ -142,7 +158,7 @@ So the each actions are just have effect on the reward function.
 
 Next gap what can be seen is that they use as reward the current whole portfolio value
 and not just reward for the actions like $\pm\1$ of the portfolio value or
-something that kind...
+something that kind\ldots
 
 
 \section{Gaps}\label{sec:gaps}
@@ -182,7 +198,7 @@ Policy Iteration and Value Iteration.
 
 % Why do I choose this topic
 In my opinion, the stock market is a very interesting topic.
-I love investing and what is called ''passive income''.
+I love investing and what is called \(''\)passive income\(''\).
 This topic was already covered by many people, but because of the
 vision of getting rich, people tend to keep their solutions secret.
 
@@ -449,7 +465,7 @@ MRP is a tuple of $g\in G\subseteq L \times \mathrm{Ops} \times L$
     A Markov Reward Process is a Markov Process, along with a time-indexed
     sequence of Reward random variables $R_t \in D$ (a countable subset of R) for time steps $t =
     1,2,\ldots$, satisfying the Markov Property (including Rewards):
-    $\probP[(R_{t+1}, S_{t+1})|S_t, S_{t-1}, \ldots, S_0] = P[(Rt+1, St+1)|St]$ for all $t \leq 0.$~\cite[p.~79]{rao-2022}
+    $\probP[(R_{t+1}, S_{t+1})|S_t, S_{t-1}, \ldots, S_0] = P[(Rt+1, St+1)|St]$ for all $t \leq 0.$~\cite[p.~79]{rao2022foundations}
 \end{definition}
 
 The total reward discounted reward from time-step $t$ is given by:
@@ -486,7 +502,7 @@ The agent assumes that the transition probabilities and rewards are known.
 The Dynamic Programming Algorithm are considered to be planning and not learning,
 because the algorithm doesn’t need to interact with the Environment and
 doesn’t need to learn from the (states, rewards) data stream coming
-from the Environment~\cite[p.~28]{rao-2022}.
+from the Environment~\cite[p.~28]{rao2022foundations}.
 
 
 \section{Markov Decision Process}\label{sec:markov-decision-process}
@@ -597,7 +613,7 @@ $\mathcal{M}=\langle\mathcal{S},\mathcal{A},\mathcal{P},\mathcal{R},\gamma\rangl
 with a fixed policy $\pi$ (in general, with a fixed stochastic policy $\pi$), we get the
 Markov Reward Process (MRP) $\langle \mathcal{S},\mathcal{P}^{\pi},\mathcal{R}^{\pi},\gamma\rangle$.
 that is implied by the combination of the MDP and the
-policy $\pi$~\cite[100]{rao-2022}.
+policy $\pi$~\cite[100]{rao2022foundations}.
 
 where
 \begin{align}
@@ -684,7 +700,7 @@ Value functions define a partial ordering over policies.
     This is an optimal policy $\pi_{*}$.
     The optimal policy $\pi_{*}$ is the policy that maximizes the action-value function.
     $q_{\pi_{*}}(s,a) = q_*(s,a)$
-\end{definition}\cite[p.~84]{sutton-2018}
+\end{definition}\cite[p.~84]{sutton2018reinforcement}
 
 Optimal policy can be found by maximizing over $q_*(s,a)$
 \[
@@ -1234,7 +1250,7 @@ To specific point we want in our space.
 \]
 
 \begin{itemize}
-    \item Value Based: $V(s,\theta)$ \cite{sutton-2018}
+    \item Value Based: $V(s,\theta)$ \cite{sutton2018reinforcement}
     \item Policy Based: $\pi_\theta(a|s)$
     \item Actor-Critic: $V(s,\theta)$ and $\pi_\theta(a|s)$
 \end{itemize}
