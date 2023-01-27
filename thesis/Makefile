@@ -21,7 +21,7 @@ $(CO).ps: $(CO).dvi
 
 $(CO).pdf: clean setup
 	$(CMD_PDFLATEX) $(FLAGS) $(CO)
-	-$(CMD_BIBTEX) $(CO)
+	-$(CMD_BIBTEX) $(OUT_DIR)/$(CO)
 	$(CMD_PDFLATEX) $(FLAGS) $(CO)
 	$(CMD_PDFLATEX) $(FLAGS) $(CO)
 
