@@ -17,37 +17,87 @@
 % Odolejte pokušení říkat banality a všeobecně známé informace.
 % "Žijeme v době rozvoje mobilní výpočetní techniky, kdy každý má v kapse mobil" - je dokonale prázdné a hloupé sdělení, nic takového neříkejte, fakt to nikoho nezajímá.
 
-\begin{frame}
-    \frametitle{Motivace}
-
-    % This will make vertical space
-    \vspace{1cm}
-
-    \textbf{AI4Finance-Foundation}
-\end{frame}
+%\begin{frame}
+%    \frametitle{Motivace}
+%
+%    % This will make vertical space
+%    \vspace{1cm}
+%
+%    \textbf{AI4Finance-Foundation}
+%\end{frame}
 
 \begin{frame}
     \frametitle{Cíle práce}
     \begin{enumerate}
         \itemsep1em
-        \item Nastudovat si problematiku AI se zaměřením na Reinforcement Learning
+        \item Nastudovat Reinforcement Learning a Markov Decision Processes
+        \itemsep1em
+        \item Experimentalne se seznamit s volně dostupnymi RL agenty pro portfolio allocation (FinRL-Meta).
+        \itemsep1em
+        \item Vytvořit datasety pro trénování RL agentů.
         \itemsep1em
         % TODO: the better way to describe the goal
-        \item Provést experimenty s volně dostupnými RL agenty pro finanční trhy.
+        \item Preimplementovat RL agenty pro nase datasety s naslednym trenovanim
         \itemsep1em
-        \item Vytvořit dataset pro trénování RL agentů.
+        \item Testovat a Benchmarkovat implementaci na datasetech s ruznymi RL algoritmy
         \itemsep1em
-        % TODO: the better way to describe the goal
-        \item Experimentovat s vlastními RL agenty a porovnat jejich výsledky s existujícími.
+        \item Porovnani a vyhodnoceni dosazenych vysledku vzhledem k Mean-Variance Portfolio Allocation and Baseline Indexes
+%        \item s vlastními RL agenty a porovnat jejich výsledky s existujícími.
     \end{enumerate}
 \end{frame}
 
 \begin{frame}
-    \frametitle{Návrh řešení}
+    \frametitle{Uz je hotovo}
+    \begin{enumerate}
+        \itemsep1em
+        \item Nastudovan Reinforcement Learning, MDP a frameworky pouzite pri implementaci.
+        \itemsep1em
+        \item Provedeny experimenty s knihovnami OpenAI Gym, Stable Baselines 3.
+        \itemsep1em
+        \item Data
+        \begin{itemize}
+            \item Zajistena data: 60000+ tickeru z celeho sveta, s historii 30 let
+            \item Pripraven dataset postaveny na fundamentalni analyze spolecnosti
+        \end{itemize}
+        \itemsep1em
+        \item Provedeny experimenty s aktualnimi agenty od \textbf{AI4Finance-Foundation}
+    \end{enumerate}
 \end{frame}
 
 \begin{frame}
-    \frametitle{}
+    \frametitle{Aktualni vystupy z experimentu}
+    % TODO: Fotka grafu
+\end{frame}
+
+\begin{frame}
+    \frametitle{Nasledujici prace}
+    \begin{enumerate}
+        \item Dataset
+        \begin{itemize}
+            \item Postaven na technicke analyze
+            \item Kombinace datasetu z technicke analyzy a fundamentalni analyzy.
+        \end{itemize}
+        \itemsep1em
+        \item Preimplementovat agenty od \textbf{AI4Finance-Foundation} pro nase datasety
+        \item Provest benchmarkovani agentu trenovanych na nasich datasetech s vicero RL algoritmy jako je
+        \textbf{PPO}, \textbf{DQN}, \textbf{DDPG}, \textbf{TD3}, \textbf{SAC}, \textbf{A2C},...
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Literatura}
+    {
+        \fontsize{7}{15}\selectfont
+
+        \begin{itemize}
+            \item Sutton, R. S., and Barto, A. G. (2018). Reinforcement learning: An introduction.
+            \item Guan, M. andLiu, X.-Y. (2021). Explainable Deep Reinforcement Learning for PortfolioManagement: An Empirical Approach.
+            \item Oshingbesan, A.,Ajiboye, E.,Kamashazi, P. andMbaka, T. (2022). Model-FreeReinforcement Learning for Asset Allocation.
+            \item Wikipedia contributors.Modern portfolio theory — Wikipedia, The FreeEncyclopedia. 2022.
+            \item Širůček, M. andKřen, L. (2015). Application of Markowitz Portfolio Theory by BuildingOptimal Portfolio on the US Stock Market.Acta Universitatis Agriculturae etSilviculturae Mendelianae Brunensis.
+            \item Rao, A. andJelvis, T. (2022). Foundations of Reinforcement Learning with Applications inFinance.
+        \end{itemize}
+    }
 \end{frame}
 
 
