@@ -17,72 +17,88 @@
 % Odolejte pokušení říkat banality a všeobecně známé informace.
 % "Žijeme v době rozvoje mobilní výpočetní techniky, kdy každý má v kapse mobil" - je dokonale prázdné a hloupé sdělení, nic takového neříkejte, fakt to nikoho nezajímá.
 
-%\begin{frame}
-%    \frametitle{Motivace}
-%
-%    % This will make vertical space
-%    \vspace{1cm}
-%
-%    \textbf{AI4Finance-Foundation}
-%\end{frame}
+\begin{frame}
+    \frametitle{Motivace}
+    \begin{itemize}
+        \itemsep1em
+        \item Fondy, Banky, Společnosti s velkým objemem peněz, jednotlivci
+        \item Zhodnocení peněz
+    \end{itemize}
+\end{frame}
 
 \begin{frame}
     \frametitle{Cíle práce}
     \begin{enumerate}
         \itemsep1em
-        \item Nastudovat Reinforcement Learning a Markov Decision Processes
-        \itemsep1em
-        \item Experimentalne se seznamit s volně dostupnymi RL agenty pro portfolio allocation (FinRL-Meta).
-        \itemsep1em
+        \item Nastudovat Reinforcement Learning, Markov Decision Processes a frameworky od AI4Finance-Foundation
         \item Vytvořit datasety pro trénování RL agentů.
-        \itemsep1em
-        % TODO: the better way to describe the goal
-        \item Preimplementovat RL agenty pro nase datasety s naslednym trenovanim
-        \itemsep1em
-        \item Testovat a Benchmarkovat implementaci na datasetech s ruznymi RL algoritmy
-        \itemsep1em
-        \item Porovnani a vyhodnoceni dosazenych vysledku vzhledem k Mean-Variance Portfolio Allocation and Baseline Indexes
-%        \item s vlastními RL agenty a porovnat jejich výsledky s existujícími.
+        \item Upravit RL agenty pro naše datasety
+        \item Trénovat RL agenty
+        \item Testovat a porovnávat natrénované agenty
     \end{enumerate}
 \end{frame}
 
 \begin{frame}
-    \frametitle{Uz je hotovo}
+    \frametitle{Návrh řešení}
+
+    \begin{center}
+        \centering
+        \includegraphics[width=\textwidth]{img/navrh_reseni}
+    \end{center}
+    {\Large 3 Fáze:}
+    \begin{enumerate}
+        \item Data Engineering
+        \item Environment Modeling
+        \item Agent Training \& Testing
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Aktuální stav}
     \begin{enumerate}
         \itemsep1em
-        \item Nastudovan Reinforcement Learning, MDP a frameworky pouzite pri implementaci.
-        \itemsep1em
-        \item Provedeny experimenty s knihovnami OpenAI Gym, Stable Baselines 3.
+        \item Nastudováno RL, MDP a potřebné knihovny
+        \item Provedeny experimenty a zjistěna výkonnost aktuální implementace od \textbf{AI4Finance-Foundation}
+        \item Data
+        \begin{itemize}
+            \item Vice jak 63000 symbolu z celého světa (historie 30+ let)
+            \item 1.Dataset (fundamentální analýza společnosti)
+        \end{itemize}
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Výkonnost agenta \textbf{AI4Finance-Foundation}}
+
+    \begin{center}
+        \centering
+        \includegraphics[width=\textwidth]{img/2}
+    \end{center}
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Plán na letní semestr}
+    \begin{enumerate}
         \itemsep1em
         \item Data
         \begin{itemize}
-            \item Zajistena data: 60000+ tickeru z celeho sveta, s historii 30 let
-            \item Pripraven dataset postaveny na fundamentalni analyze spolecnosti
+            \itemsep1em
+            \item 2.Dataset (technická analýza)
+            \item 3.Dataset (kombinace technické + fundamentalní analyzy)
         \end{itemize}
-        \itemsep1em
-        \item Provedeny experimenty s aktualnimi agenty od \textbf{AI4Finance-Foundation}
-    \end{enumerate}
-\end{frame}
-
-\begin{frame}
-    \frametitle{Aktualni vystupy z experimentu}
-    % TODO: Fotka grafu
-\end{frame}
-
-\begin{frame}
-    \frametitle{Nasledujici prace}
-    \begin{enumerate}
-        \item Dataset
-        \begin{itemize}
-            \item Postaven na technicke analyze
-            \item Kombinace datasetu z technicke analyzy a fundamentalni analyzy.
-        \end{itemize}
-        \itemsep1em
-        \item Preimplementovat agenty od \textbf{AI4Finance-Foundation} pro nase datasety
-        \item Provest benchmarkovani agentu trenovanych na nasich datasetech s vicero RL algoritmy jako je
+        \item Upravit prostředí od \textbf{AI4Finance-Foundation} pro naše datasety
+        \item Testovat výkonnost nátrenovaných agentů pomocí vícero algoritmů:
         \textbf{PPO}, \textbf{DQN}, \textbf{DDPG}, \textbf{TD3}, \textbf{SAC}, \textbf{A2C},...
     \end{enumerate}
 \end{frame}
+
+% A2C - Advantage Actor Critic
+% DDPG - Deep Deterministic Policy Gradient
+% DQN - Deep Q-Network
+% PPO - Proximal Policy Optimization
+% SAC - Soft Actor Critic
+% TD3 - Twin Delayed DDPG
 
 \begin{frame}
     \frametitle{Literatura}
