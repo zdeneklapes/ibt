@@ -12,7 +12,7 @@
 \DeclareOption{english}{\let\ifenglish\iftrue\let\ifczech\iffalse}
 \DeclareOption*{}
 \ProcessOptions\relax
-\LoadClass[10pt,xcolor=pdflatex,hyperref={unicode}]{beamer}
+\LoadClass[10pt,xcolor=pdflatex,hyperref={unicode},aspectratio=169]{beamer}
 
 %-----------------------------------------------------------------------------
 % Balicky / Packages
