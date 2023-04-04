@@ -11,11 +11,11 @@
 % zpracování / processing: make, make pdf, make clean
 %==============================================================================
 % Soubory, které je nutné upravit nebo smazat: / Files which have to be edited or deleted:
-%   content/bibliography.bib - literatura / bibliography
-%   content/chapters.tex - obsah práce / the thesis content
-%   content/appendices.tex - přílohy v angličtině / appendices in English
+%   chapter/bibliography.bib - literatura / bibliography
+%   chapter/chapters.tex - obsah práce / the thesis chapter
+%   chapter/appendices.tex - přílohy v angličtině / appendices in English
 %==============================================================================
-\documentclass[english, zadani, odsaz]{fitthesis} % bez zadání - pro začátek práce, aby nebyl problém s překladem
+\documentclass[english, zadani]{fitthesis} % bez zadání - pro začátek práce, aby nebyl problém s překladem
 %\documentclass[english]{fitthesis} % without assignment - for the work start to avoid compilation problem
 %\documentclass[zadani]{fitthesis} % odevzdani do IS VUT a/nebo tisk s barevnými odkazy - odkazy jsou barevné
 %\documentclass[english,zadani]{fitthesis} % for submission to the IS VUT and/or print with color links - links are color
@@ -159,7 +159,7 @@
 
     % Kompilace po částech (viz výše, nutno odkomentovat a zakomentovat input výše)
     % Compilation piecewise (see above, it is necessary to uncomment it and comment out input above)
-    \subfile{content/chapters.tex}
+    \subfile{chapter/chapters.tex}
 
     % Pouzita literatura / Bibliography
     % ----------------------------------------------
@@ -167,23 +167,23 @@
 %    \makeatletter
 %    \def\@openbib@code{\addcontentsline{toc}{chapter}{Literatúra}}
 %    \makeatother
-%    \bibliographystyle{bib-styles/Pysny/skplain}
+%    \bibliographystyle{bib-style/Pysny/skplain}
 %    \else
 %    \ifczech
 %    \makeatletter
 %    \def\@openbib@code{\addcontentsline{toc}{chapter}{Literatura}}
 %    \makeatother
-%    \bibliographystyle{bib-styles/Pysny/czplain}
+%    \bibliographystyle{bib-style/Pysny/czplain}
 %    \else
     \makeatletter
     \def\@openbib@code{\addcontentsline{toc}{chapter}{Bibliography}}
     \makeatother
-    \bibliographystyle{bib-styles/Pysny/enplain}
+    \bibliographystyle{bib-style/Pysny/enplain}
     %  \bibliographystyle{alpha}
 %    \fi
 %    \fi
     \begin{flushleft}
-        \bibliography{content/bibliography}
+        \bibliography{chapter/bibliography}
     \end{flushleft}
 
     % vynechani stranky v oboustrannem rezimu
@@ -250,5 +250,5 @@
 
     % Kompilace po částech (viz výše, nutno odkomentovat)
     % Compilation piecewise (see above, it is necessary to uncomment it)
-    \subfile{content/appendices.tex}
+    \subfile{chapter/appendices.tex}
 \end{document}
