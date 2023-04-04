@@ -22,10 +22,7 @@ doc/**
 !doc/Doxyfile
 
 # Documentation Latex
-**out/
-!thesis/out
-!itt-presentation/out
-!**.pdf
+**/out/
 *.dvi
 *.log
 *.blg

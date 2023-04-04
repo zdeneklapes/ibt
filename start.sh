@@ -18,37 +18,6 @@ function error_exit() {
     exit 1
 }
 
-function clean() {
-    ${RM} *.zip
-
-    # Folders
-    for folder in "venv" "__pycache__"; do
-        find . -type d -iname "${folder}" | xargs "${RM}"
-    done
-
-    # Files
-    for file in ".DS_Store" "*.log"; do
-        find . -type f -iname "${file}" | xargs "${RM}"
-    done
-}
-
-function tags() {
-    ctags -R --fields=+l \
-        --exclude=.git \
-        --exclude=.idea \
-        --exclude=node_modules \
-        --exclude=tests* \
-        --exclude=venv* .
-    cscope -Rb
-}
-
-function upload_code() {
-    rsync -avPz \
-        --exclude-from=.rsync_ignore_code \
-        ./src ./requirements.txt \
-        xlapes02@sc-gpu1.fit.vutbr.cz:/home/xlapes02/ai-investing
-}
-
 function usage() {
     echo "USAGE:
     '-c' | '--clean') clean ;;
@@ -58,6 +27,15 @@ function usage() {
     '-t' | '--tags') tags ;;
     '-h' | '--help') usage ;;
     '-p' | '--pack') pack ;;"
+}
+
+function make_all() {
+    for folder in "ibt-presentation" "thesis" "itt-presentation"; do
+        cd $folder || error_exit "Cannot cd to $folder"
+        make
+        cd - || error_exit "Cannot cd to -"
+        cp ${folder}/out/*.pdf pdf/${folder}.pdf
+    done
 }
 
 function pack() {
@@ -71,11 +49,7 @@ function pack() {
 [[ "$#" -eq 0 ]] && usage && exit 0
 while [ "$#" -gt 0 ]; do
     case "$1" in
-    '-c' | '--clean') clean ;;
-        #
-    '-sc' | '--sync-code') upload_code ;;
-        #
-    '-t' | '--tags') tags ;;
+    '-ma' | '--make-all') make_all ;;
     '-h' | '--help') usage ;;
     '-p' | '--pack') pack ;;
     esac
