@@ -1,11 +1,4 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% Introduction
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% ITT START
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
+%===============================================================================
 \chapter{Introduction}\label{ch:introduction}
 
 
@@ -106,153 +99,12 @@ The thesis objectives are:
 
 The thesis will be implemented using the programming language Python3 and open-source libraries such as NumPy, Pandas, Stable Baselines3, and OpenAI Gym.
 
-pen
 
-\chapter{Preliminaries}\label{sec:preliminaries}
-\textbf{TODO}
-
-
-\chapter{Related Work}\label{sec:related-work}
-\textbf{TODO}
-
-
-\chapter{Methodology}\label{sec:methodology}
-\textbf{TODO}
-
-
-\chapter{Results}\label{sec:results}
-\textbf{TODO}
-
-
-\chapter{Discussion}\label{sec:discussion}
-\textbf{TODO}
-
-
-\chapter{Conclusion}\label{sec:conclusion}
-\textbf{TODO}
-
-
-\chapter{Future Work}\label{sec:future-work}
-\textbf{TODO}
-
-
-\chapter{Acknowledgements}\label{sec:acknowledgements}
-\textbf{TODO}
-
-
-\chapter{References}\label{sec:references}
-\textbf{TODO}
-
-
-\chapter{Appendix}\label{sec:appendix}
-\textbf{TODO}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Blocked chapters:
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\if 0
-
-
-\chapter{Gaps and Goals}\label{ch:gaps-and-goals}
-TODO
-
-Maybe that they don't use current portfolio value as states and observations.
-
-They just take actions normalized (using softmax) and then use current portfolio value
-and calculate reward.
-
-As the main problem I see that agent actions don't have any effect on he
-state space as well as on the observation space (like assets weights include in portfolio),
-because they are defines
-before as a part of the Data engineering process.
-
-So the each actions are just have effect on the reward function.
-
-Next gap what can be seen is that they use as reward the current whole portfolio value
-and not just reward for the actions like $\pm\1$ of the portfolio value or
-something that kind\ldots
-
-
-\section{Gaps}\label{sec:gaps}
-TODO
-
-
-\section{Goals}\label{sec:goals}
-TODO
-
-Using programming language python3 and its frameworks, like pandas, numpy, stable-baselines3, gym, etc.
-I will implement the DRL agent, that will be able to learn how to allocate the portfolio.
-The current solutions are not effective enough to be used in real world, so I will try to improve them.
-I will try to find out what is the best way to represent the state and observation space.
-I will try to find out what is the best way to represent the reward function.
-I will try to find out what is the best way to represent the action space.
-And I will benchmark and compare the results with the baseline indexes.
-
-Implement data engineering process, that will be able to prepare the data for the DRL agent.
-
-
-% MC & MDP
-The relationship between Markov Decision Process (MDP) and RL is
-that RL problem could be well described in MDP\@.
-And more precisely is problem described in MDP,
-the better and faster could RL agent learn.
-
-The base for MDPs is Markov Chain (MC),
-which is a stochastic model describing a sequence of possible events in which the probability
-of each event depends only on the state attained in the previous event.
-MDPs from MCs differ from by adding actions and rewards.
-In other words, MDPs become MCs with one action in a states and all rewards are same
-for given state and action.
-
-% Dynamic Programming
-In Dynamic Programming, we can see two variants of Reinforcement Learning
-Policy Iteration and Value Iteration.
-
-% Why do I choose this topic
-In my opinion, the stock market is a very interesting topic.
-I love investing and what is called \(''\)passive income\(''\).
-This topic was already covered by many people, but because of the
-vision of getting rich, people tend to keep their solutions secret.
-
-As Warren Buffett said, ''Be fearful when others are greedy and greedy when others are fearful.''
-
-% Goal
-The goal is to evaluate, benchmark and try to improve the current solutions of models
-based on Reinforcement Learning and MDPs from AI4Finance-Foundation~\cite{https://doi.org/10.48550/arxiv.2111.03995}.
-The goal is to make a model that will be able to make decisions in the stock market
-in order to maximize the profit by allocating the portfolio.
-
-% TODO: Thesis Structure
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% ITT END
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% Preliminaries
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-\chapter{Preliminaries}\label{ch:preliminaries}
-TODO
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% Reinforcement Learning
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%===============================================================================
 
 
 \chapter{Reinforcement Learning}\label{ch:reinforcement-learning}
 Reinforcement learning in general are used for decision-making.
-In RL there is no supervisor, who teaches the agent what actions to take.
-
-So it is obvious that agent get the result after the action is taken.
-
-The Reinforcement Learning is now used e.q. in robotics, games, finance, etc\ldots
-
-he
 The purpose of this chapter is to introduce the reader to the basics of Reinforcement Learning.
 
 Section \ref{sec:rl-introduction} introduces the reader to the basics of Reinforcement Learning.
@@ -307,45 +159,13 @@ TODO
 TODO
 
 
-\section{Reinforcement Learning Algorithms}\label{sec:reinforcement-learning-algorithms2}
-TODO
-
-
 \section{Deep Reinforcement Learning}\label{sec:deep-reinforcement-learning}
 TODO
 
 \subsection{Exploration vs. Exploitation}\label{subsec:exploration-vs.-exploitation}
 TODO
 
-
-\section{Reinforcement Learning Algorithms}\label{sec:reinforcement-learning-algorithms}
-TODO: Describe used RL Algorithms
-
 \subsection{Deep Reinforcement Learning Algorithms}\label{subsec:deep-reinforcement-learning-algorithms}
-TODO
-
-\subsubsection{PPO}
-TODO
-
-\subsubsection{SAC}
-TODO
-
-\subsubsection{TD3}
-TODO
-
-\subsubsection{DDPG}
-TODO
-
-
-\section{Existing solutions}\label{sec:existing-solutions}
-TODO
-
-
-\section{Neural Networks}\label{sec:neural-networks}
-TODO
-
-
-\section{Used Frameworks}\label{sec:used-frameworks}
 TODO
 
 
@@ -1344,84 +1164,52 @@ Likelihod Ratios
 \subsection{REINFORCE}\label{subsec:reinforce}
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% Experiments
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%===============================================================================
 
 
-\chapter{Experiments}\label{ch:experiments}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% Exisiting Approaches
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-\chapter{Existing Approaches to Portfolio Allocation}\label{ch:existing-approaches-to-portfolio-allocation}
+\chapter{Implementation}\label{sec:implementation}
 TODO
 
 
-\section{Introduction}\label{sec:introduction}
+\section{Data Engineering}\label{ch:data-engineering}
 TODO
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% Environment
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-\chapter{Environment}\label{ch:environment}
+\subsection{Data Collection}\label{sec:data-collection}
 TODO
 
-
-\section{Stock Market Environment}\label{sec:stock-market-environment}
-TODO
-
-\subsection{Used Frameworks}\label{subsec:used-frameworks}
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% Data
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-\chapter{Data Engineering}\label{ch:data-engineering}
-TODO
-
-
-\section{Data Collection}\label{sec:data-collection}
-TODO
-
-
-\section{Data Preprocessing}\label{sec:data-preprocessing}
+\subsection{Data Preprocessing}\label{sec:data-preprocessing}
 TODO
 
 \subsection{Data Cleaning}\label{subsec:data-cleaning}
 TODO
 
-
-\section{Different kinds of Data}\label{sec:different-kinds-of-data}
+\subsection{Data types in Stock Market}\label{subsec:data-types-in-stock-market}
 TODO
 
-\subsection{Fundamental Data}\label{subsec:fundamental-data}
+\subsubsection{Dataset from Fundamental Analysis}\label{sec:fundamental-analysis}
 TODO
 
-\subsection{Market Data}\label{subsec:market-data}
+\subsubsection{Dataset from Technical Analysis}\label{sec:technical-analysis}
 TODO
 
-\subsection{Analytics Data}\label{subsec:analytics-data}
-TODO
-
-\subsection{Alternative Data}\label{subsec:alternative-data}
+\subsubsection{Dataset from Combined Fundamental and Technical Analysis}\label{sec:combined-fundamental-and-technical-analysis}
 TODO
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% Getting Ready Agent
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Environment}\label{ch:environment}
+TODO
+
+\subsection{Stock Market Environment}\label{sec:stock-market-environment}
+TODO
+
+\subsection{Used Frameworks}\label{subsec:used-frameworks}
+TODO
+
+%===============================================================================
 
 
-\chapter{Agent}\label{ch:agent}
+\chapter{Experiments}\label{sec:experiments}
 TODO
 
 
@@ -1437,7 +1225,7 @@ TODO
 TODO
 
 
-\section{Backtesting}\label{sec:backtesting}
+\section{Model Backtesting}\label{sec:backtesting}
 TODO
 
 
@@ -1445,36 +1233,34 @@ TODO
 TODO
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% Contribution to Finrl-Meta
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{hyperparameters}\label{sec:hyperparameters}
+TODO
+
+%===============================================================================
 
 
-\chapter{Contribution to Finrl-Meta}\label{ch:contribution-to-finrl-meta}
+\chapter{Results}\label{sec:results}
+TODO
+
+%===============================================================================
+
+
+\chapter{Conclusion}\label{sec:conclusion}
 TODO
 
 
-\section{1}\label{sec:1}
-TODO
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% Evaluation
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%===============================================================================
 
 
-\chapter{Evaluation}\label{ch:evaluation}
+\chapter{Future Work}\label{sec:future-work}
 TODO
 
 
-\section{1}\label{sec:12}
+\section{Things having potential to improve the results}\label{sec:things-having-potential-to-improve-the-results}
 TODO
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%% Conclusion
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-\chapter{Conclusion}\label{ch:conclusion}
+\subsection{Reward function}\label{sec:reward-function}
 TODO
 
-\fi
+\subsection{Dataset}\label{sec:dataset-future-work}
+TODO
