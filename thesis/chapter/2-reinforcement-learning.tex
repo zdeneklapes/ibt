@@ -96,7 +96,28 @@
 
 
     \section{Model-based methods}
-    TODO
+    As mentioned in Section~\ref{sec:rl-introduction}, RL algorithms can be broadly categorized into two main types: model-free and model-based.
+    Model-based methods rely on \emph{planning} as they primary component, while model-free methods rely on \emph{learning}~\cite{sutton2018reinforcement}.
+    One popular approach is to use a probabilistic model of the environment, which can be represented as a transition function $P(s_{t+1}|s_t, a_t)$ that describes the probability of transitioning from state $s_t$ to state $s_{t+1}$ when taking action $a_t$.
+    Some popular probabilistic model-based RL methods include Monte Carlo Tree Search, Neural Network Dynamics, and Probabilistic Ensembles with Trajectory Samplin.
+
+    Another approach in model-based RL is to use a learned deterministic model of the environment, which can be represented as a function $f(s_t, a_t)$ that directly maps states and actions to next states.
+    Deterministic model-based RL methods, such as World Models, learn an encoder to represent states, a recurrent neural network (RNN) to model dynamics, and a decoder to generate predicted next states.
+
+    \subsection{Advantages and Challenges}
+
+    Model-based RL offers several advantages over model-free methods.
+    One major advantage is sample efficiency, as the agent can use the learned model of the environment to plan and generate simulated trajectories for learning, reducing the need for costly real-world interactions.
+    Additionally, model-based RL can enable the agent to handle complex, high-dimensional state spaces and long-horizon tasks more effectively.
+
+    However, model-based RL also faces challenges.
+    One challenge is the accuracy of the learned model, as any errors in the model can lead to suboptimal policies.
+    Another challenge is the computational cost of planning and decision-making using the learned model, as it requires additional computation compared to direct action selection in model-free methods.
+
+    In conclusion, model-based RL is a promising approach that can offer sample-efficient learning and improved performance in complex environments.
+    Various methods, such as probabilistic models and deterministic models, have been proposed in the literature.
+    Despite some challenges, model-based RL continues to be an active area of research in machine learning.
+
 
 %\subsection{Value Based Agents}\label{subsec:value-based-agents}
 
@@ -133,6 +154,4 @@
 
     \subsection{Monte Carlo Policy Gradient Methods}\label{subsec:monte-carlo-policy-gradient-methods}
     TODO
-
-
 \end{document}
