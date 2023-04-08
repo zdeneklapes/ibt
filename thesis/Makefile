@@ -24,10 +24,12 @@ $(CO).pdf: clean setup
 	-$(CMD_BIBTEX) $(OUT_DIR)/$(CO)
 	$(CMD_PDFLATEX) $(FLAGS) $(CO)
 	$(CMD_PDFLATEX) $(FLAGS) $(CO)
+	$(CMD_PDFLATEX) $(FLAGS) $(CO)
 
 $(CO).dvi: $(CO).tex $(CO).bib
 	latex $(CO)
 	-bibtex $(CO)
+	latex $(CO)
 	latex $(CO)
 	latex $(CO)
 
