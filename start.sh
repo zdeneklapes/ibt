@@ -38,9 +38,21 @@ function make_all() {
     done
 }
 
-function pack() {
+function pack_thesis() {
     zip -r thesis.zip \
         thesis \
+        -x "*out*" \
+        -x "*others*"
+}
+function pack_itt() {
+    zip -r itt.zip \
+        itt-presentation \
+        -x "*out*" \
+        -x "*others*"
+}
+function pack_ibt() {
+    zip -r ibt.zip \
+        ibt-presentation \
         -x "*out*" \
         -x "*others*"
 }
@@ -51,7 +63,9 @@ while [ "$#" -gt 0 ]; do
     case "$1" in
     '-ma' | '--make-all') make_all ;;
     '-h' | '--help') usage ;;
-    '-p' | '--pack') pack ;;
+    '-pt' | '--pack-thesis') pack_thesis ;;
+    '--pack-ibt') pack_ibt ;;
+    '--pack-itt') pack_itt ;;
     esac
     shift
 done
