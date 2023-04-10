@@ -1,16 +1,10 @@
 \documentclass[../xlapes02]{subfiles}
-\usepackage{beamerbasesection}
 \begin{document}
     \chapter{Reinforcement Learning}\label{ch:reinforcement-learning}
 
-    The motivation for this chapter comes from the influential book on reinforcement learning by Richard Sutton and Andrew Barto~\cite{sutton2018reinforcement} and Foundations of Reinforcement Learning with Application in Finance by Ashwin Rao, Tikhon Jelvis~\cite{rao2022foundations}.
-    This chapter explore the application of Reinforcement Learning techniques in the context of portfolio allocation.
+    The motivation for this chapter comes from the influential book on reinforcement learning by Richard Sutton and Andrew Barto and Foundations of Reinforcement Learning with Application in Finance by Ashwin Rao and Tikhon Jelvis~\cite{rao2022foundations, sutton2018reinforcement}.
 
-    % TODO: Make better description of each section
-%    We will begin by providing an overview of RL in context of AI, its fundamental concepts, including the agent, environment, state, action, and reward.
-%    We will also highlight the motivation for using RL in portfolio allocation and discuss its potential benefits and challenges.
-
-    First we need understand the differences between types of learning:
+    This chapter explore the application of Reinforcement Learning techniques in the context of portfolio allocation. In \cref{sec:markov-models-for-rl} we will provide an introduction to Markov models, first explore \emph{Markov Processes}, \emph{Markov Reward Processes} and \emph{Markov Decision Processes}, which are the fundamental building blocks of Reinforcement Learning. Afterward, we divide Reinfocement Learning into two main categories. In \cref{sec:model-based-methods}, we will discuss \emph{Model-based} Reinforcement Learning methods, and in \cref{sec:model-free-methods} we will discuss \emph{Model-free} Reinforcement Learning methods in details with advantages and disadvantages of each approach. Let start with introduction to AI in general and its different types of learning:
 
     \paragraph{Supervised Learning}
     In supervised learning (SL), a model is trained on a labeled dataset, where the input data is paired with corresponding output labels. The model learns to make predictions based on the labeled examples, and the goal is to minimize the error between predicted outputs and actual labels. Common applications of supervised learning include image classification, speech recognition, and sentiment analysis.
@@ -21,18 +15,17 @@
     \paragraph{Unsupervised Learning}
     In unsupervised learning (UL), the model learns from unlabeled data without any predefined output labels. The goal is to find underlying patterns, structures, or relationships within the data. Common unsupervised learning tasks include clustering, dimensionality reduction, and anomaly detection. UL is used in scenarios where labeled data is scarce or not available, and the model needs to discover patterns autonomously from the data.
 
-    \paragraph{Reinforcement Learning}
-    Reinforcement learning is a type of learning paradigm where an agent interacts with an environment and learns to take actions to maximize a cumulative reward signal~\cite{sutton2018reinforcement}. The agent learns through \texttt{trial-and-error}, exploring different actions and receiving feedback in the form of rewards or penalties based on its actions. RL is used in scenarios where the optimal action is not known, and the agent needs to learn from feedback to make sequential decisions. Common applications of RL include game playing, robotic control, autonomous driving, and financial trading.
+    The last type is Reinforcement Learning and this entire chapter will be devoted to it, let's dive into it in more detail.
 
 
     \section{Introduction}\label{sec:rl-introduction}
-    Reinforcement learning (RL) is an exciting field at the intersection of artificial intelligence (AI) and machine learning (ML) that deals with training agents to make optimal decisions in dynamic environments. RL is inspired by the way humans learn from experience, where an agent interacts with an environment, receives feedback in the form of rewards or penalties, and uses this feedback to learn and improve its decision-making abilities.
+    Reinforcement learning (RL) is an exciting field at the intersection of artificial intelligence (AI) and machine learning (ML) that deals with training agents to make optimal decisions in dynamic environments. RL is inspired by the way humans learn from experience, like \texttt{trial-and-error}, and an agent interacts with an environment the same way and receives feedback in the form of \emph{rewards} (typically positive number, e.g.: $1$) or \emph{penalties} (typically negative number, e.g.: $-1$), and uses this feedback to learn and improve its decision-making abilities.
 
     At the heart of RL lies the concept of an agent, which that takes actions in an environment to achieve specific goals. The environment is typically modeled as a Markov decision process (MDP), which is a mathematical framework that describes how an agent interacts with an environment in discrete time steps. An MDP is defined by a tuple $(S, A, P, R)$, where $S$ is the state space, $A$ is the action space, $P$ is the transition probability function, and $R\in\mathbb{R}$ is the reward.
 
-    The goal of an RL agent is to learn a policy, denoted by $\pi$, which is a mapping from states to actions that maximizes the cumulative rewards over time $T$. The agent uses this policy to select actions at each time step, and the environment responds with a new state and a reward. The agent then updates its policy based on the observed rewards and states, aiming to improve its decision-making abilities and achieve higher rewards in the long run.
+    The goal of an RL agent is to learn a policy, denoted by $\pi$, which is a mapping from states to actions that maximizes the cumulative reward $G_t$ over time $T$. The agent uses this policy to select actions at each time step, and the environment responds with a new state and a reward. The agent then updates its policy based on the observed rewards and states, aiming to improve its decision-making abilities and achieve higher rewards in the long run. RL does not require labeled data, because learns from observations and rewards via interaction with the environment.
 
-    RL algorithms can be broadly categorized into two main types: model-free and model-based. Model-free algorithms are then further divided into value-based and policy-based methods, such as Q-learning (value-based) and policy gradient methods (policy-based), learn directly from the interactions with the environment without explicitly modeling the transition probabilities and rewards. Model-based algorithms, on the other hand, learn a model of the environment and use it to make decisions. These algorithms have their strengths and weaknesses, and the choice between them depends on the specific problem and requirements.
+%    RL algorithms can be broadly categorized into two main types: model-free and model-based. Model-free algorithms are then further divided into value-based and policy-based methods, such as Q-learning (value-based) and policy gradient methods (policy-based), learn directly from the interactions with the environment without explicitly modeling the transition probabilities and rewards. Model-based algorithms, on the other hand, learn a model of the environment and use it to make decisions. These algorithms have their strengths and weaknesses, and the choice between them depends on the specific problem and requirements.
 
     The sequence of states, actions and rewards that the agent experiences is called a trajectory, and it look like this:
     \begin{equation}
@@ -40,45 +33,110 @@
         (S_0, A_0, R_1, S_1, A_1, R_2, S_2, A_2, \dots, S_{T-1}, A_{T-1}, R_T, S_T)
     \end{equation}
 
-    This sequence of \emph{state-action-reward} can be finite or infinite, depending on the environment and the agent's goal. Pretty good example of this is the game of chess, where the game ends when one of the players wins or the game is a draw. In this case, the trajectory is finite, and the agent's goal is to maximize the cumulative reward over time $T$. On the other hand, the self-driving car example is an infinite-horizon problem, where the agent's goal is to maximize the cumulative reward over an infinite time horizon or until the car reaches its destination.
+    This sequence of \emph{state-action-reward} can be finite or infinite, depending on the environment and the agent's goal. Pretty good example of this is the game of chess, where the game ends when one of the players wins or the game is a draw. In this case, the trajectory is finite, and the agent's goal is to maximize the cumulative reward over time $T$. On the other hand, the self-driving car example is an infinite-horizon problem, where the agent's goal is to maximize the cumulative reward over an infinite time horizon or until the car reaches its destination~\cite{FITMT25127}.
 
     \begin{figure}[h]
-        \includegraphics[width=0.6\linewidth]{image/agent-environment}
+        \includegraphics[width=0.7\linewidth]{image/agent-environment}
         \centering
         \caption{The agent interacts with the environment and learns to maximize the cumulative reward over time $T$.}
         \label{fig:rl-introduction}
     \end{figure}
 
+    Because RL agent is categorized by the way it learns, there are many different types of RL agents. We will try to differentiate them in this chapter, because it is important to understand teh differences between them, to understand the behavior of the agent and to choose the right algorithm for the problem. Based on the different computable approaches we can categorize RL agents:
+    \begin{multicols}{2}
+        \begin{itemize}
+            \item \textbf{Value-based}
+            \begin{itemize}
+                \item \textcolor{darkgray}{No Policy (implicit)}
+                \item Value function
+            \end{itemize}
+            \item \textbf{Policy-based}
+            \begin{itemize}
+                \item Policy
+                \item \textcolor{darkgray}{No Value function}
+            \end{itemize}
+            \item \textbf{Actor-critic}
+            \begin{itemize}
+                \item Policy
+                \item Value function
+            \end{itemize}
+        \end{itemize}
+        \columnbreak
+        \begin{itemize}
+            \item \textbf{Model-based}
+            \begin{itemize}
+                \item Policy and/or Value function
+                \item \textcolor{darkgray}{No model}
+            \end{itemize}
+            \item \textbf{Model-free}
+            \begin{itemize}
+                \item Policy and/or Value function
+                \item Model
+            \end{itemize}
+        \end{itemize}
+    \end{multicols}
 
-    \section{Markov Models for Reinforcement Learning}\label{sec:markov-models-for-rl}
-    This section provides introduction to Markov models, which are the fundamental building blocks of Reinforcement Learning. Markov models, specifically Markov Decision Processes (MDPs) described in~\cref{subsec:markov-decision-process}, are a widely used mathematical framework in reinforcement learning for modeling the dynamics of an environment further described in~\crefrange{sec:model-based-methods}{sec:model-free-methods}. Via Markov models, we will be able to understand the basic concepts of RL, such as Markov process, Markov decision process, and Bellman's equation.
+    \emph{Model-based} algorithm are closely relate to \emph{Planning algorithms} which are trying to create a model of the environment and use it to make decisions, they have knowledge of the transition probabilities and rewards from the beginning, we will discuss them in \cref{sec:model-based-methods}. \emph{Value-based} algorithms can implicitly infer a policy, but do not explicitly compute it, we will discuss them in \cref{sec:value-based-methods}, and \emph{Policy-based} algorithms compute a policy function by themselves, and are discussed in \cref{sec:policy-based-methods}. Another agents like \emph{Actor-critic methods} compute a policy function and a state-value function at the same time~\cite{rl-course-david-silver, sutton2018reinforcement}.
+
+    \begin{figure}[h]
+        \includegraphics[width=0.5\linewidth]{image/model-value-policy}
+        \centering
+        \caption{The relationship between model, value function and policy. Source:~\cite{FITMT25127}}
+        \label{fig:model-value-policy-introduction}
+    \end{figure}
+
+
+    \section{Markov Theory}\label{sec:markov-models-for-rl}
+    This section provides introduction to Markov theory, which is the fundamental building blocks of Reinforcement Learning. We begin by \emph{Markov Process}, described in~\cref{subsec:markov-process}, which is a stochastic process that satisfies the Markov property. We then move on to \emph{Markov Reward Process}, described in~\cref{subsubsec:markov-reward-process}, which is a Markov process with a reward function. Finally, we describe the most important for RL \emph{Markov Decision Process}, described in~\cref{subsec:markov-decision-process}, which is a Markov Reward process with a decision-making ability.
 
     \subsection{Markov Process}\label{subsec:markov-process}
-    TODO
+    The Markov process (MP) (also called Markov Chains) describes the states of an environment and models the dynamics of state transitions. In an MP, an agent can only observe the changing states of the environment and has no influence over them. Markov processes have two key properties. Firstly, state transitions are non-deterministic and influenced by randomness. States are modeled as realizations of random variables, defined in \cref{subsubsec:probability-functions}. Secondly, the future state is only dependent on the current state, and not on previous states, simplifying causality with the Markov property~\cite{FITMT25127}.
+
+    \subsubsection{Probability Functions}\label{subsubsec:probability-functions}
+
+    The first property of an MP states that each concrete state of an environment is the realization of a discrete random variable \(X\) from set \(V\), with a certain probability \(P(X=x)\), where \(x \in V\). A state is a realization of a random experiment that the environment assumes with a certain probability, and this can be represented as a probability function:
+    \begin{equation}
+        P(X = X(\omega)) = P(X = x)
+    \end{equation}
+
+    The repeated successive execution of a random experiment can be represented as a stochastic process, which is a sequence of random variables, e.g., \(X_t(\omega), X_{t+1}(\omega), \ldots X_n(\omega)\), where a single term can be shortened to \(X_t\) and it represents the state of the environment at time \(t\)~\cite{FITMT25127, rao2022foundations}.
+
+    \subsubsection{Stochastic Process (Random Process)}\label{subsubsec:stochastic-process}
+    A stochastic process is defined as a collection of random variables defined on a common probability space $(\Omega, \mathcal{F}, P)$, where $\Omega$ is a sample space, $\mathcal{F}$ is a $\sigma$-algebra, and $P$ is a probability measure; and the random variables, indexed by some set $T$, all take values in the same mathematical space $S$, which must be measurable with respect to some $\sigma$-algebra $\Sigma$.
+
+    In other words, for a given probability space $(\Omega, \mathcal{F}, P)$ and a measurable space $(S, \Sigma)$, a stochastic process is a collection of $S$-valued random variables, which can be written as:~\cite{enwiki:1148510872}
+    \[
+        \{X(t) : t \in T\}.
+    \]
+
+    In stochastic processes the probability that the environment assumes a certain state depends on the realized states of previous random variables. For example, if the weather forecast is assumed to be a stochastic process, then the yesterday’s weather may still have an influence on tomorrow’s weather. To represent this causality complicates the modeling of stochastic processes, so that with definition of Markov property the dependence of future states is assumed only on the current state. This is the second important property of Markov process~\cite{FITMT25127}.
 
     \subsubsection{Markov Property}\label{subsubsec:markov-property}
     The Markov property, which is defined using conditional probability, states that ``The future is independent of the past, given the present."
 
-    A stochastic process exhibits the Markov property if and only if, for all time steps $t \in N$, the conditional probability of the next state given the current state is equal to the conditional probability of the next state given all the previous states $S_1, \ldots, S_t$. $\probP[S_{t+1}|S_t] = \probP[S_{t+1}|S_1,\ldots,S_t]$
+    The stochastic process has the Markov property if and only if, for all time steps $t \in N$, the conditional probability of the next state given the current state is equal to the conditional probability of the next state given all the previous states $X_1, \ldots, X_t$. $\probP[X_{t+1}|X_t] = \probP[X_{t+1}|X_1,\ldots,X_t]$
 
-    This property has several advantages in practical reinforcement learning, including the uniqueness and distinctiveness of states, as well as the ability to precisely formulate the probability of state transitions~\cite{FITMT25127}.
-
-    When there exist n possible states, $s\in S$, then the probability of transitioning from state $s$ to state $s'$ can be represented as a matrix $P$, and because probability summation rule, the sum of transition probabilities from state $s$ to any other state $s'$ must equal to 1.
-
+    This property has several advantages in practical reinforcement learning, including the uniqueness and distinctiveness of states, as well as the ability to precisely formulate the probability of state transitions, defined as:~\cite{FITMT25127}
     \begin{equation}
-        P=\begin{bmatrix}
-              p_{11} & p_{12} & p_{13} & \dots  & p_{1n} \\
-              p_{21} & p_{22} & p_{23} & \dots  & p_{2n} \\
-              \vdots & \vdots & \vdots & \ddots & \vdots \\
-              p_{n1} & p_{n2} & p_{n3} & \dots  & p_{nn}
-        \end{bmatrix}
+        \mathcal{P}(x'|x)=\probP(X_{t+1}=x'|X_t=x)
     \end{equation}
 
-    The Markov process is stochastic process that satisfies the Markov property and is described as tuple $\mathcal{S}, \mathcal{P}$ for which holds:
+    Given n possible states, $s\in S$, then the probability of transitioning from state $s$ to state $s'$ can be represented as a matrix $P$, and because probability summation rule, the sum of transition probabilities from state $s$ to any other state $s'$ must equal to 1.
+
+    The Markov process is stochastic process that satisfies the Markov property and is described as tuple $\left(\mathcal{S}, \mathcal{P}\right)$ for which holds:\cite{ABATE2021102207}
     \begin{itemize}
         \item $\mathcal{S} = s_1, s_2, ..., s_n$ is a finite set of states
         \item $\mathcal{P}$ is an $n\times n$ transition probability matrix which sums to 1 for each row, so each value $p_{ij}$ is the probability of transitioning from state $s_i$ to state $s_j$ in interval $\left< 0;1 \right>$
     \end{itemize}
+
+    \begin{equation}
+        \mathcal{P}=\begin{bmatrix}
+                        p_{11} & p_{12} & p_{13} & \dots  & p_{1n} \\
+                        p_{21} & p_{22} & p_{23} & \dots  & p_{2n} \\
+                        \vdots & \vdots & \vdots & \ddots & \vdots \\
+                        p_{n1} & p_{n2} & p_{n3} & \dots  & p_{nn}
+        \end{bmatrix}
+    \end{equation}
 
     \subsubsection{Starting States}
     The probability distribution of start states is denoted as $\mu : N \rightarrow [0,1]$ in order to perform simulations and compute the probability distribution of states at specific future time steps. A Markov Process is fully specified by the transition probability function $P$, which governs the complete dynamics of the process.
@@ -91,16 +149,35 @@
     \subsubsection{Terminal States}
     Markov Processes can terminate at specific states (e.g., based on rules for winning or losing in games). Termination can occur after a variable number of time steps (episodic) or after a fixed number of time steps (as in many financial applications). If all sampling traces of the Markov Process reach a terminal state, they are called episodic sequences. The notion of episodic sequences is important in Reinforcement Learning. In some financial applications, the Markov Process terminates after a fixed number of time steps $T$, and states with time index $t = T$ are labeled as terminal states. States with time index $t < T$ transition to states with time index $t + 1$~\cite{rao2022foundations}.
 
-    In \cref{fig:markov-process} is an example of Markov process with 3 states, representing the stock market's typical behavior.
-
     \begin{figure}[h!]
-        \includegraphics[width=0.5\linewidth]{image/mp}
+        \begin{center}
+            \begin{tikzpicture}
+                [->,>=stealth,shorten >=1pt,auto,node distance=3cm,
+                thick,main node/.style={circle,draw,font=\sffamily\Large\bfseries}]
+
+                % Nodes
+                \node[main node] (A) {$S_0$}; % Starting state
+                \node[main node] (B) [right of=A] {$S_1$};
+                \node[main node] (C) [right of=B] {$S_2$};
+                \node[main node] (T) [right of=C] {$S_3$}; % Terminal state
+
+                % Edges
+                \path[every node/.style={font=\sffamily\small}]
+                (A) edge [bend left] node [above] {0.5} (B)
+                (B) edge [bend left] node [below] {0.5} (A)
+                (B) edge [bend left] node [above] {0.5} (C)
+                (C) edge [bend left] node [below] {0.5} (B)
+                (C) edge [bend left] node [above] {0.5} (T);
+            \end{tikzpicture}
+            \caption{Markov Process with Start state $S_0$ and Terminal state $S_3$, because there is no edge from $S_3$.}
+            \label{fig:markov-process}
+        \end{center}
         \centering
-        \caption{Markov process with 3 states. on the edges are the transition probabilities.}
-        \label{fig:markov-process}
     \end{figure}
 
-    \subsubsection{Markov Reward Process}\label{subsubsec:markov-reward-process}
+    The examples shown here only include states and transition probabilities. To fully define an environment within the framework of RL, actions and rewards also need to be defined.
+
+    \subsection{Markov Reward Process}\label{subsubsec:markov-reward-process}
     The reason we covered Markov Processes is that we want to make our way to Markov Decision Processes (the framework for Reinforcement Learning algorithms) by adding incremental features to Markov Processes. Now we cover an intermediate framework between Markov Processes and Markov Decision Processes, known as Markov Reward Processes. These rewards are random, and all we need to do is to specify the probability distributions of these rewards as we make state transitions.
 
     The main purpose of Markov Reward Processes is to calculate how much reward we would accumulate (in expectation, from each of the non-terminal states) if we let the process run indefinitely, bearing in mind that future rewards need to be discounted appropriately (otherwise, the sum of rewards could blow up to $\infty$). In order to solve the problem of calculating expected accumulative rewards from each non-terminal state, we will first set up some formalism for Markov Reward Processes, develop some (elegant) theory on calculating rewards accumulation, write plenty of code (based on the theory), and apply the theory and code to the simple inventory example (which we will embellish with rewards equal to negative of the costs incurred at the store).
@@ -176,22 +253,32 @@
         \end{itemize}
     \end{definition}
 
-    \subsubsection{Policy}\label{subsubsec:policy}
-    A policy, denoted by $\pi$, in the context of MDPs, is a function that maps states to actions. It represents the agent's strategy or decision-making rule for selecting actions based on the current state. Mathematically, a policy is defined as $\pi: S \rightarrow A$, where $S$ is the set of states and $A$ is the set of actions. A policy can be deterministic, meaning it selects a single action for each state, or it can be stochastic, meaning it selects actions probabilistically based on some probability distribution over actions for each state \cite{GPT3.5}. A policy is a function that maps states to actions and represents the agent's decision-making strategy
+    \subsubsection{Stochastic Policy}\label{subsubsec:policy}
+    A policy, denoted by $\pi$, in the context of MDPs, is a function that maps states to actions. It represents the agent's strategy or decision-making rule for selecting actions based on the current state. Mathematically, a policy is defined as: $\pi: S \rightarrow A$, where $S$ is the set of states and $A$ is the set of actions. Notation for a policy is as follows:
+    \begin{equation}
+        \pi(a|s)=\mathbb{P}(A_t=a|S_t=s)
+    \end{equation}
+    The policy can be deterministic, meaning it selects a single action for each state, or it can be stochastic, meaning it selects actions probabilistically based on some probability distribution over actions for each state. A policy is a function that maps states to actions and represents the agent's decision-making strategy\cite{sutton2018reinforcement}.
 
-    Policies and action-value, defined in~\cref{subsubsec:action-value-function}, functions are closely related and are used interchangeably in many reinforcement learning algorithms, but they are conceptually distinct.
+    Policies and action-value functions are closely related and are used interchangeably in many reinforcement learning algorithms, but they are conceptually distinct.
 
-    In the more general case, where states or rewards are uncountable, the same concepts apply except that the mathematical formalism needs to be more detailed and more careful. Specifically, we'd end up with integrals instead of summations, and probability density functions (for continuous probability distributions) instead of probability mass functions (for discrete probability distributions). For ease of notation and more importantly, for ease of understanding of the core concepts (without being distracted by heavy mathematical formalism), we've chosen to stay with discrete-time, countable $S$, countable $A$,
+%    In the more general case, where states or rewards are uncountable, the same concepts apply except that the mathematical formalism needs to be more detailed and more careful. Specifically, we'd end up with integrals instead of summations, and probability density functions (for continuous probability distributions) instead of probability mass functions (for discrete probability distributions). For ease of notation and more importantly, for ease of understanding of the core concepts (without being distracted by heavy mathematical formalism), we've chosen to stay with discrete-time, countable $S$, countable $A$,
 
-    \subsubsection{Value Function for a Policy}
-    The value function $V^{\pi}(s)$ for a policy $\pi$ is the expected cumulative discounted reward the agent can obtain from state $s$ by following policy $\pi$ and then continuing to follow $\pi$ thereafter. It is defined as:
-    \[
-        V^{\pi}(s) = \mathbb{E}_{\pi}\left[\sum_{t=0}^{\infty} \gamma^t R_{t+1} | S_0 = s\right]
-    \]
+    \subsubsection{Value Function for stochastic Policy $\pi$}
+    The value function $V^{\pi}(s)$ for a stochastic policy $\pi$ is the expected cumulative discounted reward the agent can obtain from state $s$ by following policy $\pi$ and then continuing to follow $\pi$ thereafter. It is defined as:
+    \begin{equation}
+        \label{eq:Vpi}
+        \begin{split}
+            V^{\pi}(s) &\doteq \mathbb{E}_{\pi}\left[ G_t|S_t=s \right] \\
+            &= \mathbb{E}\left[ R_{t+1} = \gamma G_{t+1} | S_t=s \right] \\
+            &= \mathbb{E}_{\pi}\left[ \sum_{k=0}^{\infty}\gamma^k R_{t+k+1}|S_t=s \right] \\
+            &= \sum_{a \in \mathcal{A}} \pi(a|s) \sum_{s', r} p(R_{t+1}, S_{t+1}|S_t, A_t) \left[r + \gamma v_{\pi}(s')  \right]\text{, for all } s \in \mathcal{S}
+        \end{split}
+    \end{equation}
     where $\mathbb{E}_{\pi}$ denotes the expectation with respect to the states and rewards generated by following policy $\pi$.
 
     \subsubsection{Action-Value Function}
-    An action-value function, also known as a Q-function, denoted by $Q$, in the context of MDPs, is a function that estimates the expected cumulative reward of an agent starting from a given state, taking a specific action, and following a specific policy thereafter. Mathematically, an action-value function is defined as $Q: S \times A \rightarrow \mathbb{R}$, where $S$ is the set of states and $A$ is the set of actions. The action-value function $Q(s,a)$ represents the expected cumulative reward from taking action $a$ in state $s$, following the policy $\pi$ thereafter. In other words, it quantifies the value of selecting a particular action in a particular state under a specific policy. An action-value function is a function that estimates the expected cumulative reward of taking a specific action from a specific state, following a specific policy thereafter~\cite{GPT3.5}.
+    An action-value function, also known as a Q-function, denoted by $Q$, in the context of MDPs, is a function that estimates the expected cumulative reward of an agent starting from a given state, taking a specific action, and following a specific policy $\pi$ thereafter. Mathematically, an action-value function is defined as $Q: S \times A \rightarrow \mathbb{R}$, where $S$ is the set of states and $A$ is the set of actions. The action-value function $Q(s,a)$ represents the expected cumulative reward from taking action $a$ in state $s$, following the policy $\pi$ thereafter. In other words, it quantifies the value of selecting a particular action in a particular state under a specific policy. An action-value function is a function that estimates the expected cumulative reward of taking a specific action from a specific state, following a specific policy thereafter~\cite{GPT3.5}.
 
     The action-value function $Q^{\pi}(s, a)$ for a policy $\pi$ is the expected cumulative discounted reward the agent can obtain from state $s$, taking action $a$, and then following policy $\pi$ thereafter. It is defined as:
     \[
@@ -291,6 +378,12 @@
     However, model-based RL also faces challenges. One challenge is the accuracy of the learned model, as any errors in the model can lead to suboptimal policies. Another challenge is the computational cost of planning and decision-making using the learned model, as it requires additional computation compared to direct action selection in model-free methods.
 
     In conclusion, model-based RL is a promising approach that can offer sample-efficient learning and improved performance in complex environments. Various methods, such as probabilistic models and deterministic models, have been proposed in the literature. Despite some challenges, model-based RL continues to be an active area of research in machine learning.
+
+
+    \section{Value-based methods}\label{sec:value-based-methods}
+
+
+    \section{Policy-based methods}\label{sec:policy-based-methods}
 
 
     \section{Model-free methods}\label{sec:model-free-methods}
