@@ -216,8 +216,7 @@
     TODO
 
     \subsubsection{Bellman's Equation}\label{subsubsec:bellman-equation}
-    The Bellman equation is a fundamental equation in reinforcement learning that expresses the relationship between the state-value function and the expected return from a state.
-    It is given by:
+    The Bellman equation is a fundamental equation in reinforcement learning that expresses the relationship between the state-value function and the expected return from a state. It is given by:
 
     \begin{equation}
         v(s) = \mathbb{E}[R_{t+1} + \gamma v(S_{t+1}) | S_t = s]
@@ -232,15 +231,11 @@
 
 
     \section{Model-based methods}\label{sec:model-based-methods}
-    As mentioned in Section~\cref{sec:rl-introduction}, RL algorithms can be broadly categorized into two main types: model-free and model-based.
-    Model-based methods rely on \emph{planning} as they primary component, while model-free methods rely on \emph{learning}~\cite{sutton2018reinforcement}.
-    Despite their distinctions, both approaches involve computing value functions and using them to update approximate value functions based on future events.
+    As mentioned in Section~\cref{sec:rl-introduction}, RL algorithms can be broadly categorized into two main types: model-free and model-based. Model-based methods rely on \emph{planning} as they primary component, while model-free methods rely on \emph{learning}~\cite{sutton2018reinforcement}. Despite their distinctions, both approaches involve computing value functions and using them to update approximate value functions based on future events.
 
-    One popular approach is to use a probabilistic model of the environment, which can be represented as a transition function $P(s_{t+1}|s_t, a_t)$ that describes the probability of transitioning from state $s_t$ to state $s_{t+1}$ when taking action $a_t$.
-    Some popular probabilistic model-based RL methods include Monte Carlo Tree Search, Neural Network Dynamics, and Probabilistic Ensembles with Trajectory Samplin.
+    One popular approach is to use a probabilistic model of the environment, which can be represented as a transition function $P(s_{t+1}|s_t, a_t)$ that describes the probability of transitioning from state $s_t$ to state $s_{t+1}$ when taking action $a_t$. Some popular probabilistic model-based RL methods include Monte Carlo Tree Search, Neural Network Dynamics, and Probabilistic Ensembles with Trajectory Samplin.
 
-    Another approach in model-based RL is to use a learned deterministic model of the environment, which can be represented as a function $f(s_t, a_t)$ that directly maps states and actions to next states.
-    Deterministic model-based RL methods, such as World Models, learn an encoder to represent states, a recurrent neural network (RNN) to model dynamics, and a decoder to generate predicted next states.
+    Another approach in model-based RL is to use a learned deterministic model of the environment, which can be represented as a function $f(s_t, a_t)$ that directly maps states and actions to next states. Deterministic model-based RL methods, such as World Models, learn an encoder to represent states, a recurrent neural network (RNN) to model dynamics, and a decoder to generate predicted next states.
 
     \subsection{Planning}\label{subsec:planning}
     A model of the environment refers to anything that an agent can use to predict the outcome of its actions. It can be either stochastic, where there are multiple possible outcomes with associated probabilities, or deterministic, where the outcome is fixed. Distribution models provide a description of all possible outcomes and their probabilities, while sample models generate a single outcome sampled from the probabilities.

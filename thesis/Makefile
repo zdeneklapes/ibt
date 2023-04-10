@@ -26,6 +26,9 @@ $(CO).pdf: clean setup
 	$(CMD_PDFLATEX) $(FLAGS) $(CO)
 	$(CMD_PDFLATEX) $(FLAGS) $(CO)
 
+open: $(CO).pdf
+	open -a Skim $(OUTDIR)/$(CO).pdf
+
 $(CO).dvi: $(CO).tex $(CO).bib
 	latex $(CO)
 	-bibtex $(CO)
