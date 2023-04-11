@@ -123,20 +123,22 @@
 
     Given n possible states, $s\in S$, then the probability of transitioning from state $s$ to state $s'$ can be represented as a matrix $P$, and because probability summation rule, the sum of transition probabilities from state $s$ to any other state $s'$ must equal to 1.
 
-    The Markov process is stochastic process that satisfies the Markov property and is described as tuple $\left(\mathcal{S}, \mathcal{P}\right)$ for which holds:\cite{ABATE2021102207}
-    \begin{itemize}
-        \item $\mathcal{S} = s_1, s_2, ..., s_n$ is a finite set of states
-        \item $\mathcal{P}$ is an $n\times n$ transition probability matrix which sums to 1 for each row, so each value $p_{ij}$ is the probability of transitioning from state $s_i$ to state $s_j$ in interval $\left< 0;1 \right>$
-    \end{itemize}
+    \begin{definition}
+        The Markov process is stochastic process that satisfies the Markov property and is described as tuple $\left(\mathcal{S}, \mathcal{P}\right)$ for which holds:\cite{ABATE2021102207}
+        \begin{itemize}
+            \item $\mathcal{S} = s_1, s_2, ..., s_n$ is a finite set of states
+            \item $\mathcal{P}$ is an $n\times n$ transition probability matrix which sums to 1 for each row, so each value $p_{ij}$ is the probability of transitioning from state $s_i$ to state $s_j$ in interval $\left< 0;1 \right>$
+        \end{itemize}
+    \end{definition}
 
-    \begin{equation}
+    \begin{align*}
         \mathcal{P}=\begin{bmatrix}
                         p_{11} & p_{12} & p_{13} & \dots  & p_{1n} \\
                         p_{21} & p_{22} & p_{23} & \dots  & p_{2n} \\
                         \vdots & \vdots & \vdots & \ddots & \vdots \\
                         p_{n1} & p_{n2} & p_{n3} & \dots  & p_{nn}
         \end{bmatrix}
-    \end{equation}
+    \end{align*}
 
     \subsubsection{Starting States}
     The probability distribution of start states is denoted as $\mu : N \rightarrow [0,1]$ in order to perform simulations and compute the probability distribution of states at specific future time steps. A Markov Process is fully specified by the transition probability function $P$, which governs the complete dynamics of the process.
@@ -178,9 +180,9 @@
     The examples shown here only include states and transition probabilities. To fully define an environment within the framework of RL, actions and rewards also need to be defined.
 
     \subsection{Markov Reward Process}\label{subsubsec:markov-reward-process}
-    Markov Reward Process (MRP) is a Markov Process with rewards. These rewards are random, and all we need to do is to specify the probability distributions of these rewards as we make state transitions. The main purpose of Markov Reward Processes is to calculate how much reward we would accumulate (in expectation, from each of the non-terminal states) if we let the process run indefinitely, bearing in mind that future rewards need to be discounted appropriately $\gamma$ (otherwise, the sum of rewards could blow up to $\infty$). In order to solve the problem of calculating expected accumulative rewards from each non-terminal state, we will first set up some formalism for Markov Reward Processes and develop some theory on calculating rewards accumulation.
+    Markov Reward Process (MRP) is a Markov Process with rewards. These rewards are random, and all we need to do is to specify the probability distributions of these rewards as we make state transitions. The main purpose of Markov Reward Processes is to calculate how much reward we would accumulate (in expectation, from each of the non-terminal states) if we let the process run indefinitely, bearing in mind that future rewards need to be discounted appropriately $\gamma$ (otherwise, the sum of rewards could blow up to $\infty$). In order to solve the problem of calculating expected accumulative rewards, defined in \cref{par:expected-reward}, from each non-terminal state, we will first set up some formalism for Markov Reward Processes and develop some theory on calculating rewards accumulation.
 
-    The main objective of an RL agent is to maximize the sum of rewards from each time-step, also known as the return. The agent can observe different episodes in the Markov process, but lacks the means to determine the actual quality of an episode. By calculating the return, we can precisely measure the goodness of an episode or even a single state using the \emph{state-value function}, defined in \cref{subsubsec:state-value-function}. This allows the agent to actively transition to favorable states and maximize the return.
+    The main objective of an RL agent is to maximize the sum of rewards from each time-step. The agent can observe different episodes in the Markov process, but lacks the means to determine the actual quality of an episode. By calculating the reward, we can precisely measure the goodness of an episode or even a single state using the \emph{state-value function}, defined in \cref{subsubsec:state-value-function}. This allows the agent to actively transition to favorable states and maximize the reward.
 
 %    \begin{definition}
 %        A Markov Reward Process is a Markov Process with a time-indexed sequence of Reward random variables $R_t \in D$ (a countable subset of $R$) for time steps $t = 1, 2, \cdot$, satisfying the Markov Property (including Rewards): $P[(Rt+1, St+1)|St, St−1, ..., S0] = P[(Rt+1, St+1)|St]$ for all $t ≥ 0$.
@@ -206,14 +208,20 @@
         \end{align*}
     \end{definition}
 
-    \paragraph{Reward function}
+    \subsubsection{Reward function}\label{par:reward-function}
     The reward function $\mathcal{R}(s)$ is a function that maps a state $s$ to a reward $r$ and specify how much reward and agent expects from the environment given current state $s$. If an agent is in a state $s$ at time $t$, the agent receives reward  $R_{t+1}$  at time $t + 1$,  when it transitions to a subsequent state $s'$. Rewards of an episode can be represented as a sequence $(R_1, R_2, \ldots, R_t)$~\cite{FITMT25127}.
 
-    \paragraph{Expected reward}
-    The expected reward $G_t$ of a state $s$ is the discounted sum of rewards in a single episode.
+    % TODO: Agent reference
+
+    \paragraph{When to receive reward?} An RL agent, defined in \verb|\cref{TODO}|, should receive a reward for a good action and a penalty for a bad action. Good actions are those that lead to the agent's main goal, while bad actions are those that lead to a state that is not desirable for the agent. That is, an agent should not receive (one small) reward when it can then receive a large penalty, for example in chess by taking one piece, when it can then lose the game by getting checkmate~\cite{sutton2018reinforcement}.
+
+    \subsubsection{Expected reward}\label{par:expected-reward}
+    The expected reward, denoted as $G_t$ at time $t$ is the discounted sum of rewards in a single episode. Can be used to calculate the sum of discounted rewards in an episode.
+
     \begin{equation}
         G_t = R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + \ldots = \sum_{k=0}^{\infty} \gamma^k R_{t+k+1}
     \end{equation}
+
 
     We can also calculate the expected rewards for state-action pairs as a two-argument function $r: S \times A \to R$.
     The expected reward of a state-action pair as two-argument function $r: \mathcal{S}\times \mathcal{A}\leftarrow \mathbb{R}$ is defined as:
@@ -221,105 +229,126 @@
         r(s, a) = \sum_{t=0}^{\infty} \gamma^t R_{t+1} P(S_{t+1} = s|S_t = s, A_t = a)
     \end{equation}
 
-    The calculation also involves the discount factor $\gamma$ which is a value in the interval $\langle 0, 1 \rangle$. If $\gamma$ is equal to one, the series value goes to infinity. The agent can only calculate the return in the case of always terminating episodes. If $\gamma$ is less than one, the return has a finite value, allowing the agent to determine the quality of an episode. The discount factor is not only useful mathematically but also for tuning the agent's rewards. If early rewards in an episode are more significant than later ones, $\gamma$ should be close to zero. If the rewards represent monetary gains, then it is the case, as early rewards earn additional interest. On the other hand, the closer $\gamma$ is to one, the more important later rewards are.
+    \paragraph{Discount factor $\gamma$}\label{par:discount-factor}
+    The calculation also involves the discount factor $\gamma$ which is a value in the interval $\langle 0, 1 \rangle$. If $\gamma$ is equal to one, the series value goes to infinity. The agent can only calculate the reward in the case of always terminating episodes. If $\gamma$ is less than one, the reward has a finite value, allowing the agent to determine the quality of an episode. The discount factor is not only useful mathematically but also for tuning the agent's rewards. If early rewards in an episode are more significant than later ones, $\gamma$ should be close to zero. If the rewards represent monetary gains, then it is the case, as early rewards earn additional interest. On the other hand, the closer $\gamma$ is to one, the more important later rewards are.
 
-    The return, denoted as $G_t$, can be used to calculate the sum of discounted rewards in an episode. The state-value function, as defined in \cref{subsubsec:state-value-function}, determines the expected long-term return starting from a specific state. Since episodes may start with different states due to state transitions probabilities, the expected return of a particular state is the expected value of the conditional density function over the probabilities of returns for that state. Thus, $G_t$ can be treated mathematically as a continuous random variable~\cite{FITMT25127, rao2022foundations}.
+    \subsubsection{State-value Function}\label{subsubsec:state-value-function}
+    The state-value function provides information about the long-term expected reward for each state in an environment. With this information, an agent can determine which state to transition to in order to maximize the reward of an episode. Specifically, the agent should choose the state that has the highest long-term expected reward. If the agent observes a sequence of states and rewards, it can remember the subsequent rewards for each state, calculate the reward of an episode, and iteratively update the probabilities for higher occurrence of rewards over multiple episodes. As the number of episodes approaches infinity, the estimated probabilities converge to the true probabilities, and the long-term expected reward of a state can be accurately determined. Intuitively, the more episodes and consequent rewards an agent observes, the better it can estimate the value of each state. We will introduce the methods for determining the state-value function and the action-value function in the next subsection, along with a recursive iterative approach for calculating the state-value function based on Bellman's equation~\cite{FITMT25127}.
 
-    \paragraph{Receive rewards}
-    The agent receives rewards for its actions in the environment. An agent should receive a reward for a good action and a penalty for a bad action. Good actions are those that lead to the agent's main goal, while bad actions are those that lead to a state that is not desirable for the agent. That is, an agent should not receive (one small) reward when it can then receive a large penalty, for example in chess by taking one piece, when it can then lose the game by getting checkmate{sutton2018reinforcement}.
+    Since episodes may start with different states due to state transitions probabilities, the expected reward of a particular state is the expected value of the conditional density function over the probabilities of rewards for that state. Thus, $G_t$ can be treated mathematically as a continuous random variable.
+    To derive \emph{Bellman's equation}, defined later in this subsection, we need to make use of the definition of the \emph{(Recursive) State-value function}~\cite{FITMT25127, rao2022foundations}.
+    \begin{equation}
+        \begin{split}
+            \textcolor[RGB]{51, 204, 51}{v(s)} &= E[G_t | S_t = s] \\
+            &= E[R_{t+1} + \gamma G_{t+1} | S_t = s] \\
+            &= E[R_{t+1} + \gamma \textcolor[RGB]{51, 204, 51}{v(S_{t+1})} | S_t = s]\\
+            &= \mathcal{R}(s) + \gamma \sum_{s' \in \mathcal{S}} \mathcal{P}(s' | s) \textcolor[RGB]{51, 204, 51}{v(s')}
+        \end{split}
+    \end{equation}
+    where $\gamma$ is the discount factor, $\mathcal{R}(s)$ is the immediate reward for state $s$, $\mathcal{P}(s' | s)$ is the transition probability from state $s$ to state $s'$, and $\mathcal{S}$ is the set of all possible states in the environment. The last equation expresses that the long-term expected reward of a state depends only on the immediate reward and the long-term expected reward of the subsequent states.
+
+    In the case of Finite Markov Reward Processes, let's assume that the state space is denoted as $\mathcal{S} = \{s_1, s_2, ..., s_n\}$, and the subset of states of interest is denoted as $\mathcal{N}$ with $m \leq n$ states. We can use bold-face notation to represent functions as column vectors and matrices, since we are dealing with finite states/transitions. So, $V$ is a column vector of length $m$, $P$ is an $m \times m$ matrix, and $R$ is a column vector of length $m$ (with rows/columns corresponding to states in $\mathcal{N}$). We can express the equation in vector and matrix notation as follows:
+    \begin{equation}
+        \begin{split}
+            V &= R + \gamma P \cdot V \\
+            &= (I_m - \gamma P)^{-1} \cdot R
+        \end{split}
+    \end{equation}
+    where $I_m$ is the identity matrix of size $m \times m$, and $\gamma$ is the discount factor~\cite{rao2022foundations}.
+
+    By extending the equation to include actions, we arrive at the most important equation in all of reinforcement learning: the Bellman equation, defined in ~\cref{subsubsec:bellman-equation}. It states that to calculate the long-term expected reward from a state, an agent only needs to add together the reward of the current state and the long-term expected reward of the next state~\cite{FITMT25127}.
 
     \subsection{Markov Decision Process}\label{subsec:markov-decision-process}
-    Markov decision process (MDP) is about \emph{sequential decision-making} under conditions of \emph{sequential uncertainty}. In previous subsections we discussed the aspect of \emph{sequential uncertainty} using the framework of Markov Processes, and extended it to incorporate uncertain Reward $R_t\in\mathcal{R}$ at each state transition $p(s',r|s)$, referred to as Markov Reward Processes. However, this framework lacks the notion of \emph{sequential decision-making}. Now we further extend the Markov Reward Processes framework to incorporate the concept of \emph{sequential decision-making}, which is formally known as Markov Decision Processes.
-
-
-    %%%
-    Similar to the definitions of Markov Processes and Markov Reward Processes, for ease of exposition, the definitions and theory of Markov Decision Processes below will be for discrete-time, for countable state spaces and countable set of pairs of next state and reward transitions (with the knowledge that the definitions and theory are analogously extensible to continuous-time and uncountable spaces, which we shall indeed encounter later in this book).
+    The Markov Decision Process (MDP) allows an agent to actively influence changes in the state of the environment through its actions. Within the MDP, the agent has the ability to jointly determine the subsequent state to which the environment should transition. The agent's primary goal is to strategically choose actions that maximize expected payoff. In the previous subsections, we addressed the aspect of \emph{sequential uncertainty (e.g., MRP)} using the Markov process framework and extended it to include the uncertain reward $R_t\in\mathcal{R}$ at each state transition $p(s',r,s)$, referred to as Markov reward processes. However, this framework lacks the notion of \emph{sequential decision making} and in this section this notion is introduced in terms of MDP, a generalization of MRP that includes the notion of \emph{sequential decision making}~\cite{rao2022foundations}.
 
     \begin{definition}
-        A Markov Decision Process comprises of:
+        Markov decision process (MDP) is Markov reward process with actions. It is an tuple $(S, A, \mathcal{P}, \mathcal{R}, \gamma)$, where:
         \begin{itemize}
-            \item A countable set of states $S$ (known as the State Space), a set $T \subseteq S$ (known as the set of Terminal States), and a countable set of actions $A$ (known as the Action Space).
-            \item A time-indexed sequence of environment-generated random states $S_t \in S$ for time steps $t = 0, 1, 2, \ldots$, a time-indexed sequence of environment-generated Reward random variables $R_t \in D$ (a countable subset of $\mathbb{R}$) for time steps $t = 1, 2, \ldots$, and a time-indexed sequence of agent-controllable actions $A_t \in A$ for time steps $t = 0, 1, 2, \ldots$. (Sometimes we restrict the set of actions allowable from specific states, in which case, we abuse the $A$ notation to refer to a function whose domain is $\mathbb{N}$ and range is $A$, and we say that the set of actions allowable from a state $s \in \mathbb{N}$ is $A(s)$.)
-            \item \emph{Markov Property}
-            \[
-                P[(R_{t+1}, S_{t+1})|(S_t, A_t, S_{t-1}, A_{t-1}, \ldots , S_0, A_0)] = P[(R_{t+1}, S_{t+1})|(S_t, A_t)] \text{ for all } t \geq 0
-            \]
-            \item \emph{Termination} If an outcome for $S_T$ (for some time step $T$) is a state in the set $T$, then this sequence outcome terminates at time step $T$. As in the case of Markov Reward Processes, we denote the set of non-terminal states $S - T$ as $N$ and refer to any state in $N$ as a non-terminal state. The sequence: $S_0, A_0, R_1, S_1, A_1, R_1, S_2, \ldots$ terminates at time step $T$ if $S_T \in T$ (i.e., the final reward is $R_T$ and the final action is $A_{T-1}$).
+            \item $\mathcal{S}$ is finite set of states $S$ (known as the State Space), a set $T \subseteq S$ (known as the set of Terminal States)
+            \item $\mathcal{A}$ is finite set of actions $A$ (known as the Action Space)
+            \item $\mathcal{P}$ is a transition probability function $p(s',r,s,a)$, which is a function that maps a state $s$, an action $a$, a next state $s'$ and a reward $r$ to a probability $p(s',r,s,a)$
+            \item $\mathcal{R}$ is a reward function $r(s,a)$, which is a function that maps a state $s$ and an action $a$ to a reward $r(s,a)$
+            \item $\gamma \in [0,1]$ is the discount factor
         \end{itemize}
     \end{definition}
 
-    \subsubsection{State-value Function}\label{subsubsec:state-value-function}
-    The state-value function provides information about the long-term expected return for each state in an environment. With this information, an agent can determine which state to transition to in order to maximize the return of an episode. Specifically, the agent should choose the state that has the highest long-term expected return. However, in a Markov Reward Process (MRP), there are no actions available for the agent to transition to different states. Actions need to be defined in the context of a Markov Decision Process (MDP), which will be introduced later.
-
-    If the agent observes a sequence of states and rewards, it can remember the subsequent rewards for each state, calculate the return of an episode, and iteratively update the probabilities for higher occurrence of returns over multiple episodes. As the number of episodes approaches infinity, the estimated probabilities converge to the true probabilities, and the long-term expected return of a state can be accurately determined. Intuitively, the more episodes and consequent returns an agent observes, the better it can estimate the value of each state. We will introduce the methods for determining the state-value function and the action-value function in the next subsection, along with a recursive iterative approach for calculating the state-value function based on Bellman's equation~\cite{FITMT25127}.
-
-    To derive Bellman's equation, we need to make use of the definition of the state-value function:
-    \[
-        v(s) = E[G_t | S_t = s] = E[R_{t+1} + \gamma G_{t+1} | S_t = s] = E[R_{t+1} + \gamma v(S_{t+1}) | S_t = s] = R(s) + \gamma \sum_{s' \in \mathcal{S}} P(s' | s) v(s')
-    \]
-    where $\gamma$ is the discount factor, $R(s)$ is the immediate reward for state $s$, $P(s' | s)$ is the transition probability from state $s$ to state $s'$, and $\mathcal{S}$ is the set of all possible states in the environment. The last equation expresses that the long-term expected return of a state depends only on the immediate reward and the long-term expected return of the subsequent state.
-
-    By extending the equation to include actions, we arrive at the most important equation in all of reinforcement learning: the Bellman equation~\cref{subsubsec:bellman-equation}. It states that to calculate the long-term expected return from a state, an agent only needs to add together the reward of the current state and the long-term expected return of the next state~\cite{FITMT25127}.
-
     \subsubsection{Stochastic Policy}\label{subsubsec:policy}
-    A policy, denoted by $\pi$, in the context of MDPs, is a function that maps states to actions. It represents the agent's strategy or decision-making rule for selecting actions based on the current state. Mathematically, a policy is defined as: $\pi: S \rightarrow A$, where $S$ is the set of states and $A$ is the set of actions. Notation for a policy is as follows:
-    \begin{equation}
-        \pi(a|s)=\mathbb{P}(A_t=a|S_t=s)
-    \end{equation}
-    The policy can be deterministic, meaning it selects a single action for each state, or it can be stochastic, meaning it selects actions probabilistically based on some probability distribution over actions for each state. A policy is a function that maps states to actions and represents the agent's decision-making strategy\cite{sutton2018reinforcement}.
+    A policy, denoted by $\pi$, in the context of MDPs, is a function that maps states to actions. It represents the agent's strategy or decision-making rule for selecting actions based on the current state.
+    \begin{definition}
+        A policy is defined as: $\pi: S \rightarrow A$, where $S$ is the set of states and $A$ is the set of actions. Notation for a policy is as follows:
+        \begin{equation}
+            \pi(a|s)=\mathbb{P}(A_t=a|S_t=s)
+        \end{equation}
+    \end{definition}
+    Policy refers to the specification of an Agent's actions based on the current state in a Markov Decision Process. The policy can be deterministic, meaning it selects a single action for each state. It is represented as a function $\pi_D : N \rightarrow A$, where $\pi_D(s)$ represents the action to be taken in state $s$. Or it can be stochastic, meaning it selects actions probabilistically based on some probability distribution over actions for each state. A policy is a function that maps states to actions and represents the agent's decision-making strategy. Mathematically, a Policy is represented as a function $\pi : N \times A \rightarrow [0, 1]$, where $N$ represents the state space and $A$ represents the action space. The function $\pi(s, a)$ represents the probability of taking action $a$ in state $s$ at time step $t = 0, 1, 2, \ldots$, for all $s \in N$ and $a \in A$. It is assumed that the sum of probabilities for all actions in a given state is equal to 1. A Policy is usually assumed to be Markovian, meaning that the action probabilities depend only on the current state and not the history. It is also assumed to be stationary, meaning that the action probabilities do not change over time. However, if the policy needs to depend on the time step $t$, we can include $t$ as part of the state, which would make the policy stationary but may increase computational cost due to the enlarged state space. In the more general case, where states or rewards are uncountable, the same concepts apply except that the mathematical formalism needs to be more detailed and more careful. Specifically, we'd end up with integrals instead of summations, and probability density functions (for continuous probability distributions) instead of probability mass functions (for discrete probability distributions). For ease of notation and more importantly, for ease of understanding of the core concepts (without being distracted by heavy mathematical formalism), we've chosen to stay with discrete-time, countable $S$, countable $A$~\cite{rao2022foundations}.
 
     Policies and action-value functions are closely related and are used interchangeably in many reinforcement learning algorithms, but they are conceptually distinct.
 
-%    In the more general case, where states or rewards are uncountable, the same concepts apply except that the mathematical formalism needs to be more detailed and more careful. Specifically, we'd end up with integrals instead of summations, and probability density functions (for continuous probability distributions) instead of probability mass functions (for discrete probability distributions). For ease of notation and more importantly, for ease of understanding of the core concepts (without being distracted by heavy mathematical formalism), we've chosen to stay with discrete-time, countable $S$, countable $A$,
-
-    \subsubsection{Value Function for stochastic Policy $\pi$}
-    The value function $V^{\pi}(s)$ for a stochastic policy $\pi$ is the expected cumulative discounted reward the agent can obtain from state $s$ by following policy $\pi$ and then continuing to follow $\pi$ thereafter. It is defined as:
+    \subsubsection{State-value Function for Stochastic Policy $\pi$}
+    The value function $V^{\pi}(s)$ for a stochastic policy $\pi$ is the expected cumulative discounted reward the agent can obtain from state $s$ by following policy $\pi$ and then continuing to follow $\pi$ thereafter. It can be computed recursively using the Bellman equation, which relates the Value Function of a state to the rewards and transitions of the MDP.
+    It is defined as:
     \begin{equation}
         \label{eq:Vpi}
         \begin{split}
-            V^{\pi}(s) &\doteq \mathbb{E}_{\pi}\left[ G_t|S_t=s \right] \\
-            &= \mathbb{E}\left[ R_{t+1} = \gamma G_{t+1} | S_t=s \right] \\
-            &= \mathbb{E}_{\pi}\left[ \sum_{k=0}^{\infty}\gamma^k R_{t+k+1}|S_t=s \right] \\
-            &= \sum_{a \in \mathcal{A}} \pi(a|s) \sum_{s', r} p(R_{t+1}, S_{t+1}|S_t, A_t) \left[r + \gamma v_{\pi}(s')  \right]\text{, for all } s \in \mathcal{S}
+            \textcolor[RGB]{51,204,51}{v^{\pi}(s)} &\doteq \mathbb{e}_{\pi}\left[ g_t|S_t=s \right] \\
+            &= \mathbb{e}\left[ r_{t+1} = \gamma g_{t+1} | S_t=s \right] \\
+            &= \mathbb{e}_{\pi}\left[ \sum_{k=0}^{\infty}\gamma^k r_{t+k+1}|S_t=s \right] \\
+            &= \sum_{a} \pi(a|s) \sum_{s', r} p(r, s'|s, a) \left[r + \gamma \textcolor[RGB]{51,204,51}{v_{\pi}(s')}  \right]\text{, for all } s \in \mathcal{S}
         \end{split}
     \end{equation}
     where $\mathbb{E}_{\pi}$ denotes the expectation with respect to the states and rewards generated by following policy $\pi$.
 
-    \subsubsection{Action-Value Function}
-    An action-value function, also known as a Q-function, denoted by $Q$, in the context of MDPs, is a function that estimates the expected cumulative reward of an agent starting from a given state, taking a specific action, and following a specific policy $\pi$ thereafter. Mathematically, an action-value function is defined as $Q: S \times A \rightarrow \mathbb{R}$, where $S$ is the set of states and $A$ is the set of actions. The action-value function $Q(s,a)$ represents the expected cumulative reward from taking action $a$ in state $s$, following the policy $\pi$ thereafter. In other words, it quantifies the value of selecting a particular action in a particular state under a specific policy. An action-value function is a function that estimates the expected cumulative reward of taking a specific action from a specific state, following a specific policy thereafter~\cite{GPT3.5}.
+    \subsubsection{Action-value Function}
 
-    The action-value function $Q^{\pi}(s, a)$ for a policy $\pi$ is the expected cumulative discounted reward the agent can obtain from state $s$, taking action $a$, and then following policy $\pi$ thereafter. It is defined as:
-    \[
-        Q^{\pi}(s, a) = \mathbb{E}_{\pi}\left[\sum_{t=0}^{\infty} \gamma^t R_{t+1} | S_0 = s, A_0 = a\right]
-    \]
+    Action-Value Function $q^\pi(s, a)$, which maps a (state, action) pair to the expected reward originating from that pair when evaluated with policy $\pi$. Mathematically, an action-value function is defined as $Q: S \times A \rightarrow \mathbb{R}$, where $S$ is the set of states and $A$ is the set of actions. The Action-value function $a^{\pi}(s,a)$ represents the expected cumulative reward from taking action $a$ in state $s$, following the policy $\pi$ thereafter. In other words, it quantifies the value of selecting a particular action in a particular state under a specific policy. The Action-Value Function is denoted by $q^\pi$ and is crucial in developing various Dynamic Programming and Reinforcement Learning algorithms for the MDP Prediction problem.
 
-    \subsubsection{Optimal Value and Action-Value Functions}
-    The optimal value function $V^*(s)$ is the maximum value function over all possible policies. It is defined as:
-    \[
-        V^*(s) = \max_{\pi} V^{\pi}(s)
-    \]
-    Similarly, the optimal action-value function $Q^*(s, a)$ is the maximum action-value function over all possible policies. It is defined as:
-    \[
-        Q^*(s, a) = \max_{\pi} Q^{\pi}(s, a)
-    \]
-    %%%
+    \begin{definition}
+        The action-value function $Q^{\pi}(s, a)$ for a policy $\pi$ is the expected cumulative discounted reward the agent can obtain from state $s$, taking action $a$, and then following policy $\pi$ thereafter. It is defined as:
+        \[
+            q^{\pi}(s, a) = \mathbb{E}_{\pi}\left[\sum_{t=0}^{\infty} \gamma^t R_{t+1} | S_0 = s, A_0 = a\right]
+        \]
+    \end{definition}
 
-    \subsubsection{Stochastic Policy Function}\label{subsubsec:stochastic-policy-function}
-    TODO
+    To avoid confusion, $v^\pi$ is referred to as the State-Value Function, while $q^\pi$ is referred to as the Action-Value Function. The Action-Value Function provides information about the expected returns from specific state-action pairs and is useful for making decisions about which actions to take in an MDP. The relationship between the state-value function and the action-value function can be defined as:
+    \[ v_\pi(s) = \max_a q_\pi(s, a) \quad\]
 
-    \subsubsection{Bellman's Equation}\label{subsubsec:bellman-equation}
-    The Bellman equation is a fundamental equation in reinforcement learning that expresses the relationship between the state-value function and the expected return from a state. It is given by:
+    \subsubsection{Optimal State-value function}
+    The goal of an agent is to maximize the reward, which means finding a policy that yields the highest possible return. To compare two policies, let $\pi$ and $\pi'$ be two different stochastic policies. Then $\pi'$ is considered better or equal to $\pi$ if $v_{\pi'}(s) \geq v_{\pi}(s)$ holds for all states $s$. It can be shown that there is always at least one policy that is better or equal to all other policies, and this policy is called the optimal policy $\pi^*$. If an agent uses the optimal policy, then for all states and actions the agent will use the optimal state-value function and the optimal action-value function:
+    \begin{definition}
+        The Optimal State-value function $v^*(s)$ is the maximum value function over all possible policies and is defined as:
+        \begin{equation}
+            \begin{split}
+                v^*(s) = \max_{\pi} v^{\pi}(s) \\
+            \end{split}
+        \end{equation}
+    \end{definition}
 
-    \begin{equation}
-        v(s) = \mathbb{E}[R_{t+1} + \gamma v(S_{t+1}) | S_t = s]
-    \end{equation}
+    \subsubsection{Optimal Action-value function}
 
-    where $v(s)$ is the state-value function, $R_{t+1}$ is the immediate reward, $S_{t+1}$ is the next state, and $\gamma$ is the discount factor.
+    Conversely, if the optimal action-value function is found, the optimal policy can be derived.
+    \begin{definition}
+        The Optimal Action-value function $q^*(s, a)$ is the maximum action-value function over all possible policies. It is defined as:
+        \begin{equation}
+            \begin{split}
+                q^*(s, a) = \max_{\pi} q^{\pi}(s, a)
+            \end{split}
+        \end{equation}
+    \end{definition}
 
-    The Bellman equation can be used to iteratively calculate the state-value function by updating the value of each state based on the immediate reward and the long-term expected return of the next state\cite{rao2022foundations}.
+    The optimal policy function $\pi^*(a | s)$ always selects an action $a$ with a selection probability of 1 for which $q_*(s, a)$ is maximal for a given state $s$. It also follows that the optimal policy is deterministic, meaning for the same state, the optimal policy function always selects exactly the same action. In contrast, Definition 2.6 allows for stochastic behavior of the policy. The transition from stochastic to deterministic policy is explained by the greedy selection of actions in the last equation. As will be shown in the following sections, all reinforcement learning algorithms presented here use a
 
     \subsubsection{Bellman's Optimality Equation}\label{subsubsec:bellman-optimality-equation}
-    TODO
+    The optimal state-value function $v^*(s)$ must satisfy Bellman's equation, which provides an recursive rule for determining the long-term expected return of each state. In order to incorporate actions, the State-value function for a Markov Reward Process (MRP) is extended to include actions, leading to Bellman's optimality equation for $v^*(s)$:
+    \[
+        \textcolor[RGB]{51,204,51}{v^*(s)} = \max_{a} \in \mathcal{A} \mathbb{E}[R_{t+1} + \gamma \textcolor[RGB]{51,204,51}{v^*(S_{t+1})} | S_t = s, A_t = a]
+    \]
+
+    This equation derives the recursive relation to the subsequent state, allowing the reference to the optimal policy to be omitted. Similarly, the Action-value function $q^*(s, a)$ can be derived as~\cite{rao2022foundations}:
+    \[
+        \textcolor[RGB]{51,204,51}{q^*(s, a)} = \mathbb{E}[R_{t+1} + \gamma \max_{a'} \in \mathcal{A} \textcolor[RGB]{51,204,51}{q^*(S_{t+1}, a')} | S_t = s, A_t = a]
+    \]
+
+    The Bellman Optimality equation can be used to recursively calculate value functions by updating the value of each state based on the immediate reward and the long-term expected reward of the next state~\cite{rao2022foundations}.
 
 
     \section{Model-based methods}\label{sec:model-based-methods}
