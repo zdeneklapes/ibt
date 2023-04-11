@@ -417,12 +417,18 @@
 
     \begin{wrapfigure}{r}{0.35\textwidth}
         \begin{center}
-            \includegraphics[width=0.34\textwidth]{image/mc-evaluation-improvement}
+            \includegraphics[width=0.33\textwidth]{image/mc-evaluation-improvement}
         \end{center}
-        \caption{MC Policy Evaluation and Improvement.}
     \end{wrapfigure}
 
-    MC methods allow an agent to infer the optimal policy $\pi^*$ from the optimal action-value function $q^*(s,a)$ estimated through experience. MC methods use the iterative procedure Generalized Policy Iteration to incrementally infer $\pi^*$. First, a finite trajectory $(S_0, A_0, R_1, S_1, A_1, ..., R_n, S_n)$ is generated, where actions are selected according to a stochastic policy $\pi(a|s)$ and states and rewards come from the unknown environmental dynamics. From this episode, the return $G_t$ is computed for all state-action pairs reached. Then, the policy evaluation step is performed using the update equation:
+    MC methods allow an agent to infer the optimal policy $\pi^*$ from the optimal action-value function $q^*(s,a)$ estimated through experience. MC methods use the iterative procedure Generalized Policy Iteration to incrementally infer $\pi^*$. First, a finite trajectory $(S_0, A_0, R_1, S_1, A_1, ..., R_n, S_n)$ is generated, where actions are selected according to a stochastic policy $\pi(a|s)$ and states and rewards come from the unknown environmental dynamics. From this episode, the return $G_t$ is computed for all state-action pairs reached. Then, the policy evaluation step is performed using the update equation~\cite{sutton2018reinforcement, FITMT25127, rao2022foundations}:
+
+%    \begin{wrapfigure}[h!]
+%        \includegraphics[width=\textwidth]
+%        \caption{Monte Carlo convergence.}
+%        \label{fig:mc}
+%    \end{wrapfigure}
+
     \begin{equation}
         \label{eq:mc}
         q_{k+1}(s, a) = q_k(s, a) + \alpha(G_t - q_k(s, a))
@@ -436,14 +442,7 @@
         \pi_* \xrightarrow{E} q_{\pi_*}
     \end{equation}
 
-%    \begin{wrapfigure}[h!]
-%        \includegraphics[width=\textwidth]
-%        \caption{Monte Carlo convergence.}
-%        \label{fig:mc}
-%    \end{wrapfigure}
-
-
-    Since MC methods do not require knowledge of the environment dynamics, a non-deterministic policy should be used for episode generation to ensure exploration of all states and actions. A stochastic policy, such as the $\epsilon$-greedy approach, is commonly used in MC methods for exploration.
+    Since MC methods do not require knowledge of the environment dynamics, a non-deterministic policy should be used for episode generation to ensure exploration of all states and actions. A stochastic policy, such as the $\epsilon$-greedy approach, is commonly used in MC methods for exploration~\cite{FITMT25127}.
 
     \paragraph{Epsilon-Greedy Policy Exploration}
     The \textbf{$\epsilon$-greedy} approach for exploration selects actions randomly according to:
@@ -454,35 +453,63 @@
             \frac{\epsilon}{|\mathcal{A}|} & \text{if } a \neq A^* \text{ for } a \in \mathcal{A}
         \end{cases}
     \end{equation}
-    where the greedy action is the one with the highest estimated action-value according to the current policy. The process of adjusting action-value values in the policy evaluation step and determining a new policy in the policy improvement step is referred to as training the RL agent. The \cref{eq:mc} shows that MC methods use the return $G_t$ of an episode, which can only be calculated when the episode is terminated. Therefore, MC methods can only be used in environments with finite, i.e., always terminating episodes~\cite{FITMT25127, rao2022foundations, sutton2018reinforcement}
-
-    \subsection{Off Policy Monte Carlo Control}\label{subsec:off-policy-monte-carlo-control}
+    where the greedy action is the one with the highest estimated action-value according to the current policy. The process of adjusting action-value values in the policy evaluation step and determining a new policy in the policy improvement step is referred to as training the RL agent. The \cref{eq:mc} shows that MC methods use the return $G_t$ of an episode, which can only be calculated when the episode is terminated. Therefore, MC methods can only be used in environments with finite, i.e., always terminating episodes~\cite{FITMT25127, sutton2018reinforcement, rl-course-david-silver}.
 
     \subsection{Temporal-Difference Methods}\label{subsec:temporal-difference-methods}
-    Temporal Difference (TD) methods, unlike Monte Carlo (MC) methods, can also be used in environments with infinite episodes. The mechanism that makes this possible is called bootstrapping, which determines $v_{k+1}(s)$ or $q_{k+1}(s,a)$ from the immediate reward plus $v_k(s')$ or $q_k(s',a')$, respectively, and is already applied in a similar way in Dynamic Programming (DP) through Bellman's equations. Unlike algorithms of DP, however, TD methods do not depend on the environment dynamics $\mathcal{P}$ and $R$. Like DP and MC methods, TD methods also use the iterative Generalized Policy Iteration procedure to determine the optimal policy. The policy evaluation step differs in TD methods from MC methods, but the policy improvement step is the same for both with the $\epsilon$-greedy approach. The difference between TD methods and MC methods in the evaluation step can be most easily illustrated by the iterative calculation of the state-value function of a policy with the following equation:
-    \[
-        v_{t+1}(s) = v_t(s) + \alpha(R_{t+1} + \gamma v_t(s') - v_t(s))
-    \]
-    where the term $(R_{t+1} + \gamma v_t(s') - v_t(s))$ is called TD-error and the term $G(1) = R_{t+1} + \gamma v_t(s')$ is called TD-target. This equation illustrates the difference between TD and MC methods. TD methods only have to wait until the next time-step before adjusting $v_{t+1}(s)$, whereas MC methods usually have to wait until the end of the episode for the computation of $G_t$. Therefore, the index $t$ now corresponds to the time-step. More generally, the TD target can be expressed as the $n$-step return, formulated as:
-    \[
-        G(n) = R_{t+1} + \gamma R_{t+2} + \ldots + \gamma^{n-1} R_{t+n} + \gamma^n v(S_{t+n} = s(n))
-    \]
-    where for the limiting case of $n$ nearing infinity, the TD methods become MC methods. TD methods that use $G(1)$ are called TD(0). There are methods where the specific number of steps $n$ in $G(n)$ does not have to be specified. These methods are called TD($\lambda$), which we will not discuss in detail here. Later, when we discuss the Proximal Policy Optimization (PPO) algorithm, this concept will be used for the definition of Generalized Advantage Estimation (GAE), one of the major aspects of PPO. We can mention that the concept is known as exponentially weighted average.
 
-    \subsection{Sarsa On-Policy TD Control}\label{subsec:sarsa-on-policy-td-control}
-    The TD methods use the action-value function for the evaluation step and iteratively determine $q_\pi(s,a)$. A TD method that implements this practically is called SARSA and adjusts the action-value function in the evaluation step for a state-action pair at each time-step of the episode as
+    Temporal-difference (TD) learning is a fundamental concept in reinforcement learning that combines ideas from Monte Carlo and dynamic programming (DP). TD methods allow for learning from raw experience without a model of the environment's dynamics, similar to Monte Carlo methods, but also update estimates based on other learned estimates, without waiting for a final outcome (i.e., bootstrapping), like DP methods. The relationship between TD, DP, and Monte Carlo is a recurring theme in reinforcement learning theory, and these ideas can be blended and combined in various ways.
 
+    Both TD and Monte Carlo methods are used for policy evaluation, estimating the value function for a given policy. However, TD methods differ from Monte Carlo methods in that they update their value function estimates based on the non-terminal states observed in the experience, and they do not have to wait until the end of the episode to determine the increment to the value function. Instead, TD methods only need to wait until the next time step to form a target and make a useful update using the observed reward and the estimate of the value function for the next state~\cite{rl-course-david-silver, sutton2018reinforcement}.
+
+    The simplest TD method is TD(0), also known as one-step TD, which updates the value function using the following equation:
+
+    \[ V(S_t) = V(S_t) + \alpha \cdot (R_{t+1} + \gamma \cdot V(S_{t+1}) - V(S_t)) \]
+
+    where \( V(S_t) \) is the estimated value of state \( S_t \), \( \alpha \) is the learning rate, \( R_{t+1} \) is the reward received at time step \( t+1 \), \( \gamma \) is the discount factor, and \( V(S_{t+1}) \) is the current estimate of the value of the next state.
+
+    One of the key advantages of TD methods over Monte Carlo methods is that TD methods do not have to wait until the end of the episode to update the value function. Instead, they can make updates at each time step, using the observed reward and the estimate of the value function for the next state. This makes TD methods more computationally efficient and allows for online learning in environments where episodes are long or never-ending. Like DP and Monte Carlo methods, TD methods also use the iterative Generalized Policy Iteration (GPI) procedure to determine the optimal policy. The policy evaluation step in TD methods differs from Monte Carlo methods in that it uses the TD error, which is the difference between the TD target and the current estimate of the value function, as the update rule~\cite{sutton2018reinforcement}.
+
+    The TD target is the sum of the reward and the discounted value of the next state, and it serves as the target for the TD update. The TD error and TD target are defined as follows:
+
+    \[ \text{TD error} = R_{t+1} + \gamma \cdot V(S_{t+1}) - V(S_t) \]
+    \[ \text{TD target} = R_{t+1} + \gamma \cdot V(S_{t+1}) \]
+
+%
+    The TD error at each time is the error in the estimate made at that time, depending on the next state and next reward. It is available at time $t + 1$, i.e., (t is the error in $V(S_t)$. If V does not change during the episode, then the Monte Carlo error can be written as a sum of \emph{TD errors}:
+    \begin{equation}
+        \begin{split}
+        G_t - V(S_t) &= R_{t+1} + \gamma G_{t+1} - V(S_t) + \gamma V (S_{t+1}) - \gamma V (S_{t+1})\\
+        &= \delta_t + \gamma \delta_{t+1} + \gamma^2 \delta_{t+2} + \ldots + \gamma^{T-t-1} \delta_{T-1} + \gamma^{T-t} \delta_T - V(S_T)\\
+        &= \delta_t + \gamma \delta_{t+1} + \gamma^2 \delta_{t+2} + \ldots + \gamma^{T-t-1} \delta_{T-1} + \gamma^{T-t} (R_T + \gamma V(S_T) - V(S_T))\\
+        &= \sum_{k=t}^{T-1} \gamma^{k-t} \delta_k
+        \end{split}
+    \end{equation}
+%
+    The TD error represents the error in the current estimate of the value function, and the TD target represents the updated estimate of the value function for the current state. By using the TD error and TD target in the update rule, TD methods can learn from raw experience and update the value function at each time step, making them well-suited for online learning tasks.
+
+    In addition to TD(0), there are also other variations of TD methods such as TD($\lambda$), which is a family of methods that use eligibility traces to combine TD(0) updates with Monte Carlo-like updates. TD($\lambda$) methods have a parameter $\lambda$ that controls the trade-off between the bias and variance of the updates. When $\lambda$ is set to 0, TD($\lambda$) reduces to TD(0), and when $\lambda$ is set to 1, TD($\lambda$) reduces to Monte Carlo updates. TD($\lambda$) methods update the value function for not only the current state but also for all the states visited in the episode, weighted by their eligibility traces, which are updated at each time step. The eligibility trace keeps track of the recent history of state visits and decays over time with a decay factor $\lambda$, which determines the credit assignment to different states~\cite{sutton2018reinforcement}.
+%
+
+    \subsubsection{Sarsa On-Policy TD Control}\label{subsec:sarsa-on-policy-td-control}
+    The TD methods use the action-value function for the evaluation step and iteratively determine $q_\pi(s,a)$. A TD method that implements this practically is called SARSA and adjusts the action-value function in the evaluation step for a state-action pair at each time-step of the episode as:
     \[
         q_{t+1}(s, a) = q_t(s, a) + \alpha \left( R_{t+1} + \gamma q_t(s', a') - q_t(s, a) \right) \quad (2.21)
     \]
 
-    The TD methods, such as SARSA, utilize the action-value function for evaluating and updating the action-value estimates. SARSA adjusts the action-value function at each time-step of the episode based on the sequence of transitions \( (s, a, r, s', a') \) generated by the environment dynamics and the current epsilon-greedy policy. The updated action-value function is used to determine the new policy at the next time-step. This process is repeated iteratively until optimal action-value and policy functions are found. SARSA is an on-policy algorithm, as it evaluates and improves the same policy used for selecting actions.
-
+    The TD methods, such as SARSA, utilize the action-value function for evaluating and updating the action-value estimates. SARSA adjusts the action-value function at each time-step of the episode based on the sequence of transitions \( (s, a, r, s', a') \) generated by the environment dynamics and the current epsilon-greedy policy. The updated action-value function is used to determine the new policy at the next time-step. This process is repeated iteratively until optimal action-value and policy functions are found. SARSA is an on-policy algorithm, as it evaluates and improves the same policy used for selecting actions:
     \[
         q_{t+1}(s, a) = q_t(s, a) + \alpha \left( R_{t+1} + \gamma \max_{a^*} q_t(s', a^*) - q_t(s, a) \right)
     \]
 
-    On the other hand, off-policy algorithms, like Q-learning, evaluate and improve one policy while using a different policy for selecting actions. This can be useful, for example, when introducing a new version of an agent with a different policy to learn from an old agent with a well-performing policy. In Q-learning, the action maximizing action (\( a^* \)) of all action-value functions at a fixed state \( s' \) is always chosen when updating the action-value function for a given state-action pair \( (s, a) \), regardless of which action \( a^* \) of the policy was chosen. After updating the action-value function, the policy improvement step is performed using the epsilon-greedy approach with respect to the current policy (\( \pi \)) and optionally the old policy (\( \mu \)) as well.
+    On the other hand, off-policy algorithms, like Q-learning, evaluate and improve one policy while using a different policy for selecting actions. This can be useful, for example, when introducing a new version of an agent with a different policy to learn from an old agent with a well-performing policy. In Q-learning, the action maximizing action (\( a^* \)) of all action-value functions at a fixed state \( s' \) is always chosen when updating the action-value function for a given state-action pair \( (s, a) \), regardless of which action \( a^* \) of the policy was chosen. After updating the action-value function, the policy improvement step is performed using the epsilon-greedy approach with respect to the current policy (\( \pi \)) and optionally the old policy (\( \mu \)) as well~\cite{FITMT25127, sutton2018reinforcement}.
+
+    \subsubsection{Q Learning Off-Policy TD Control}\label{subsec:q-learning-off-policy-td-control}
+    One of the early breakthroughs in reinforcement learning was the development of an off-policy TD control algorithm known as Q-learning \cite{sutton2018reinforcement}, defined by:
+    \[
+        Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha \left[ R_{t+1} + \gamma \max_a Q(S_{t+1}, a) - Q(S_t, A_t) \right]
+    \]
+
+    In this case, the learned action-value function, \(Q\), directly approximates \(q^*\), the optimal action-value function, independent of the policy being followed. This dramatically simplifies the analysis of the algorithm and enables early convergence proofs. The policy still has an effect in that it determines which state-action pairs are visited and updated. However, all that is required for correct convergence is that all pairs continue to be updated. As we observed in Chapter 5, this is a minimal requirement in the sense that any method guaranteed to find optimal behavior in the general case must require it. Under this assumption and a variant of the usual stochastic approximation conditions on the sequence of step-size parameters, \(Q\) has been shown to converge with probability 1 to \(q^*\). The Q-learning algorithm is show in \cref{alg:q_learning}~\cite{rl-course-david-silver, sutton2018reinforcement}.
 
     \subsection{Function Approximation}\label{subsec:function-approximation}
     TODO

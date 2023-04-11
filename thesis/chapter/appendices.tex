@@ -5,6 +5,7 @@
 \chapter{Reinforcement Learning Algorithms}
 In this appendix, we present pseudocode for various RL methods and algorithms, which are used in the field of RL research and applications.
 
+
 \section{Policy Iteration Algorithm in DP}
 \begin{algorithm}[h!]
     \SetKwComment{Comment}{/* }{ */}
@@ -39,6 +40,7 @@ In this appendix, we present pseudocode for various RL methods and algorithms, w
         Goto \texttt{2. Policy Prediction}
     }
 \end{algorithm}
+
 
 \section{Value Iteration Algorithm in DP}
 \begin{algorithm}[H]
@@ -85,6 +87,29 @@ In this appendix, we present pseudocode for various RL methods and algorithms, w
                 Append $G$ to \emph{Returns($S_t$)}
                 $V(S_t) \leftarrow \text{average}(\text{Returns}(S_t))$
             }
+        }
+    }
+\end{algorithm}
+
+
+\section{Q-Learning TD Prediction}
+\begin{algorithm}[h!]
+    \caption{Q-learning (Off-policy TD Control)}
+    \label{alg:q_learning}
+
+    \textbf{Algorithm parameters:} step size $\alpha \in (0, 1]$, small $\epsilon > 0$
+
+    Initialize $Q(s, a)$ for all $s \in \mathcal{S}^+, a \in \mathcal{A}(s)$ arbitrarily, except that $Q(\text{terminal}, \cdot) = 0$
+
+    \textbf{Loop for each episode:}
+    \For{each episode}{
+        Initialize $S$
+        \textbf{Loop for each step of episode:}
+        \While{$S$ is not terminal}{
+            Choose $A$ from $S$ using policy derived from $Q$ (e.g., $\epsilon$-greedy)
+            Take action $A$, observe $R$, $S_0$
+            $Q(S, A) \leftarrow Q(S, A) + \alpha \cdot \left[R + \max_a Q(S_0, a) - Q(S, A)\right]$
+            $S \leftarrow S_0$
         }
     }
 \end{algorithm}
