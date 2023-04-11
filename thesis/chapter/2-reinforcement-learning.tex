@@ -310,7 +310,7 @@
     \end{definition}
 
     To avoid confusion, $v^\pi$ is referred to as the State-Value Function, while $q^\pi$ is referred to as the Action-Value Function. The Action-Value Function provides information about the expected returns from specific state-action pairs and is useful for making decisions about which actions to take in an MDP. The relationship between the state-value function and the action-value function can be defined as:
-    \[ v_\pi(s) = \argmax_a q_\pi(s, a) \quad\]
+    \[ v_\pi(s) = \max_{a\in\mathcal{A}} q_\pi(s, a) \]
 
     \subsubsection{Optimal State-value function}
     The goal of an agent is to maximize the reward, which means finding a policy that yields the highest possible return. To compare two policies, let $\pi$ and $\pi'$ be two different stochastic policies. Then $\pi'$ is considered better or equal to $\pi$ if $v_{\pi'}(s) \geq v_{\pi}(s)$ holds for all states $s$. It can be shown that there is always at least one policy that is better or equal to all other policies, and this policy is called the optimal policy $\pi^*$. If an agent uses the optimal policy, then for all states and actions the agent will use the optimal state-value function and the optimal action-value function:
@@ -318,7 +318,7 @@
         The Optimal State-value function $v^*(s)$ is the maximum value function over all possible policies and is defined as:
         \begin{equation}
             \begin{split}
-                v^*(s) = \argmax_{\pi} v^{\pi}(s) \\
+                v^*(s) = \max_{\pi} v^{\pi}(s) \\
             \end{split}
         \end{equation}
     \end{definition}
@@ -330,7 +330,7 @@
         The Optimal Action-value function $q^*(s, a)$ is the maximum action-value function over all possible policies. It is defined as:
         \begin{equation}
             \begin{split}
-                q^*(s, a) &= \argmax_{\pi} q^{\pi}(s, a) \\
+                q^*(s, a) &= \max_{\pi} q^{\pi}(s, a) \\
             \end{split}
         \end{equation}
     \end{definition}
@@ -341,16 +341,16 @@
     The optimal state-value function $v^*(s)$ must satisfy Bellman's equation, which provides an recursive rule for determining the long-term expected return of each state. In order to incorporate actions, the State-value function for a Markov Reward Process (MRP) is extended to include actions, leading to Bellman's optimality equation for $v^*(s)$:
     \begin{equation}
         \begin{split}
-            \textcolor[RGB]{51,204,51}{v^*(s)} &= \argmax_{a} \in \mathcal{A} \mathbb{E}[R_{t+1} + \gamma \textcolor[RGB]{51,204,51}{v^*(S_{t+1})} | S_t = s, A_t = a] \\
-            &= \argmax_{a} \sum_{s', r} p(r, s'|s, a) \left[r + \gamma \textcolor[RGB]{51,204,51}{v^*(s')}  \right]
+            \textcolor[RGB]{51,204,51}{v^*(s)} &= \max_{a\in\mathcal{A}} \in \mathcal{A} \mathbb{E}[R_{t+1} + \gamma \textcolor[RGB]{51,204,51}{v^*(S_{t+1})} | S_t = s, A_t = a] \\
+            &= \max_{a\in\mathcal{A}} \sum_{s', r} p(r, s'|s, a) \left[r + \gamma \textcolor[RGB]{51,204,51}{v^*(s')}  \right]
         \end{split}
     \end{equation}
 
     This equation derives the recursive relation to the subsequent state, allowing the reference to the optimal policy to be omitted. Similarly, the Action-value function $q^*(s, a)$ can be derived as~\cite{rao2022foundations}:
     \begin{equation}
         \begin{split}
-            \textcolor[RGB]{51,204,51}{q^*(s, a)} &= \mathbb{E}[R_{t+1} + \gamma \argmax_{a'} \in \mathcal{A} \textcolor[RGB]{51,204,51}{q^*(S_{t+1}, a')} | S_t = s, A_t = a] \\
-            &= \sum_{s', r} p(r, s'|s, a) \left[r + \gamma \argmax_{a'} \in \mathcal{A} \textcolor[RGB]{51,204,51}{q^*(s', a')}  \right]
+            \textcolor[RGB]{51,204,51}{q^*(s, a)} &= \mathbb{E}[R_{t+1} + \gamma \max_{a'\in\mathcal{A}} \textcolor[RGB]{51,204,51}{q^*(S_{t+1}, a')} | S_t = s, A_t = a] \\
+            &= \sum_{s', r} p(r, s'|s, a) \left[r + \gamma \max_{a'\in\mathcal{A}} \in \mathcal{A} \textcolor[RGB]{51,204,51}{q^*(s', a')}  \right]
         \end{split}
     \end{equation}
 
@@ -404,7 +404,7 @@
             Send $s, a$ to a sample model, and obtain a sample next reward $r$ and a sample next state $s'$\;
             Apply one-step tabular Q-learning update to $s, a, r, s'$:
             \[
-                Q(s, a) \leftarrow Q(s, a) + \alpha \cdot \left( r + \gamma \cdot \argmax_{a'} Q(s', a') - Q(s, a) \right)
+                Q(s, a) \leftarrow Q(s, a) + \alpha \cdot \left( r + \gamma \cdot \max_{a'} Q(s', a') - Q(s, a) \right)
             \]
         }
         \caption{Random-sample one-step tabular Q-planning}
