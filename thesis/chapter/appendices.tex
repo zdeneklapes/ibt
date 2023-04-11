@@ -1,2 +1,94 @@
 %! Author = zlapik
 %! Date = 18/11/2022
+
+
+\chapter{Reinforcement Learning Algorithms}
+In this appendix, we present pseudocode for various RL methods and algorithms, which are used in the field of RL research and applications.
+
+\section{Policy Iteration Algorithm in DP}
+\begin{algorithm}[h!]
+    \SetKwComment{Comment}{/* }{ */}
+    \caption{An algorithm with caption}\label{alg:two}
+
+    \Comment{1. Initialization}
+    $V(s) \in \mathbb{R}$ and $\pi(s) \in A(s)$ arbitrarily for all $s \in S$; $V(\text{terminal}) = 0$.
+
+    \Comment{2. Policy Prediction}
+    \While{$\Delta < \theta$}{
+        $\Delta \leftarrow 0$
+        \ForAll{$s \in S$}{
+            $v \leftarrow V(s)$\;
+            $V(s) \leftarrow \sum_{s', r} p(s_0, r|s, \pi(s)) \cdot (r + \gamma V(s_0))$\;
+            $\Delta \leftarrow \max(\Delta, |v - V(s)|)$\;
+        }
+    }
+
+    \Comment{3. Policy Improvement}
+    \emph{policy-stable} $\leftarrow$ \emph{true}
+    \ForAll{$s \in S$}{
+        $\text{old-action} \leftarrow \pi(s)$\;
+        $\pi(s) \leftarrow \arg\max_a \sum_{s', r} p(s', r|s, a) \left[ r + \gamma V(s') \right]$\;
+        \If{$\text{old-action} \neq \pi(s)$}{
+            \emph{policy-stable} $\leftarrow$ \emph{false}
+        }
+    }
+    \eIf{$\text{policy-stable}$}
+    {
+        \Return $V_{\pi} \approx v_*$ and $\pi \approx \pi_*$\;
+    }{
+        Goto \texttt{2. Policy Prediction}
+    }
+\end{algorithm}
+
+\section{Value Iteration Algorithm in DP}
+\begin{algorithm}[H]
+    \label{alg:value-iteration}
+    \SetAlgoLined
+    \textbf{Value Iteration Algorithm}\\
+    \textbf{Algorithm parameter:} a small threshold $\epsilon > 0$ determining accuracy of estimation\\
+    \textbf{Initialize} $V(s)$, for all $s \in S$, arbitrarily except that $V(\text{terminal}) = 0$\\
+    \textbf{Loop:}\\
+    \quad \textbf{for each} $s \in S:$\\
+    \quad \quad $v \leftarrow V(s)$\\
+    \quad \quad $V(s) \leftarrow \max_a \sum_{s', r} p(s', r|s, a)(r + \gamma V(s'))$\\
+    \quad \quad $\delta \leftarrow \max(\delta, |v - V(s)|)$\\
+    \textbf{until} $\delta < \epsilon$\\
+    \textbf{Output} a deterministic policy $\pi$, such that\\
+    $\pi(s) \leftarrow \argmax_a \sum_{s', r} p(s', r|s, a)(r + \gamma V(s'))$\\
+\end{algorithm}
+
+
+\section{Monte Carlo Prediction}
+\begin{algorithm}[h!]
+    \caption{First-visit MC prediction for estimating $V^\pi$}
+    \label{alg:mc}
+
+    \SetKwInput{Input}{Input}
+
+    \Input{A policy $\pi$ to be evaluated}
+
+    \emph{Initialize:}\\
+    $V(s) \in \mathbb{R}$, arbitrarily, for all $s \in S$\\
+    \emph{Returns($s$)}: an empty list, for all $s \in S$
+
+    \emph{Loop forever (for each episode):}\\
+    \While{true}{
+        Generate an episode following $\pi$: $S_0, A_0, R_1, S_1, A_1, R_2, \ldots, S_{T-1}, A_{T-1}, R_T$
+
+        $G \leftarrow 0$
+
+        \emph{Loop for each step of episode, $t = T-1, T-2, \ldots, 0$:}\\
+        \For{$t \leftarrow T-1$ \KwTo $0$}{
+            $G \leftarrow G + R_{t+1}$
+
+            \uIf{$S_t$ does not appear in $S_0, S_1, \ldots, S_{t-1}$}{
+                Append $G$ to \emph{Returns($S_t$)}
+                $V(S_t) \leftarrow \text{average}(\text{Returns}(S_t))$
+            }
+        }
+    }
+\end{algorithm}
+
+
+\chapter{Setting up and running the program}
+TODO

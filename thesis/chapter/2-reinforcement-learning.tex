@@ -335,10 +335,10 @@
         \end{equation}
     \end{definition}
 
-    The optimal policy function $\pi^*(a | s)$ always selects an action $a$ with a selection probability of 1 for which $q_*(s, a)$ is maximal for a given state $s$. It also follows that the optimal policy is deterministic, meaning for the same state, the optimal policy function always selects exactly the same action. In contrast, Definition 2.6 allows for stochastic behavior of the policy. The transition from stochastic to deterministic policy is explained by the greedy selection of actions in the last equation. As will be shown in the following sections, all reinforcement learning algorithms presented here use a
+    The optimal policy function $\pi^*(a | s)$ always selects an action $a$ with a selection probability of 1 for which $q_*(s, a)$ is maximal for a given state $s$. It also follows that the optimal policy is deterministic, meaning for the same state, the optimal policy function always selects exactly the same action. The transition from stochastic to deterministic policy is explained by the \emph{greedy selection}\footnote{Always choose action with the highest expexted reward.} of actions in the last equation.
 
     \subsubsection{Bellman's Optimality Equation}\label{subsubsec:bellman-optimality-equation}
-    The optimal state-value function $v^*(s)$ must satisfy Bellman's equation, which provides an recursive rule for determining the long-term expected return of each state. In order to incorporate actions, the State-value function for a Markov Reward Process (MRP) is extended to include actions, leading to Bellman's optimality equation for $v^*(s)$:
+    The optimal state-value function $v^*(s)$ must satisfy Bellman's equation, which provides an recursive rule for determining the long-term expected return of each state. In order to incorporate actions, the State-value function for a Markov Reward Process (MRP) is extended to include actions as the second parameter, leading to Bellman's optimality equation for $v^*(s)$:
     \begin{equation}
         \begin{split}
             \textcolor[RGB]{51,204,51}{v^*(s)} &= \max_{a\in\mathcal{A}} \in \mathcal{A} \mathbb{E}[R_{t+1} + \gamma \textcolor[RGB]{51,204,51}{v^*(S_{t+1})} | S_t = s, A_t = a] \\
@@ -357,8 +357,139 @@
 
     The Bellman Optimality equation can be used to recursively calculate value functions by updating the value of each state based on the immediate reward and the long-term expected reward of the next state~\cite{rao2022foundations}.
 
+    Now that we have a solid understanding of Markov Decision Processes (MDP), which form the foundation for Reinforcement Learning (RL), we can delve into the different learning methods used in RL.
 
-    \section{Model-based methods}\label{sec:model-based-methods}
+
+    \section{Value-based learning}\label{sec:value-based-learning}
+    This section presents value-based algorithms that iteratively compute state-value or action-value functions of states and actions. These functions are then used to derive continuously improving policies. Therefore, these algorithms are referred to as value-based algorithms. First, we need to mention some concepts: $Prediction==Valuation$ and $Improvement==Control$, these two concepts will be used later in this section. However, we will try to stick to the former, as it is more common in the literature and makes a bit more sense based on the context of the topic.
+
+    \subsection{Dynamic Programming}\label{subsec:dynamic-programming}
+    The term dynamic programming (DP) refers to a collection of algorithms that can be used to compute optimal policies in Markov decision processes (MDPs) when a perfect model of the environment is available. Classical DP algorithms are limited in reinforcement learning due to their assumptions of a perfect model and computational expense. DP uses value functions to organize the search for good policies, and the Bellman optimality equations define optimal value functions (\emph{State-value function} and \emph{Action-value function}). DP algorithms are effective for problems with finite state, action, and reward sets. However, for continuous problems, exact solutions are limited. One approach is to approximate solutions by discretizing the state and action spaces, and applying finite-state DP methods. Second approach is to use function approximation to approximate the value functions. The latter approach is the focus of this thesis.
+
+    DP planning algorithms consists of the evaluation of a given policy, called policy prediction, defined in \cref{par:policy-prediction} and the subsequent improvement of the policy, called policy improvement, defined in \cref{par:policy-improvement}. The goal of these two steps is to infer $v^*(s)$ or $q^*(s,a)$ for all the states and actions in a procedure called Generalized Policy Iteration, defined in \cref{subsubsec:generalized-policy-iteration}~\cite{sutton2018reinforcement, FITMT25127}.
+
+    \subsubsection{Policy Iteration}\label{subsubsec:policy-iteration}
+    Policy iteration consist of 2 steps: \emph{policy evaluation} and \emph{policy improvement}. The policy prediction step, defined in \cref{par:policy-prediction}, is used to estimate the value function $v_{\pi}$ for a given policy $\pi$. The policy improvement step, defined in \cref{par:policy-improvement} is used to improve the policy $\pi$ by selecting the action that maximizes the value function $v_{\pi}$~\cite{sutton2018reinforcement}.
+
+    \paragraph{Policy Prediction}\label{par:policy-prediction}
+    Policy evaluation, or prediction, is the process of computing the state-value function for an arbitrary policy. The state-value function, denoted as $v^\pi(s)$, represents the expected sum of discounted rewards from a given state $s$ when following policy $\pi$. If the dynamics of the environment are completely known, the policy evaluation can be formulated as a system of simultaneous linear equations, which can be solved iteratively using update rules based on the Bellman equation for $v^\pi$. This process involves finding successive approximations of the value function, starting from an initial approximation, and updating it according to the Bellman equation until convergence is achieved to $v_k(s) \approx v_{\pi}(s)$ with:
+    \[
+        v_{k+1}(s) = \sum_{a \in \mathcal{A}} \pi(a|s) \left( R(s, a) + \gamma \sum_{s' \in \mathcal{S}} P(s'|s, a) v_k(s') \right)
+    \]
+    for all states. This equation is the analogous equation to Bellman's optimality equation for $v^*(s)$ in iteration form. Once $v_{\pi}(s)$ is found for a given policy the action-value function can be determined~\cite{sutton2018reinforcement, FITMT25127}:
+    \[
+        q_{\pi}(s,a) = \mathbb{E}_{\pi}[G_t|S_t = s, A_t = a] = R(s,a) + \gamma \sum_{s' \in \mathcal{S}} P(s'|s,a) v_{\pi}(s')
+    \]
+
+    \paragraph{Policy Improvement}\label{par:policy-improvement}
+    This equation is then the Bellman's equation for $q_{\pi}(s,a)$ and can be used in the Policy Improvement step to create a new policy. It should also be ensured that the new, deterministic policy is better or equal to the old policy, when for all states applies:
+    \[
+        q_{\pi}(s, \pi'(s)) \geq v_{\pi}(s)
+    \]
+    This means that choosing action $a' = \pi'(s)$ in state $s$ under policy $\pi$ produces a better result than action $a = \pi(s)$. Next, $q_{\pi'}(s, a)$ is computed for the new policy $\pi'$ in the Policy Evaluation step and improved with $\pi'(s) = \arg\max_a q_{\pi'}(s, a)$~\cite{sutton2018reinforcement, FITMT25127}.
+
+    \subsubsection{Value Iteration}\label{subsubsec:value-iteration}
+    Value iteration effectively combines, in each of its sweeps, one sweep of policy evaluation and one sweep of policy improvement. Faster convergence is often achieved by interposing multiple policy evaluation sweeps between each policy improvement sweep. In general, the entire class of truncated policy iteration algorithms can be thought of as sequences of sweeps, some of which use policy evaluation updates and some of which use value iteration updates. Because the $\max$ operation in the update equation \cref{def:value-iteration} is the only difference between these updates, this just means that the $\max$ operation is added to some sweeps of policy evaluation. All of these algorithms converge to an optimal policy for discounted finite MDPs. The algorithm pseudocode is presented in \cref{alg:value-iteration}~\cite{sutton2018reinforcement}.
+
+    \begin{definition}
+        \label{def:value-iteration}
+        \textbf{Value Iteration Equation} is that iteratively computes the state-value function $V_k(s)$ for a given policy $\pi$ using the Bellman equation:
+        \[
+            V_{k+1}(s) \doteq \max_a \mathbb{E}\left[ R_{t+1} + \gamma v_k(S_{t+1}) | S_t = s, A_t = a \right]
+            = \max_a \sum_{s', r} p(s', r|s, a) [r + V_k(s')]
+        \]
+    \end{definition}
+
+    \subsubsection{Generalized Policy Iteration}\label{subsubsec:generalized-policy-iteration}
+    If Policy Evaluation and Policy Improvement steps are executed enough times and no more improvement of the old policy over the new policy is found, then optimal $q^*$ and $\pi^*$ are found. Well-known algorithms in DP which implement this Generalized Policy Iteration are the Policy Iteration algorithm and its special case the Value Iteration algorithm. They use the equations Bellman's equations for $v^*(s)$ and $q^*(s,a)$ and a variant of the Generalized Policy Iteration method, where $v_{\pi}(s)$ does not have to be determined. The iteration in the Policy Evaluation step is immediately followed by the Policy Improvement step~\cite{sutton2018reinforcement, 7110602}.
+
+    \begin{figure}[h!]
+        \centering
+        \begin{minipage}[b]{0.5\textwidth}
+            \includegraphics[width=\textwidth]{image/gpi2}
+            \caption{Generalized Policy Iteration convergence.}
+            \label{fig:gpi}
+        \end{minipage}
+    \end{figure}
+
+    \subsection{Monte Carlo Methods}\label{subsec:monte-carlo-methods}
+    In this chapter, we explore Monte Carlo methods for estimating value functions in the context of reinforcement learning (RL) without assuming complete knowledge of the environment (\emph{transition probabilities} and \emph{reward function}). Monte Carlo methods use sample sequences of states, actions, and rewards from actual or simulated interactions with the environment for learning. These methods can be used to solve the RL problem for episodic tasks, where experience is divided into episodes and value estimates and policies are updated only on the completion of an episode.
+
+    Both first-visit MC and every-visit MC converge to $v_\pi(s)$ as the number of visits (or first visits) to $s$ goes to infinity. In the case of first-visit MC, each return is an independent, identically distributed estimate of $v_\pi(s)$ with finite variance, and the sequence of averages of these estimates converges to their expected value by the law of large numbers. Each average is an unbiased estimate, and the standard deviation of its error decreases as $\frac{1}{\sqrt{n}}$, where $n$ is the number of returns averaged. Every-visit MC also converges quadratically to $v_\pi(s)$~\cite{sutton2018reinforcement}, see the \cref{alg:mc} in Appendices.
+
+    MC methods allow an agent to infer the optimal policy $\pi^*$ from the optimal action-value function $q^*(s,a)$ estimated through experience. MC methods use the iterative procedure Generalized Policy Iteration to incrementally infer $\pi^*$. First, a finite trajectory $(S_0, A_0, R_1, S_1, A_1, ..., R_n, S_n)$ is generated, where actions are selected according to a stochastic policy $\pi(a|s)$ and states and rewards come from the unknown environmental dynamics. From this episode, the return $G_t$ is computed for all state-action pairs reached. Then, the policy evaluation step is performed using the update equation:
+    \begin{equation}
+        \label{eq:mc}
+        q_{k+1}(s, a) = q_k(s, a) + \alpha(G_t - q_k(s, a))
+    \end{equation}
+    where $\alpha \in (0,1)$ is a learning rate and $G_t$ is the sum of discounted rewards starting from action $a$ in state $s$. The term $G_t - q_k(s, a)$ corrects the value of $q_{k+1}(s,a)$ in the direction of the target $G_t$. The index $k$ represents the current episode, and in the limiting case, $q_k(s,a) = q_{\pi}(s,a)$, where $\pi$ is the optimal policy.
+
+    Since MC methods do not require knowledge of the environment dynamics, a non-deterministic policy should be used for episode generation to ensure exploration of all states and actions. A stochastic policy, such as the $\epsilon$-greedy approach, is commonly used in MC methods for exploration.
+
+    \paragraph{Epsilon-Greedy Policy Exploration}
+    The \textbf{$\epsilon$-greedy} approach for exploration selects actions randomly according to:
+    \begin{equation}
+        \pi'(a | S) =
+        \begin{cases}
+            1 - \epsilon + \frac{\epsilon}{|\mathcal{A}|} & \text{if } a = A^* \\
+            \frac{\epsilon}{|\mathcal{A}|} & \text{if } a \neq A^* \text{ for } a \in \mathcal{A}
+        \end{cases}
+    \end{equation}
+    where the greedy action is the one with the highest estimated action-value according to the current policy. The process of adjusting action-value values in the policy evaluation step and determining a new policy in the policy improvement step is referred to as training the RL agent. The \cref{eq:mc} shows that MC methods use the return $G_t$ of an episode, which can only be calculated when the episode is terminated. Therefore, MC methods can only be used in environments with finite, i.e., always terminating episodes~\cite{FITMT25127, rao2022foundations, sutton2018reinforcement}.
+
+    \subsection{Off Policy Monte Carlo Control}\label{subsec:off-policy-monte-carlo-control}
+
+    \subsection{Temporal-Difference Methods}\label{subsec:temporal-difference-methods}
+    Temporal Difference (TD) methods, unlike Monte Carlo (MC) methods, can also be used in environments with infinite episodes. The mechanism that makes this possible is called bootstrapping, which determines $v_{k+1}(s)$ or $q_{k+1}(s,a)$ from the immediate reward plus $v_k(s')$ or $q_k(s',a')$, respectively, and is already applied in a similar way in Dynamic Programming (DP) through Bellman's equations. Unlike algorithms of DP, however, TD methods do not depend on the environment dynamics $\mathcal{P}$ and $R$. Like DP and MC methods, TD methods also use the iterative Generalized Policy Iteration procedure to determine the optimal policy. The policy evaluation step differs in TD methods from MC methods, but the policy improvement step is the same for both with the $\epsilon$-greedy approach. The difference between TD methods and MC methods in the evaluation step can be most easily illustrated by the iterative calculation of the state-value function of a policy with the following equation:
+    \[
+        v_{t+1}(s) = v_t(s) + \alpha(R_{t+1} + \gamma v_t(s') - v_t(s))
+    \]
+    where the term $(R_{t+1} + \gamma v_t(s') - v_t(s))$ is called TD-error and the term $G(1) = R_{t+1} + \gamma v_t(s')$ is called TD-target. This equation illustrates the difference between TD and MC methods. TD methods only have to wait until the next time-step before adjusting $v_{t+1}(s)$, whereas MC methods usually have to wait until the end of the episode for the computation of $G_t$. Therefore, the index $t$ now corresponds to the time-step. More generally, the TD target can be expressed as the $n$-step return, formulated as:
+    \[
+        G(n) = R_{t+1} + \gamma R_{t+2} + \ldots + \gamma^{n-1} R_{t+n} + \gamma^n v(S_{t+n} = s(n))
+    \]
+    where for the limiting case of $n$ nearing infinity, the TD methods become MC methods. TD methods that use $G(1)$ are called TD(0). There are methods where the specific number of steps $n$ in $G(n)$ does not have to be specified. These methods are called TD($\lambda$), which we will not discuss in detail here. Later, when we discuss the Proximal Policy Optimization (PPO) algorithm, this concept will be used for the definition of Generalized Advantage Estimation (GAE), one of the major aspects of PPO. We can mention that the concept is known as exponentially weighted average.
+
+    \subsection{Sarsa On-Policy TD Control}\label{subsec:sarsa-on-policy-td-control}
+    The TD methods use the action-value function for the evaluation step and iteratively determine $q_\pi(s,a)$. A TD method that implements this practically is called SARSA and adjusts the action-value function in the evaluation step for a state-action pair at each time-step of the episode as
+
+    \[
+        q_{t+1}(s, a) = q_t(s, a) + \alpha \left( R_{t+1} + \gamma q_t(s', a') - q_t(s, a) \right) \quad (2.21)
+    \]
+
+    The TD methods, such as SARSA, utilize the action-value function for evaluating and updating the action-value estimates. SARSA adjusts the action-value function at each time-step of the episode based on the sequence of transitions \( (s, a, r, s', a') \) generated by the environment dynamics and the current epsilon-greedy policy. The updated action-value function is used to determine the new policy at the next time-step. This process is repeated iteratively until optimal action-value and policy functions are found. SARSA is an on-policy algorithm, as it evaluates and improves the same policy used for selecting actions.
+
+    \[
+        q_{t+1}(s, a) = q_t(s, a) + \alpha \left( R_{t+1} + \gamma \max_{a^*} q_t(s', a^*) - q_t(s, a) \right)
+    \]
+
+    On the other hand, off-policy algorithms, like Q-learning, evaluate and improve one policy while using a different policy for selecting actions. This can be useful, for example, when introducing a new version of an agent with a different policy to learn from an old agent with a well-performing policy. In Q-learning, the action maximizing action (\( a^* \)) of all action-value functions at a fixed state \( s' \) is always chosen when updating the action-value function for a given state-action pair \( (s, a) \), regardless of which action \( a^* \) of the policy was chosen. After updating the action-value function, the policy improvement step is performed using the epsilon-greedy approach with respect to the current policy (\( \pi \)) and optionally the old policy (\( \mu \)) as well.
+
+    \subsection{Function Approximation}\label{subsec:function-approximation}
+    TODO
+
+
+    \section{Policy-based learning}\label{sec:policy-based}
+    TODO
+
+    \subsection{Stochastic Policy Gradient Methods}\label{subsec:stochastic-policy-gradient-methods}
+    TODO
+
+    \subsection{Monte Carlo Policy Gradient Methods}\label{subsec:monte-carlo-policy-gradient-methods}
+    TODO
+
+    \subsection{Actor-Critic Policy Gradient Methods}\label{subsec:actor-critic-policy-gradient-methods}
+    TODO
+
+    \subsection{Trust Region Policy Methods}\label{subsec:trust-region-policy-methods}
+    TODO
+
+
+    \section{Actor-Critic}\label{sec:actor-critic}
+    TODO
+
+
+    \section{Model-based}\label{sec:model-based}
     As mentioned in Section~\cref{sec:rl-introduction}, RL algorithms can be broadly categorized into two main types: model-free and model-based. Model-based methods rely on \emph{planning} as they primary component, while model-free methods rely on \emph{learning}~\cite{sutton2018reinforcement}. Despite their distinctions, both approaches involve computing value functions and using them to update approximate value functions based on future events.
 
     One popular approach is to use a probabilistic model of the environment, which can be represented as a transition function $P(s_{t+1}|s_t, a_t)$ that describes the probability of transitioning from state $s_t$ to state $s_{t+1}$ when taking action $a_t$. Some popular probabilistic model-based RL methods include Monte Carlo Tree Search, Neural Network Dynamics, and Probabilistic Ensembles with Trajectory Samplin.
@@ -421,41 +552,20 @@
     In conclusion, model-based RL is a promising approach that can offer sample-efficient learning and improved performance in complex environments. Various methods, such as probabilistic models and deterministic models, have been proposed in the literature. Despite some challenges, model-based RL continues to be an active area of research in machine learning.
 
 
-    \section{Value-based methods}\label{sec:value-based-methods}
-
-
-    \section{Policy-based methods}\label{sec:policy-based-methods}
-
-
-    \section{Model-free methods}\label{sec:model-free-methods}
-
-    \subsection{Value-based methods}\label{subsec:value-based-methods}
+    \section{Dyna Architecture}\label{sec:dyna-architecture}
     TODO
 
-    \subsubsection{Dynamic Programming}\label{subsubsec:dynamic-programming}
-    TODO
 
-    \paragraph{Policy Iteration}\label{par:policy-iteration}
-    TODO
+    \section{Exploration vs. Exploitation}\label{sec:exploration-vs-exploitation}
 
-    \paragraph{Value Iteration}\label{par:value-iteration}
-    TODO
+    \subsection{Greedy}\label{subsec:greedy}
 
-    \paragraph{Monte Carlo Methods}\label{par:monte-carlo-methods}
-    TODO
+    \subsection{Epsilon-Greedy}\label{subsec:epsilon-greedy}
 
-    \paragraph{Temporal Difference Methods}\label{par:temporal-difference-methods}
-    TODO
+    \subsection{Upper Confidence Bound}\label{subsec:upper-confidence-bound}
 
-    \subsection{Policy-based methods}\label{subsec:policy-based-methods}
 
-    \subsubsection{Policy Gradient Methods}\label{subsubsec:policy-gradient-methods}
-    TODO
-
-    \subsubsection{Actor-Critic Methods}\label{subsubsec:actor-critic-methods}
-    TODO
-
-    \subsubsection{Monte Carlo Policy Gradient Methods}\label{subsubsec:monte-carlo-policy-gradient-methods}
-    TODO
+%    \section{Deep Reinforcement Learning}\label{sec:deep-reinforcement-learning}
+%    TODO
 
 \end{document}
