@@ -105,9 +105,9 @@
     A stochastic process is defined as a collection of random variables defined on a common probability space $(\Omega, \mathcal{F}, P)$, where $\Omega$ is a sample space, $\mathcal{F}$ is a $\sigma$-algebra, and $P$ is a probability measure; and the random variables, indexed by some set $T$, all take values in the same mathematical space $S$, which must be measurable with respect to some $\sigma$-algebra $\Sigma$.
 
     In other words, for a given probability space $(\Omega, \mathcal{F}, P)$ and a measurable space $(S, \Sigma)$, a stochastic process is a collection of $S$-valued random variables, which can be written as:~\cite{enwiki:1148510872}
-    \[
+    \begin{equation}
         \{X(t) : t \in T\}.
-    \]
+    \end{equation}
 
     In stochastic processes the probability that the environment assumes a certain state depends on the realized states of previous random variables. For example, if the weather forecast is assumed to be a stochastic process, then the yesterday’s weather may still have an influence on tomorrow’s weather. To represent this causality complicates the modeling of stochastic processes, so that with definition of Markov property the dependence of future states is assumed only on the current state. This is the second important property of Markov process~\cite{FITMT25127}.
 
@@ -188,23 +188,23 @@
 %        A Markov Reward Process is a Markov Process with a time-indexed sequence of Reward random variables $R_t \in D$ (a countable subset of $R$) for time steps $t = 1, 2, \cdot$, satisfying the Markov Property (including Rewards): $P[(Rt+1, St+1)|St, St−1, ..., S0] = P[(Rt+1, St+1)|St]$ for all $t ≥ 0$.
 %    \end{definition}
 
-%    \begin{definition}
-%        \textbf{Markov Reward Process} is a Markov Process, along with a time-indexed sequence of Reward random variables $R_t \in D$ (a countable subset of $\mathbb{R}$) for time steps $t = 1, 2, \ldots$, satisfying the Markov Property (including Rewards): $P[(R_{t+1}, S_{t+1})|S_t, S_{t-1}, \ldots, S_0] = P[(R_{t+1}, S_{t+1})|S_t]$ for all $t \geq 0$.
-%    \end{definition}
+    \begin{definition}
+        \textbf{Markov Reward Process} is a Markov Process, along with a time-indexed sequence of Reward random variables $R_t \in D$ (a countable subset of $\mathbb{R}$) for time steps $t = 1, 2, \ldots$, satisfying the Markov Property (including Rewards): $P[(R_{t+1}, S_{t+1})|S_t, S_{t-1}, \ldots, S_0] = P[(R_{t+1}, S_{t+1})|S_t]$ for all $t \geq 0$.
+    \end{definition}
 
     \begin{definition}
-        Markov Reward Processes is a tuple $(\mathcal{S}, \mathcal{P}, \mathcal{R}, \gamma)$ for which holds:\cite{rao2022foundations}
+        Markov Reward Processes is a tuple $(\mathcal{S},\mathcal{P},\mathcal{R},\gamma)$ for which holds:\cite{rao2022foundations}
         \begin{itemize}
-            \item $\mathcal{S} = s_1, s_2, ..., s_n$ is a finite set of states
+            \item $\mathcal{S}=s_1,s_2,\cdots,s_n$ is a finite set of states
             \item $\mathcal{P}$ is an $n\times n$ transition probability matrix which sums to 1 for each row, so each value $p_{ij}$ is the probability of transitioning from state $s_i$ to state $s_j$ in interval $\left< 0;1 \right>$
             \item $\mathcal{R}$ is a sequence of random variables $R_1, R_2, ..., R_n$ where $R_t$ is a random variable that represents the reward for transitioning from state $s_t$ to state $s_{t+1}$
-            \item $\gamma$ is a discount factor in interval $\left< 0;1 \right>$
+            \item $\gamma$ is a discount factor in interval $\left<0;1\right>$
         \end{itemize}
         \begin{equation}
-            \mathcal{P}(s,r,s') = \probP\left[ R_{t+1} = r, S_{t+1} = s' | S_t = s \right] \text{ for time steps } t = 0, 1, 2, \ldots
+            \mathcal{P}(s,r,s')=\probP\left[R_{t+1}=r,S_{t+1}=s'|S_t=s\right]\text{ for time steps }t=0,1,2,\ldots
         \end{equation}
         \begin{align*}
-            \text{ for all } s \in N, r \in D, s' \in S, \text{ such that } \sum_{s' \in S} \sum_{r \in D} \mathcal{P}(s,r,s') = 1 \text{ for all } s \in N
+            \text{ for all }s\in N,r\in D,s'\in S,\text{ such that }\sum_{s'\in S}\sum_{r\in D}\mathcal{P}(s,r,s')=1\text{ for all }s\in N
         \end{align*}
     \end{definition}
 
@@ -219,14 +219,14 @@
     The expected reward, denoted as $G_t$ at time $t$ is the discounted sum of rewards in a single episode. Can be used to calculate the sum of discounted rewards in an episode.
 
     \begin{equation}
-        G_t = R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + \ldots = \sum_{k=0}^{\infty} \gamma^k R_{t+k+1}
+        G_t=R_{t+1}+\gamma R_{t+2}+\gamma^2 R_{t+3}+\ldots=\sum_{k=0}^{\infty}\gamma^k R_{t+k+1}
     \end{equation}
 
 
-    We can also calculate the expected rewards for state-action pairs as a two-argument function $r: S \times A \to R$.
-    The expected reward of a state-action pair as two-argument function $r: \mathcal{S}\times \mathcal{A}\leftarrow \mathbb{R}$ is defined as:
+    We can also calculate the expected rewards for state-action pairs as a two-argument function $r:S\times A\to R$.
+    The expected reward of a state-action pair as two-argument function $r:\mathcal{S}\times\mathcal{A}\leftarrow\mathbb{R}$ is defined as:
     \begin{equation}
-        r(s, a) = \sum_{t=0}^{\infty} \gamma^t R_{t+1} P(S_{t+1} = s|S_t = s, A_t = a)
+        r(s,a)=\sum_{t=0}^{\infty}\gamma^t R_{t+1} P(S_{t+1}=s|S_t=s,A_t=a)
     \end{equation}
 
     \paragraph{Discount factor $\gamma$}\label{par:discount-factor}
@@ -239,36 +239,36 @@
     To derive \emph{Bellman's equation}, defined later in this subsection, we need to make use of the definition of the \emph{(Recursive) State-value function}~\cite{FITMT25127, rao2022foundations}.
     \begin{equation}
         \begin{split}
-            \textcolor[RGB]{51, 204, 51}{v(s)} &= E[G_t | S_t = s] \\
-            &= E[R_{t+1} + \gamma G_{t+1} | S_t = s] \\
-            &= E[R_{t+1} + \gamma \textcolor[RGB]{51, 204, 51}{v(S_{t+1})} | S_t = s]\\
-            &= \mathcal{R}(s) + \gamma \sum_{s' \in \mathcal{S}} \mathcal{P}(s' | s) \textcolor[RGB]{51, 204, 51}{v(s')}
+            \textcolor[RGB]{51,204,51}{v(s)}&=E[G_t|S_t=s]\\
+            &=E[R_{t+1}+\gamma G_{t+1}|S_t=s]\\
+            &=E[R_{t+1}+\gamma\textcolor[RGB]{51,204,51}{v(S_{t+1})}|S_t=s]\\
+            &=\mathcal{R}(s)+\gamma\sum_{s'\in\mathcal{S}}\mathcal{P}(s'|s)\textcolor[RGB]{51,204,51}{v(s')}
         \end{split}
     \end{equation}
-    where $\gamma$ is the discount factor, $\mathcal{R}(s)$ is the immediate reward for state $s$, $\mathcal{P}(s' | s)$ is the transition probability from state $s$ to state $s'$, and $\mathcal{S}$ is the set of all possible states in the environment. The last equation expresses that the long-term expected reward of a state depends only on the immediate reward and the long-term expected reward of the subsequent states.
+    where $\gamma$ is the discount factor, $\mathcal{R}(s)$ is the immediate reward for state $s$, $\mathcal{P}(s'|s)$ is the transition probability from state $s$ to state $s'$, and $\mathcal{S}$ is the set of all possible states in the environment. The last equation expresses that the long-term expected reward of a state depends only on the immediate reward and the long-term expected reward of the subsequent states.
 
     In the case of Finite Markov Reward Processes, let's assume that the state space is denoted as $\mathcal{S} = \{s_1, s_2, ..., s_n\}$, and the subset of states of interest is denoted as $\mathcal{N}$ with $m \leq n$ states. We can use bold-face notation to represent functions as column vectors and matrices, since we are dealing with finite states/transitions. So, $V$ is a column vector of length $m$, $P$ is an $m \times m$ matrix, and $R$ is a column vector of length $m$ (with rows/columns corresponding to states in $\mathcal{N}$). We can express the equation in vector and matrix notation as follows:
     \begin{equation}
         \begin{split}
-            V &= R + \gamma P \cdot V \\
-            &= (I_m - \gamma P)^{-1} \cdot R
+            V&=R+\gamma P\cdot V\\
+            &=(I_m-\gamma P)^{-1}\cdot R
         \end{split}
     \end{equation}
-    where $I_m$ is the identity matrix of size $m \times m$, and $\gamma$ is the discount factor~\cite{rao2022foundations}.
+    where $I_m$ is the identity matrix of size $m\times m$, and $\gamma$ is the discount factor~\cite{rao2022foundations}.
 
     By extending the equation to include actions, we arrive at the most important equation in all of reinforcement learning: the Bellman equation, defined in ~\cref{subsubsec:bellman-equation}. It states that to calculate the long-term expected reward from a state, an agent only needs to add together the reward of the current state and the long-term expected reward of the next state~\cite{FITMT25127}.
 
     \subsection{Markov Decision Process}\label{subsec:markov-decision-process}
     The Markov Decision Process (MDP) allows an agent to actively influence changes in the state of the environment through its actions. Within the MDP, the agent has the ability to jointly determine the subsequent state to which the environment should transition. The agent's primary goal is to strategically choose actions that maximize expected payoff. In the previous subsections, we addressed the aspect of \emph{sequential uncertainty (e.g., MRP)} using the Markov process framework and extended it to include the uncertain reward $R_t\in\mathcal{R}$ at each state transition $p(s',r,s)$, referred to as Markov reward processes. However, this framework lacks the notion of \emph{sequential decision making} and in this section this notion is introduced in terms of MDP, a generalization of MRP that includes the notion of \emph{sequential decision making}~\cite{rao2022foundations}.
-
+%
     \begin{definition}
-        Markov decision process (MDP) is Markov reward process with actions. It is an tuple $(S, A, \mathcal{P}, \mathcal{R}, \gamma)$, where:
+        Markov decision process (MDP) is Markov reward process with actions. It is an tuple $(S,A,\mathcal{P},\mathcal{R},\gamma)$, where:
         \begin{itemize}
             \item $\mathcal{S}$ is finite set of states $S$ (known as the State Space), a set $T \subseteq S$ (known as the set of Terminal States)
             \item $\mathcal{A}$ is finite set of actions $A$ (known as the Action Space)
             \item $\mathcal{P}$ is a transition probability function $p(s',r,s,a)$, which is a function that maps a state $s$, an action $a$, a next state $s'$ and a reward $r$ to a probability $p(s',r,s,a)$
             \item $\mathcal{R}$ is a reward function $r(s,a)$, which is a function that maps a state $s$ and an action $a$ to a reward $r(s,a)$
-            \item $\gamma \in [0,1]$ is the discount factor
+            \item $\gamma\in[0,1]$ is the discount factor
         \end{itemize}
     \end{definition}
 
@@ -290,10 +290,10 @@
     \begin{equation}
         \label{eq:Vpi}
         \begin{split}
-            \textcolor[RGB]{51,204,51}{v^{\pi}(s)} &\doteq \mathbb{e}_{\pi}\left[ g_t|S_t=s \right] \\
-            &= \mathbb{e}\left[ r_{t+1} = \gamma g_{t+1} | S_t=s \right] \\
-            &= \mathbb{e}_{\pi}\left[ \sum_{k=0}^{\infty}\gamma^k r_{t+k+1}|S_t=s \right] \\
-            &= \sum_{a} \pi(a|s) \sum_{s', r} p(r, s'|s, a) \left[r + \gamma \textcolor[RGB]{51,204,51}{v_{\pi}(s')}  \right]\text{, for all } s \in \mathcal{S}
+            \textcolor[RGB]{51,204,51}{v^{\pi}(s)}&\doteq\mathbb{e}_{\pi}\left[g_t|S_t=s\right]\\
+            &=\mathbb{e}\left[r_{t+1}=\gamma g_{t+1}|S_t=s\right]\\
+            &=\mathbb{e}_{\pi}\left[\sum_{k=0}^{\infty}\gamma^k r_{t+k+1}|S_t=s\right]\\
+            &=\sum_{a}\pi(a|s)\sum_{s',r}p(r,s'|s,a)\left[r+\gamma\textcolor[RGB]{51,204,51}{v_{\pi}(s')}\right]\text{, for all }s\in\mathcal{S}
         \end{split}
     \end{equation}
     where $\mathbb{E}_{\pi}$ denotes the expectation with respect to the states and rewards generated by following policy $\pi$.
@@ -304,13 +304,15 @@
 
     \begin{definition}
         The action-value function $Q^{\pi}(s, a)$ for a policy $\pi$ is the expected cumulative discounted reward the agent can obtain from state $s$, taking action $a$, and then following policy $\pi$ thereafter. It is defined as:
-        \[
+        \begin{equation}
             q^{\pi}(s, a) = \mathbb{E}_{\pi}\left[\sum_{t=0}^{\infty} \gamma^t R_{t+1} | S_0 = s, A_0 = a\right]
-        \]
+        \end{equation}
     \end{definition}
 
     To avoid confusion, $v^\pi$ is referred to as the State-Value Function, while $q^\pi$ is referred to as the Action-Value Function. The Action-Value Function provides information about the expected returns from specific state-action pairs and is useful for making decisions about which actions to take in an MDP. The relationship between the state-value function and the action-value function can be defined as:
-    \[ v_\pi(s) = \max_{a\in\mathcal{A}} q_\pi(s, a) \]
+    \begin{equation}
+        v_\pi(s) = \max_{a\in\mathcal{A}} q_\pi(s, a)
+    \end{equation}
 
     \subsubsection{Optimal State-value function}
     The goal of an agent is to maximize the reward, which means finding a policy that yields the highest possible return. To compare two policies, let $\pi$ and $\pi'$ be two different stochastic policies. Then $\pi'$ is considered better or equal to $\pi$ if $v_{\pi'}(s) \geq v_{\pi}(s)$ holds for all states $s$. It can be shown that there is always at least one policy that is better or equal to all other policies, and this policy is called the optimal policy $\pi^*$. If an agent uses the optimal policy, then for all states and actions the agent will use the optimal state-value function and the optimal action-value function:
@@ -318,7 +320,7 @@
         The Optimal State-value function $v^*(s)$ is the maximum value function over all possible policies and is defined as:
         \begin{equation}
             \begin{split}
-                v^*(s) = \max_{\pi} v^{\pi}(s) \\
+                v^*(s)=\max_{\pi}v^{\pi}(s)\\
             \end{split}
         \end{equation}
     \end{definition}
@@ -330,27 +332,27 @@
         The Optimal Action-value function $q^*(s, a)$ is the maximum action-value function over all possible policies. It is defined as:
         \begin{equation}
             \begin{split}
-                q^*(s, a) &= \max_{\pi} q^{\pi}(s, a) \\
+                q^*(s,a)&=\max_{\pi}q^{\pi}(s,a)\\
             \end{split}
         \end{equation}
     \end{definition}
 
-    The optimal policy function $\pi^*(a | s)$ always selects an action $a$ with a selection probability of 1 for which $q_*(s, a)$ is maximal for a given state $s$. It also follows that the optimal policy is deterministic, meaning for the same state, the optimal policy function always selects exactly the same action. The transition from stochastic to deterministic policy is explained by the \emph{greedy selection}\footnote{Always choose action with the highest expexted reward.} of actions in the last equation.
+    The optimal policy function $\pi^*(a|s)$ always selects an action $a$ with a selection probability of 1 for which $q_*(s, a)$ is maximal for a given state $s$. It also follows that the optimal policy is deterministic, meaning for the same state, the optimal policy function always selects exactly the same action. The transition from stochastic to deterministic policy is explained by the \emph{greedy selection}\footnote{Always choose action with the highest expexted reward.} of actions in the last equation.
 
     \subsubsection{Bellman's Optimality Equation}\label{subsubsec:bellman-optimality-equation}
     The optimal state-value function $v^*(s)$ must satisfy Bellman's equation, which provides an recursive rule for determining the long-term expected return of each state. In order to incorporate actions, the State-value function for a Markov Reward Process (MRP) is extended to include actions as the second parameter, leading to Bellman's optimality equation for $v^*(s)$:
     \begin{equation}
         \begin{split}
-            \textcolor[RGB]{51,204,51}{v^*(s)} &= \max_{a\in\mathcal{A}} \in \mathcal{A} \mathbb{E}[R_{t+1} + \gamma \textcolor[RGB]{51,204,51}{v^*(S_{t+1})} | S_t = s, A_t = a] \\
-            &= \max_{a\in\mathcal{A}} \sum_{s', r} p(r, s'|s, a) \left[r + \gamma \textcolor[RGB]{51,204,51}{v^*(s')}  \right]
+            \textcolor[RGB]{51,204,51}{v^*(s)}&=\max_{a\in\mathcal{A}}\in\mathcal{A}\mathbb{E}[R_{t+1}+\gamma\textcolor[RGB]{51,204,51}{v^*(S_{t+1})}|S_t=s,A_t=a]\\
+            &=\max_{a\in\mathcal{A}}\sum_{s',r}p(r,s'|s,a)\left[r+\gamma\textcolor[RGB]{51,204,51}{v^*(s')}\right]
         \end{split}
     \end{equation}
 
     This equation derives the recursive relation to the subsequent state, allowing the reference to the optimal policy to be omitted. Similarly, the Action-value function $q^*(s, a)$ can be derived as~\cite{rao2022foundations}:
     \begin{equation}
         \begin{split}
-            \textcolor[RGB]{51,204,51}{q^*(s, a)} &= \mathbb{E}[R_{t+1} + \gamma \max_{a'\in\mathcal{A}} \textcolor[RGB]{51,204,51}{q^*(S_{t+1}, a')} | S_t = s, A_t = a] \\
-            &= \sum_{s', r} p(r, s'|s, a) \left[r + \gamma \max_{a'\in\mathcal{A}} \in \mathcal{A} \textcolor[RGB]{51,204,51}{q^*(s', a')}  \right]
+            \textcolor[RGB]{51,204,51}{q^*(s, a)}&=\mathbb{E}[R_{t+1}+\gamma\max_{a'\in\mathcal{A}}\textcolor[RGB]{51,204,51}{q^*(S_{t+1},a')}|S_t=s,A_t=a]\\
+            &=\sum_{s',r}p(r,s'|s,a)\left[r+\gamma\max_{a'\in\mathcal{A}}\in\mathcal{A}\textcolor[RGB]{51,204,51}{q^*(s',a')}\right]
         \end{split}
     \end{equation}
 
@@ -373,19 +375,19 @@
 
     \paragraph{Policy Prediction}\label{par:policy-prediction}
     Policy evaluation, or prediction, is the process of computing the state-value function for an arbitrary policy. The state-value function, denoted as $v^\pi(s)$, represents the expected sum of discounted rewards from a given state $s$ when following policy $\pi$. If the dynamics of the environment are completely known, the policy evaluation can be formulated as a system of simultaneous linear equations, which can be solved iteratively using update rules based on the Bellman equation for $v^\pi$. This process involves finding successive approximations of the value function, starting from an initial approximation, and updating it according to the Bellman equation until convergence is achieved to $v_k(s) \approx v_{\pi}(s)$ with:
-    \[
-        v_{k+1}(s) = \sum_{a \in \mathcal{A}} \pi(a|s) \left( R(s, a) + \gamma \sum_{s' \in \mathcal{S}} P(s'|s, a) v_k(s') \right)
-    \]
+    \begin{equation}
+        v_{k+1}(s)=\sum_{a\in\mathcal{A}}\pi(a|s)\left(R(s,a)+\gamma\sum_{s'\in\mathcal{S}}P(s'|s,a)v_k(s')\right)
+    \end{equation}
     for all states. This equation is the analogous equation to Bellman's optimality equation for $v^*(s)$ in iteration form. Once $v_{\pi}(s)$ is found for a given policy the action-value function can be determined~\cite{sutton2018reinforcement, FITMT25127}:
-    \[
-        q_{\pi}(s,a) = \mathbb{E}_{\pi}[G_t|S_t = s, A_t = a] = R(s,a) + \gamma \sum_{s' \in \mathcal{S}} P(s'|s,a) v_{\pi}(s')
-    \]
+    \begin{equation}
+        q_{\pi}(s,a)=\mathbb{E}_{\pi}[G_t|S_t=s,A_t=a]=R(s,a)+\gamma\sum_{s'\in\mathcal{S}}P(s'|s,a)v_{\pi}(s')
+    \end{equation}
 
     \paragraph{Policy Improvement}\label{par:policy-improvement}
     This equation is then the Bellman's equation for $q_{\pi}(s,a)$ and can be used in the Policy Improvement step to create a new policy. It should also be ensured that the new, deterministic policy is better or equal to the old policy, when for all states applies:
-    \[
-        q_{\pi}(s, \pi'(s)) \geq v_{\pi}(s)
-    \]
+    \begin{equation}
+        q_{\pi}(s,\pi'(s))\geq v_{\pi}(s)
+    \end{equation}
     This means that choosing action $a' = \pi'(s)$ in state $s$ under policy $\pi$ produces a better result than action $a = \pi(s)$. Next, $q_{\pi'}(s, a)$ is computed for the new policy $\pi'$ in the Policy Evaluation step and improved with $\pi'(s) = \arg\max_a q_{\pi'}(s, a)$~\cite{sutton2018reinforcement, FITMT25127}.
 
     \subsubsection{Value Iteration}\label{subsubsec:value-iteration}
@@ -394,10 +396,12 @@
     \begin{definition}
         \label{def:value-iteration}
         \textbf{Value Iteration Equation} is that iteratively computes the state-value function $V_k(s)$ for a given policy $\pi$ using the Bellman equation:
-        \[
-            V_{k+1}(s) \doteq \max_a \mathbb{E}\left[ R_{t+1} + \gamma v_k(S_{t+1}) | S_t = s, A_t = a \right]
-            = \max_a \sum_{s', r} p(s', r|s, a) [r + V_k(s')]
-        \]
+        \begin{equation}
+            \begin{split}
+                V_{k+1}(s)&\doteq\max_a\mathbb{E}\left[R_{t+1}+\gamma v_k(S_{t+1})|S_t=s,A_t=a\right] \\
+                &=\max_a\sum_{s',r}p(s',r|s,a)[r+V_k(s')]
+            \end{split}
+        \end{equation}
     \end{definition}
 
     \subsubsection{Generalized Policy Iteration}\label{subsubsec:generalized-policy-iteration}
@@ -421,7 +425,7 @@
         \end{center}
     \end{wrapfigure}
 
-    MC methods allow an agent to infer the optimal policy $\pi^*$ from the optimal action-value function $q^*(s,a)$ estimated through experience. MC methods use the iterative procedure Generalized Policy Iteration to incrementally infer $\pi^*$. First, a finite trajectory $(S_0, A_0, R_1, S_1, A_1, ..., R_n, S_n)$ is generated, where actions are selected according to a stochastic policy $\pi(a|s)$ and states and rewards come from the unknown environmental dynamics. From this episode, the return $G_t$ is computed for all state-action pairs reached. Then, the policy evaluation step is performed using the update equation~\cite{sutton2018reinforcement, FITMT25127, rao2022foundations}:
+    MC methods allow an agent to infer the optimal policy $\pi^*$ from the optimal action-value function $q^*(s,a)$ estimated through experience. MC methods use the iterative procedure Generalized Policy Iteration to incrementally infer $\pi^*$. First, a finite trajectory $(S_0,A_0,R_1,S_1,A_1,\cdots,R_n,S_n)$ is generated, where actions are selected according to a stochastic policy $\pi(a|s)$ and states and rewards come from the unknown environmental dynamics. From this episode, the return $G_t$ is computed for all state-action pairs reached. Then, the policy evaluation step is performed using the update equation~\cite{sutton2018reinforcement, FITMT25127, rao2022foundations}:
 
 %    \begin{wrapfigure}[h!]
 %        \includegraphics[width=\textwidth]
@@ -431,15 +435,15 @@
 
     \begin{equation}
         \label{eq:mc}
-        q_{k+1}(s, a) = q_k(s, a) + \alpha(G_t - q_k(s, a))
+        q_{k+1}(s,a)=q_k(s,a)+\alpha(G_t-q_k(s,a))
     \end{equation}
     where $\alpha \in (0,1)$ is a learning rate and $G_t$ is the sum of discounted rewards starting from action $a$ in state $s$. The term $G_t - q_k(s, a)$ corrects the value of $q_{k+1}(s,a)$ in the direction of the target $G_t$. The index $k$ represents the current episode, and in the limiting case, $q_k(s,a) = q_{\pi}(s,a)$, where $\pi$ is the optimal policy~\cite{sutton2018reinforcement}.
     \begin{equation}
-        \pi_0 \xrightarrow{E} q_{\pi_0} \xrightarrow{I}
-        \pi_1 \xrightarrow{E} q_{\pi_1} \xrightarrow{I}
-        \pi_2 \xrightarrow{E} q_{\pi_2} \xrightarrow{I}
+        \pi_0\xrightarrow{E}q_{\pi_0}\xrightarrow{I}
+        \pi_1\xrightarrow{E}q_{\pi_1}\xrightarrow{I}
+        \pi_2\xrightarrow{E}q_{\pi_2}\xrightarrow{I}
         \cdot
-        \pi_* \xrightarrow{E} q_{\pi_*}
+        \pi_*\xrightarrow{E}q_{\pi_*}
     \end{equation}
 
     Since MC methods do not require knowledge of the environment dynamics, a non-deterministic policy should be used for episode generation to ensure exploration of all states and actions. A stochastic policy, such as the $\epsilon$-greedy approach, is commonly used in MC methods for exploration~\cite{FITMT25127}.
@@ -447,10 +451,10 @@
     \paragraph{Epsilon-Greedy Policy Exploration}
     The \textbf{$\epsilon$-greedy} approach for exploration selects actions randomly according to:
     \begin{equation}
-        \pi'(a | S) =
+        \pi'(a|S)=
         \begin{cases}
-            1 - \epsilon + \frac{\epsilon}{|\mathcal{A}|} & \text{if } a = A^* \\
-            \frac{\epsilon}{|\mathcal{A}|} & \text{if } a \neq A^* \text{ for } a \in \mathcal{A}
+            1-\epsilon+\frac{\epsilon}{|\mathcal{A}|}&\text{if }a=A^*\\
+            \frac{\epsilon}{|\mathcal{A}|}&\text{if }a\neq A^*\text{ for }a\in\mathcal{A}
         \end{cases}
     \end{equation}
     where a greedy action is the action with the highest estimated action value according to the current policy. The process of modifying action values in the policy evaluation step and setting a new policy in the policy improvement step is referred to as training the RL agent. It follows from \cref{eq:mc} that MC methods use the $G_t$ return of an episode, which can only be computed when the episode is completed. Therefore, MC methods can only be used in environments with finite, i.e. always ending, episodes. This strategy is called \textbf{Bootstrapping}, when the methods do not need to wait for the end of the episode, but only need \emph{n-steps} to improve the policy, the whole strategy is called \emph{n-steps Bootstrapping} and next method \emph{Temporal-Difference} uses this strategy to improve convergence to optimal value-function~cite{FITMT25127, sutton2018reinforcement, rl-course-david-silver}.
@@ -462,51 +466,54 @@
     \subsubsection{n-step Bootstrapping}\label{subsubsec:n-step-bootstrapping}
     The n-step bootstrapping is a strategy to improve the convergence of the value-function. The idea is to use the value-function to estimate the value-function, instead of using the return of the episode. The n-step bootstrapping for \emph{n-step return} is defined as:
     \begin{equation}
-        G_{t:t+n} = R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + \cdots + \gamma^{n-1} R_{t+n} + \gamma^n V(S_{t+n})
+        G_{t:t+n}=R_{t+1}+\gamma R_{t+2}+\gamma^2R_{t+3}+\cdots+\gamma^{n-1}R_{t+n}+\gamma^nV(S_{t+n})
     \end{equation}
 
     The simplest TD method is TD(0), also known as one-step TD, which updates the value function using the following equation:
     \begin{equation}
-        V(S_t) = V(S_t) + \alpha \cdot (R_{t+1} + \gamma \cdot V(S_{t+1}) - V(S_t))
+        V(S_t)=V(S_t)+\alpha\cdot(R_{t+1}+\gamma\cdot V(S_{t+1})-V(S_t))
     \end{equation}
     where \( V(S_t) \) is the estimated value of state \( S_t \), \( \alpha \) is the learning rate, \( R_{t+1} \) is the reward received at time step \( t+1 \), \( \gamma \) is the discount factor, and \( V(S_{t+1}) \) is the current estimate of the value of the next state. And for the n-step bootstrapping is defined as:
     \begin{equation}
-        V_{t:t+n} = R_{t+1} + \gamma R_{t+2} + \gamma^2 R_{t+3} + \cdots + \gamma^{n-1} R_{t+n} + \gamma^n V(S_{t+n})\text{, for }0\leq t \leq T
+        V_{t:t+n}=R_{t+1}+\gamma R_{t+2}+\gamma^2R_{t+3}+\cdots+\gamma^{n-1}R_{t+n}+\gamma^nV(S_{t+n})\text{,for}0\leq t\leq T
     \end{equation}
 
     One of the key advantages of TD methods over Monte Carlo methods is that TD methods do not have to wait until the end of the episode to update the value function. Instead, they can make updates at each time step, using the observed reward and the estimate of the value function for the next state. This makes TD methods more computationally efficient and allows for online learning in environments where episodes are long or never-ending. Like DP and Monte Carlo methods, TD methods also use the iterative Generalized Policy Iteration (GPI) procedure to determine the optimal policy. The policy evaluation step in TD methods differs from Monte Carlo methods in that it uses the TD error, which is the difference between the TD target and the current estimate of the value function, as the update rule~\cite{sutton2018reinforcement}.
 
     The TD target is the sum of the reward and the discounted value of the next state, and it serves as the target for the TD update. The TD error and TD target are defined as follows:
 
-    \[ \text{TD error} = R_{t+1} + \gamma \cdot V(S_{t+1}) - V(S_t) \]
-    \[ \text{TD target} = R_{t+1} + \gamma \cdot V(S_{t+1}) \]
+    \begin{equation}
+        \text{TDerror}=R_{t+1}+\gamma\cdot V(S_{t+1})-V(S_t)
+    \end{equation}
+    \begin{equation}
+        \text{TDtarget}=R_{t+1}+\gamma\cdot V(S_{t+1})
+    \end{equation}
 
-%
+
     The TD error at each time is the error in the estimate made at that time, depending on the next state and next reward. It is available at time $t + 1$, i.e., (t is the error in $V(S_t)$. If V does not change during the episode, then the Monte Carlo error can be written as a sum of \emph{TD errors}:
     \begin{equation}
         \begin{split}
-            G_t - V(S_t) &= R_{t+1} + \gamma G_{t+1} - V(S_t) + \gamma V (S_{t+1}) - \gamma V (S_{t+1})\\
-            &= \delta_t + \gamma \delta_{t+1} + \gamma^2 \delta_{t+2} + \ldots + \gamma^{T-t-1} \delta_{T-1} + \gamma^{T-t} \delta_T - V(S_T)\\
-            &= \delta_t + \gamma \delta_{t+1} + \gamma^2 \delta_{t+2} + \ldots + \gamma^{T-t-1} \delta_{T-1} + \gamma^{T-t} (R_T + \gamma V(S_T) - V(S_T))\\
-            &= \sum_{k=t}^{T-1} \gamma^{k-t} \delta_k
+            G_t-V(S_t)&=R_{t+1}+\gamma G_{t+1}-V(S_t)+\gamma V(S_{t+1})-\gamma V(S_{t+1})\\
+            &=\delta_t+\gamma\delta_{t+1}+\gamma^2\delta_{t+2}+\ldots+\gamma^{T-t-1}\delta_{T-1}+\gamma^{T-t}\delta_T-V(S_T)\\
+            &=\delta_t+\gamma\delta_{t+1}+\gamma^2\delta_{t+2}+\ldots+\gamma^{T-t-1}\delta_{T-1}+\gamma^{T-t}(R_T+\gamma V(S_T)-V(S_T))\\
+            &=\sum_{k=t}^{T-1}\gamma^{k-t}\delta_k
         \end{split}
     \end{equation}
-%
+
     The TD error represents the error in the current estimate of the value function, and the TD target represents the updated estimate of the value function for the current state. By using the TD error and TD target in the update rule, TD methods can learn from raw experience and update the value function at each time step, making them well-suited for online learning tasks.
 
     In addition to TD(0), there are also other variations of TD methods such as TD($\lambda$), which is a family of methods that use eligibility traces to combine TD(0) updates with Monte Carlo-like updates. TD($\lambda$) methods have a parameter $\lambda$ that controls the trade-off between the bias and variance of the updates. When $\lambda$ is set to 0, TD($\lambda$) reduces to TD(0), and when $\lambda$ is set to 1, TD($\lambda$) reduces to Monte Carlo updates. TD($\lambda$) methods update the value function for not only the current state but also for all the states visited in the episode, weighted by their eligibility traces, defined in \verb|\cref{TODO}|, which are updated at each time step. The eligibility trace keeps track of the recent history of state visits and decays over time with a decay factor $\lambda$, which determines the credit assignment to different states~\cite{sutton2018reinforcement}.
-%
 
     \subsubsection{On-Policy Learning (SARSA)}\label{sec:td-sarsa}
     The TD methods use the action-value function for the evaluation step and iteratively determine $q_\pi(s,a)$. A TD method that implements this practically is called SARSA and adjusts the action-value function in the evaluation step for a state-action pair at each time-step of the episode as:
-    \[
-        q_{t+1}(s, a) = q_t(s, a) + \alpha \left( R_{t+1} + \gamma q_t(s', a') - q_t(s, a) \right) \quad (2.21)
-    \]
+    \begin{equation}
+        q_{t+1}(s,a)=q_t(s,a)+\alpha\left(R_{t+1}+\gamma q_t(s',a')-q_t(s,a)\right)
+    \end{equation}
 
     The TD methods, such as SARSA, utilize the action-value function for evaluating and updating the action-value estimates. SARSA adjusts the action-value function at each time-step of the episode based on the sequence of transitions \( (s, a, r, s', a') \) generated by the environment dynamics and the current epsilon-greedy policy. The updated action-value function is used to determine the new policy at the next time-step. This process is repeated iteratively until optimal action-value and policy functions are found. SARSA is an on-policy algorithm, as it evaluates and improves the same policy used for selecting actions:
-    \[
-        q_{t+1}(s, a) = q_t(s, a) + \alpha \left( R_{t+1} + \gamma \max_{a^*} q_t(s', a^*) - q_t(s, a) \right)
-    \]
+    \begin{equation}
+        q_{t+1}(s,a)=q_t(s,a)+\alpha\left(R_{t+1}+\gamma\max_{a^*}q_t(s',a^*)-q_t(s,a)\right)
+    \end{equation}
 
     \subsubsection{Off-Policy Learning (Q Learning)}\label{sec:td-q-learning}
     On the other hand, off-policy algorithms, like Q-learning, evaluate and improve one policy while using a different policy for selecting actions. This can be useful, for example, when introducing a new version of an agent with a different policy to learn from an old agent with a well-performing policy. In Q-learning, the action maximizing action (\( a^* \)) of all action-value functions at a fixed state \( s' \) is always chosen when updating the action-value function for a given state-action pair \( (s, a) \), regardless of which action \( a^* \) of the policy was chosen. After updating the action-value function, the policy improvement step is performed using the epsilon-greedy approach with respect to the current policy (\( \pi \)) and optionally the old policy (\( \mu \)) as well~\cite{FITMT25127, sutton2018reinforcement}.
@@ -514,7 +521,7 @@
     An off-policy TD control algorithm known as Q-learning, defined by:
     \begin{equation}
         \label{eq:q-learning}
-        Q(S_t, A_t) \leftarrow Q(S_t, A_t) + \alpha \left[ R_{t+1} + \gamma \max_a Q(S_{t+1}, a) - Q(S_t, A_t) \right]
+        Q(S_t,A_t)\leftarrow Q(S_t,A_t)+\alpha\left[R_{t+1}+\gamma\max_a Q(S_{t+1},a)-Q(S_t,A_t)\right]
     \end{equation}
 
     In this case, the learned action-value function, \(Q\), directly approximates \(q^*\), the optimal action-value function, independent of the policy being followed. This dramatically simplifies the analysis of the algorithm and enables early convergence proofs. The policy still has an effect in that it determines which state-action pairs are visited and updated. However, all that is required for correct convergence is that all pairs (transition matrix, example in \cref{fig:q-learning}) continue to be updated. This is a minimal requirement in the sense that any method guaranteed to find optimal behavior in the general case must require it. The Q-learning algorithm is show in \cref{alg:q_learning}~\cite{rl-course-david-silver, sutton2018reinforcement}.
@@ -531,19 +538,23 @@
 
     Approximate Solution Methods, which utilize parametrized function approximators such as decision trees, regression methods, or neural networks, differ from Tabular Methods in that they do not rely on matrices to estimate action-value returns. These methods have emerged as a solution approach to the limitations of Tabular Methods, as they are more memory efficient and capable of generalization. When neural networks with hidden layers are used as function approximators, the resulting algorithms are classified as Deep Reinforcement Learning (DRL)~\cite{FITMT25127}.
 
-    The Approximate Solution Methods use a function approximator \(f_\theta\) to approximate the action-value function \(q_\pi(s,a)\) or the state-value function \(v_\pi(s)\) as:
+    The Approximate Solution Methods use a function approximator $f_{\bm{\theta}}$ to approximate the action-value function \(q_\pi(s,a)\) or the state-value function \(v_\pi(s)\) as:
 
-    \(\hat{v}(s,w) \approx v_{\pi}(s)\) or \(\hat{q}(s,a,w) \approx q_{\pi}(s,a)\), where \(w \in \mathbb{R}^d, d \in \mathbb{N}\)
+    \(\hat{v}(s,w)\approx v_{\pi}(s)\) or \(\hat{q}(s,a,w)\approx q_{\pi}(s,a)\), where \(w\in\mathbb{R}^d,d\in\mathbb{N}\)
 
     The weight vector $\mathbf{w}$ represents the weight vectors of the neural network in the context of iterative Stochastic Gradient Descent (SGD) procedure. The loss function $E(\mathbf{w})$ is defined over this weight vector, and the weight vector is updated during SGD as long as the error continuously decreases, i.e., until $(s, a, \mathbf{w}) \approx q_{\pi}(s, a)$.
 
     For the loss function, Mean Square Error (MSE) can be used, which is commonly used in regression optimization problems. In this case, $\mathcal{T}$ is the set of training data from which the target variable $y$ is taken. However, unlike in classical supervised learning, where the target variable is known, here $y = q_{\pi}(s,a)$, so the target is assumed to be the loss function. Thus, for function approximators applied to MC methods and SGD assumed as the optimization algorithm, the loss function for one-step SARSA is defined as:
 
-    \[ \frac{1}{2} \left( R_{t+1} + \gamma q_{\pi}(s',a', \mathbf{w}) - q_{\pi}(s, a, \mathbf{w}) \right)^2 \]
+    \begin{equation}
+        \frac{1}{2}\left(R_{t+1}+\gamma q_{\pi}(s',a',\mathbf{w})-q_{\pi}(s,a,\mathbf{w})\right)^2
+    \end{equation}
 
     The weights for one-step SARSA are updated using the following rule:
 
-    \[ \mathbf{w}_{t+1} = \mathbf{w}_t + \alpha \left( R_{t+1} + \gamma q_{\pi}(s',a', \mathbf{w}) - q_{\pi}(s, a, \mathbf{w}) \right) \nabla q_{\pi}(s, a, \mathbf{w}) \]
+    \begin{equation}
+        \mathbf{w}_{t+1}=\mathbf{w}_t+\alpha\left(R_{t+1}+\gamma q_{\pi}(s',a',\mathbf{w})-q_{\pi}(s,a,\mathbf{w})\right)\nabla q_{\pi}(s,a,\mathbf{w})
+    \end{equation}
 
     The update is performed in a way that each vector's component responsible for a part of the error is updated accordingly, with a higher share of the error being adjusted if the slope of the error with respect to that component is large. The weights are adjusted until the difference between two subsequent updates is less than a defined $\varepsilon$ value (typically a small number), at which point $q_{\pi}$ is considered found and the optimal policy can be derived. In practice, early-stopping is often used in deep learning instead of $\varepsilon$.
 
@@ -551,9 +562,9 @@
 
     \begin{equation}
         \mathbf{\hat{y}} = \begin{pmatrix}
-                               \hat{q}(s,\textcolor[RGB]{51,204,51}{a_1}, \mathbf{w}) \\
-                               \vdots                                                 \\
-                               \hat{q}(s, \textcolor[RGB]{51,204,51}{a_n}, \mathbf{w})
+                               \hat{q}(s,\textcolor[RGB]{51,204,51}{a_1},\mathbf{w}) \\
+                               \vdots                                                \\
+                               \hat{q}(s,\textcolor[RGB]{51,204,51}{a_n},\mathbf{w})
         \end{pmatrix}
     \end{equation}
 
@@ -561,89 +572,86 @@
     \section{Policy-based learning}\label{sec:policy-based}
     Methods that directly parameterize the policy, analogous to parameterizing state-value and action-value functions in subsection 2.3.4, are discussed in this section. Subsection 2.4.1 introduces and explains stochastic policy gradient methods. Subsequent subsections discuss various stochastic policy-gradient algorithms. Subsection 2.4.3 elaborates on the concept of actor-critic methods, while subsection 2.4.4 explains trust-region methods and the policy gradient algorithm (PPO) used in Chapter 4.
 
-    All algorithms that use a parameterized policy are referred to as policy gradient methods. We can represent the policy with a parameter vector \( \theta \in \mathbb{R}^d \), where \( d \in \mathbb{N} \). Then, extending Definition 2.6, we can formulate the probability of executing action \( a \) in state \( s \) with parameters \( \theta \) at time-step \( t \) of policy \( \pi_\theta \) as:
+    All algorithms that use a parameterized policy are referred to as policy gradient methods. We can represent the policy with a parameter vector \( \bm{\theta} \in \mathbb{R}^d \), where \( d \in \mathbb{N} \). Then, extending Definition 2.6, we can formulate the probability of executing action \( a \) in state \( s \) with parameters \( \bm{\theta} \) at time-step \( t \) of policy \( \pi_{\bm{\theta}} \) as:
+%
+    \begin{equation}
+        \pi(a|s,\bm{\theta})=P(A_t=a|S_t=s,\bm{\theta}_t=\bm{\theta})
+    \end{equation}
 
-    \[ \pi(a|s,\theta) = P(A_t = a|S_t = s,\theta_t = \theta) \]
+    If a performance measure \( J(\bm{\theta}) \) is introduced on the parameter vector, then the policy gradient methods can iteratively update the parameter vector using the gradient ascent procedure as follows:
 
-    If a performance measure \( J(\theta) \) is introduced on the parameter vector, then the policy gradient methods can iteratively update the parameter vector using the gradient ascent procedure as follows:
+    \begin{equation}
+        \bm{\theta}_{t+1}=\bm{\theta}_t+\alpha\nabla J(\bm{\theta}_t)
+    \end{equation}
 
-    \[ \theta_{t+1} = \theta_t + \alpha \nabla J(\theta_t) \]
-
-    Deriving a loss function for the performance measure in policy gradient methods is not as straightforward as in the case of value-based methods. Similar to the distinction between MC methods and TD methods, we need to differentiate between finite and infinite episodes. For both cases, the theorem on policy gradients provides a way to compute the gradient \( \nabla J(\theta) \).
+    Deriving a loss function for the performance measure in policy gradient methods is not as straightforward as in the case of value-based methods. Similar to the distinction between MC methods and TD methods, we need to differentiate between finite and infinite episodes. For both cases, the theorem on policy gradients provides a way to compute the gradient \( \nabla J(\bm{\theta}) \).
 
     For finite episodes, we can measure the quality of the parameter vector based on the return of the first state of the episode. The policy gradient for
 
     \begin{equation}
         \begin{split}
-            \nabla v_{\pi_\theta}(\mathbf{s}) &= \nabla \left( \sum_{a} \pi(a | s, \mathbf{\theta}) q_{\pi_\theta}(s,a) \right) \\
-            &= \sum_{a} (\nabla \pi(a | s, \mathbf{\theta}) q_{\pi_\theta}(s,a) + \pi(a | s, \mathbf{\theta}) \nabla q_{\pi_\theta}(s,a)) \\
+            \nabla v_{\pi_{\bm{\theta}}}(s)&=\nabla\left(\sum_{a}\pi(a|s,\bm{\theta})q_{\pi_{\bm{\theta}}}(s,a)\right)\\
+            &=\sum_{a}(\nabla\pi(a|s,\bm{\theta})q_{\pi_{\bm{\theta}}}(s,a)+\pi(a|s,\bm{\bm{\theta}})\nabla q_{\pi_{\bm{\theta}}}(s,a))\\
             &\mspace{10mu}\vdots\\
-            &= \sum_{s}\sum_{k=0}^{\infty} \mathbb{P}(s_0 \rightarrow s, k, \pi_\theta) \sum_{a} \nabla \pi(a | s, \mathbf{\theta}) q_\pi(s,a)
+            &=\sum_{s}\sum_{k=0}^{\infty}\mathbb{P}(s_0\rightarrow s,k,\pi_{\bm{\theta}})\sum_{a}\nabla\pi(a|s,\bm{\theta})q_\pi(s,a)
         \end{split}
     \end{equation}
 
 
-    where $P(s \rightarrow s', k, \pi_{\theta})$ is the probability of a state transition from $s$ to $s'$ in $k$ steps under policy $\pi(a | s, \theta)$. This probability thus serves as a weighting of the gradient of the return. Moreover, if $\eta(s) = \sum_{k=0}^{\infty} P(s \rightarrow s', k, \pi_{\theta})$ is defined, it can be further written:
+    where $P(s \rightarrow s', k, \pi_{\bm{\theta}})$ is the probability of a state transition from $s$ to $s'$ in $k$ steps under policy $\pi(a | s, \theta)$. This probability thus serves as a weighting of the gradient of the return. Moreover, if $\eta(s) = \sum_{k=0}^{\infty} P(s \rightarrow s', k, \pi_{\theta})$ is defined, it can be further written:
 
     \begin{equation}
         \label{eq:policy_gradient}
         \begin{split}
-            \nabla J(\mathbf{\theta}) &= \nabla v_{\pi_{\mathbf{\theta}}}(s) \\
-            &= \sum_{s}\eta(s) \sum_{a}\nabla \pi(a | s, \mathbf{\theta})q_{\pi_{\mathbf{\theta}}}(s,a) \\
-            &= \sum{s'}\eta(s') \sum_{s}\frac{\eta(s)}{\sum_{'s}\eta(s')} \sum{a} \nabla \pi(a | s, \mathbf{\theta})q_{\pi_{\mathbf{\theta}}}(s,a) \\
-            &= \sum_{s'}\eta(s') \sum_{s}\mu(s) \sum_{a}\nabla \pi(a | s, \mathbf{\theta})q_{\pi_{\mathbf{\theta}}}(s,a)\\
-            &\propto \sum_{s}\mu(s) \sum_{a}\nabla \pi(a | s, \mathbf{\theta})q_{\pi_{\mathbf{\theta}}}(s,a) \\
-            &= E_{\pi} \left[\sum_{a}q_{\pi_{\mathbf{\theta}}}(s,a) \nabla \pi(a | s, \mathbf{\theta})  \right]
+            \nabla J(\bm{\theta})&=\nabla v_{\pi_{\bm{\theta}}}(s)\\
+            &=\sum_{s}\eta(s)\sum_{a}\nabla\pi(a|s,\bm{\theta})q_{\pi_{\bm{\theta}}}(s,a)\\
+            &=\sum{s'}\eta(s')\sum_{s}\frac{\eta(s)}{\sum_{'s}\eta(s')}\sum{a}\nabla\pi(a|s,\bm{\theta})q_{\pi_{\bm{\theta}}}(s,a)\\
+            &=\sum_{s'}\eta(s')\sum_{s}\mu(s)\sum_{a}\nabla\pi(a|s,\bm{\theta})q_{\pi_{\bm{\theta}}}(s,a)\\
+            &\propto\sum_{s}\mu(s)\sum_{a}\nabla\pi(a|s,\bm{\theta})q_{\pi_{\bm{\theta}}}(s,a)\\
+            &=E_{\pi}\left[\sum_{a}q_{\pi_{\bm{\theta}}}(s,a)\nabla\pi(a|s,\bm{\theta})\right]
         \end{split}
     \end{equation}
 
-    The gradient of \(J(\theta)\) is proportional to the probability sum of \(\sum_s \mu(s)\), which denotes the likelihood that the agent is in state \(s\), multiplied by the sum of weighted gradients of the probabilities for the selection of actions. The proportionality constant is represented as \(\sum_s \eta(s)\).
+    The gradient of \(J(\bm{\theta})\) is proportional to the probability sum of \(\sum_s \mu(s)\), which denotes the likelihood that the agent is in state \(s\), multiplied by the sum of weighted gradients of the probabilities for the selection of actions. The proportionality constant is represented as \(\sum_s \eta(s)\).
 
     Practically, this equation provides insight that when the agent is in a state, it should move in the direction of weights that represent the greatest increase in the probability of selecting an action in that state, weighted by the expected return for that state and action~\cite{FITMT25127}.
 
-    In the case of infinite episodes, the performance measure \(J(\theta)\) is the average reward per time-step. The gradient \(\nabla J(\theta)\) can then be determined by the theorem of policy gradients for infinite episodes:
+    In the case of infinite episodes, the performance measure \(J(\bm{\theta})\) is the average reward per time-step. The gradient \(\nabla J(\bm{\theta})\) can then be determined by the theorem of policy gradients for infinite episodes:
     \begin{equation}
-        \nabla J(\theta) = \sum_s \mu(s) \sum_a \nabla \pi(a | s, \theta) q_\pi(\theta) (s, a)
+        \nabla J(\bm{\theta})=\sum_s\mu(s)\sum_a\nabla\pi(a|s,\bm{\theta})q_\pi(\bm{\theta})(s,a)
     \end{equation}
     The calculations of the gradient for the infinite case correspond to those of the episodic case.
 
     \subsection{REINFORCE - Monte Carlo Policy Gradient}\label{subsec:monte-carlo-policy-gradient-methods}
-    The REINFORCE algorithm, also known as Monte-Carlo Policy Gradient, is a purely policy-based approach that utilizes the return of complete finite episodes for parameter updates. Similar to classical Monte Carlo (MC) methods, it adjusts the return gradually with each time-step, unlike MC methods where the return is updated at the end of each episode. In this algorithm, the weight vector $\theta$ is updated using the product of the return $G_t$ and the gradient vector $\nabla \ln \pi(a | s, \theta)$, which represents the steepest increase in the probability of selecting action $a$ in state $s$. This weight adjustment ensures that $\theta$ is updated with the scaling factor $G_t$.
+    The REINFORCE algorithm, also known as Monte-Carlo Policy Gradient, is a purely policy-based approach that utilizes the return of complete finite episodes for parameter updates. Similar to classical Monte Carlo (MC) methods, it adjusts the return gradually with each time-step, unlike MC methods where the return is updated at the end of each episode. In this algorithm, the weight vector $\bm{\theta}$ is updated using the product of the return $G_t$ and the gradient vector $\nabla \ln \pi(a | s, \bm{\theta})$, which represents the steepest increase in the probability of selecting action $a$ in state $s$. This weight adjustment ensures that $\bm{\theta}$ is updated with the scaling factor $G_t$.
 
     \begin{equation}
-        \theta_{t+1} = \theta_{t} + \alpha \gamma^{t} G_t \nabla \ln \pi(a | s, \theta_t)
+        \bm{\theta}_{t+1}=\bm{\theta}_{t}+\alpha\gamma^{t}G_t\nabla\ln\pi(a|s,\bm{\theta}_t)
     \end{equation}
 
 
-    The algorithm employs stochastic gradient ascent for optimization, as the weights are updated at each time-step. Depending on whether the action space of the environment is discrete or continuous, the policy parametrizations described in the previous subsection can be used for the gradient $\nabla \ln \pi(a | s, \theta_t)$. One drawback of this algorithm is the high variability in returns between time-steps and the associated "slowness" of the learning process. This variance arises from the non-adaptive and loose formulation of the scaling factor.
+    The algorithm employs stochastic gradient ascent for optimization, as the weights are updated at each time-step. Depending on whether the action space of the environment is discrete or continuous, the policy parametrizations described in the previous subsection can be used for the gradient $\nabla\ln\pi(a|s,\bm{\theta}_t)$. One drawback of this algorithm is the high variability in returns between time-steps and the associated "slowness" of the learning process. This variance arises from the non-adaptive and loose formulation of the scaling factor.
 
     \subsection{Actor-Critic Policy Gradient Methods}\label{subsec:actor-critic-policy-gradient-methods}
-    The Actor-Critic Policy Gradient methods utilize the long-term expected return for an action in a state, denoted as $q_{\pi_\theta}(s, a)$, as a scaling factor for the largest increase in the probability of selecting that action in the given state. In order to address the issues of high variance and slow learning in REINFORCE, the theorem on policy gradients is extended to include a baseline $b(s)$ that acts adaptively on the scaling factor for each state. The policy gradient update formula can be written as:
+    The Actor-Critic Policy Gradient methods utilize the long-term expected return for an action in a state, denoted as $q_{\pi_{\bm{\theta}}}(s, a)$, as a scaling factor for the largest increase in the probability of selecting that action in the given state. In order to address the issues of high variance and slow learning in REINFORCE, the theorem on policy gradients is extended to include a baseline $b(s)$ that acts adaptively on the scaling factor for each state. The policy gradient update formula can be written as:
 
     \begin{equation}
-        \nabla J(\theta) \propto \sum \mu(s) \sum (q_\pi(\theta) (s, a) - b(s)) \nabla \pi(a | s, \theta)
+        \nabla J(\bm{\theta})\propto\sum\mu(s)\sum(q_\pi(\bm{\theta})(s,a)-b(s))\nabla\pi(a|s,\bm{\theta})
     \end{equation}
 
-    If the baseline is set to zero for all states, the initial \cref{eq:policy_gradient} is obtained. Alternatively, a vector of constants can also be used as the baseline. The concept of Actor-Critic methods can be formulated, when a function approximator with bootstrapping, such as TD(0) or SARSA(0), is used as the baseline. In this case, the Critic computes the scaling factor and the Actor adjusts the policy parameter $\mathbf{\theta}$. The weight update formula for the Actor network is then as follows:
+    If the baseline is set to zero for all states, the initial \cref{eq:policy_gradient} is obtained. Alternatively, a vector of constants can also be used as the baseline. The concept of Actor-Critic methods can be formulated, when a function approximator with bootstrapping, such as TD(0) or SARSA(0), is used as the baseline. In this case, the Critic computes the scaling factor and the Actor adjusts the policy parameter $\bm{\bm{\theta}}$. The weight update formula for the Actor network is then as follows:
     \begin{equation}
         \begin{split}
-            \theta^{ t + 1 } &= \theta_{ t } + \alpha( q_{ \pi_{ \theta } } ( s , a ) - b( s ) ) \frac{ \nabla_{ \pi } ( a | s, \mathbf{ \theta_{ t } } ) } { \pi( a | s, \mathbf{ \theta_{ t } } ) } \\
-            &= \theta_{ t } + \alpha( R_{ t + 1 } + \hat{ q } ( s' , a', \mathbf{ w_{ t } } ) - \hat{ q } ( \mathbf{ s }, a, \mathbf{ w_{ t } ) } ) \frac{\nabla_{ \pi } ( a | s , \mathbf{\theta_{ t } } ) } { \pi( a | s, \mathbf{ \theta_{ t } ) } } \\
+            \bm{\theta^{t+1}}&=\bm{\theta}_{t}+\alpha(q_{\pi_{\bm{\theta}}}(s,a)-b(s))\frac{\nabla_{\pi}(a|s,\bm{\theta_{t}})}{\pi(a|s,\bm{\theta_{t}})} \\
+            &= \bm{\theta}_{t}+\alpha(R_{t+1}+\hat{q}(s',a',\bm{w_{t}})-\hat{q}(\bm{s},a,\bm{w_{t})})\frac{\nabla_{\pi}(a|s,\bm{\theta_{t}})}{\pi(a|s,\bm{\theta_{t})}} \\
         \end{split}
     \end{equation}
     where:
     \begin{equation}
         \begin{split}
-            \frac { \nabla_{ \pi } ( a | s, \mathbf{ \theta_{ t } } ) } { \pi ( a | \mathbf{ s }, \theta_{ t } ) } = \nabla \ln( \pi( a | s, \mathbf{ \theta_{ t } } ) )
+            \frac{\nabla_{\pi}(a|s,\bm{\theta_{t}})}{\pi(a|\bm{s},\bm{\theta}_{t})}=\nabla\ln(\pi(a|s,\bm{\theta_{t}}))
         \end{split}
     \end{equation}
-
-    \subsection{Trust Region Policy Methods}\label{subsec:trust-region-policy-methods}
-    TODO
-
-
-    \section{Actor-Critic}\label{sec:actor-critic}
-    TODO
 
 
     \section{Model-based}\label{sec:model-based}
@@ -717,7 +725,7 @@
     \subsection{Upper Confidence Bound}\label{subsec:upper-confidence-bound}
 
 
-%    \section{Deep Reinforcement Learning}\label{sec:deep-reinforcement-learning}
-%    TODO
+    \section{Deep Reinforcement Learning}\label{sec:deep-reinforcement-learning}
+    TODO
 
 \end{document}
