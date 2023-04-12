@@ -1,0 +1,4 @@
+Chapter
+Equation
+Section
+Figure

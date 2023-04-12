@@ -1,119 +1,179 @@
-%! Author = zlapik
-%! Date = 18/11/2022
+\documentclass[../xlapes02]{subfiles}
+\begin{document}
+
+    \chapter{Reinforcement Learning Algorithms}
+    In this appendix, we present pseudocode for various RL methods and algorithms, which are used in the field of RL research and applications.
 
 
-\chapter{Reinforcement Learning Algorithms}
-In this appendix, we present pseudocode for various RL methods and algorithms, which are used in the field of RL research and applications.
+    \section{Policy Iteration Algorithm in DP}
+    \begin{algorithm}[h!]
+        \SetKwComment{Comment}{/* }{ */}
+        \caption{An algorithm with caption}\label{alg:two}
 
+        \Comment{1. Initialization}
+        $V(s) \in \mathbb{R}$ and $\pi(s) \in A(s)$ arbitrarily for all $s \in S$; $V(\text{terminal}) = 0$.
 
-\section{Policy Iteration Algorithm in DP}
-\begin{algorithm}[h!]
-    \SetKwComment{Comment}{/* }{ */}
-    \caption{An algorithm with caption}\label{alg:two}
-
-    \Comment{1. Initialization}
-    $V(s) \in \mathbb{R}$ and $\pi(s) \in A(s)$ arbitrarily for all $s \in S$; $V(\text{terminal}) = 0$.
-
-    \Comment{2. Policy Prediction}
-    \While{$\Delta < \theta$}{
-        $\Delta \leftarrow 0$
-        \ForAll{$s \in S$}{
-            $v \leftarrow V(s)$\;
-            $V(s) \leftarrow \sum_{s', r} p(s_0, r|s, \pi(s)) \cdot (r + \gamma V(s_0))$\;
-            $\Delta \leftarrow \max(\Delta, |v - V(s)|)$\;
-        }
-    }
-
-    \Comment{3. Policy Improvement}
-    \emph{policy-stable} $\leftarrow$ \emph{true}
-    \ForAll{$s \in S$}{
-        $\text{old-action} \leftarrow \pi(s)$\;
-        $\pi(s) \leftarrow \arg\max_a \sum_{s', r} p(s', r|s, a) \left[ r + \gamma V(s') \right]$\;
-        \If{$\text{old-action} \neq \pi(s)$}{
-            \emph{policy-stable} $\leftarrow$ \emph{false}
-        }
-    }
-    \eIf{$\text{policy-stable}$}
-    {
-        \Return $V_{\pi} \approx v_*$ and $\pi \approx \pi_*$\;
-    }{
-        Goto \texttt{2. Policy Prediction}
-    }
-\end{algorithm}
-
-
-\section{Value Iteration Algorithm in DP}
-\begin{algorithm}[H]
-    \label{alg:value-iteration}
-    \SetAlgoLined
-    \textbf{Value Iteration Algorithm}\\
-    \textbf{Algorithm parameter:} a small threshold $\epsilon > 0$ determining accuracy of estimation\\
-    \textbf{Initialize} $V(s)$, for all $s \in S$, arbitrarily except that $V(\text{terminal}) = 0$\\
-    \textbf{Loop:}\\
-    \quad \textbf{for each} $s \in S:$\\
-    \quad \quad $v \leftarrow V(s)$\\
-    \quad \quad $V(s) \leftarrow \max_a \sum_{s', r} p(s', r|s, a)(r + \gamma V(s'))$\\
-    \quad \quad $\delta \leftarrow \max(\delta, |v - V(s)|)$\\
-    \textbf{until} $\delta < \epsilon$\\
-    \textbf{Output} a deterministic policy $\pi$, such that\\
-    $\pi(s) \leftarrow \argmax_a \sum_{s', r} p(s', r|s, a)(r + \gamma V(s'))$\\
-\end{algorithm}
-
-
-\section{Monte Carlo Prediction}
-\begin{algorithm}[h!]
-    \caption{First-visit MC prediction for estimating $V^\pi$}
-    \label{alg:mc}
-
-    \SetKwInput{Input}{Input}
-
-    \Input{A policy $\pi$ to be evaluated}
-
-    \emph{Initialize:}\\
-    $V(s) \in \mathbb{R}$, arbitrarily, for all $s \in S$\\
-    \emph{Returns($s$)}: an empty list, for all $s \in S$
-
-    \emph{Loop forever (for each episode):}\\
-    \While{true}{
-        Generate an episode following $\pi$: $S_0, A_0, R_1, S_1, A_1, R_2, \ldots, S_{T-1}, A_{T-1}, R_T$
-
-        $G \leftarrow 0$
-
-        \emph{Loop for each step of episode, $t = T-1, T-2, \ldots, 0$:}\\
-        \For{$t \leftarrow T-1$ \KwTo $0$}{
-            $G \leftarrow G + R_{t+1}$
-
-            \uIf{$S_t$ does not appear in $S_0, S_1, \ldots, S_{t-1}$}{
-                Append $G$ to \emph{Returns($S_t$)}
-                $V(S_t) \leftarrow \text{average}(\text{Returns}(S_t))$
+        \Comment{2. Policy Prediction}
+        \While{$\Delta < \theta$}{
+            $\Delta \leftarrow 0$
+            \ForAll{$s \in S$}{
+                $v \leftarrow V(s)$\;
+                $V(s) \leftarrow \sum_{s', r} p(s_0, r|s, \pi(s)) \cdot (r + \gamma V(s_0))$\;
+                $\Delta \leftarrow \max(\Delta, |v - V(s)|)$\;
             }
         }
-    }
-\end{algorithm}
 
-
-\section{Q-Learning TD Prediction}
-\begin{algorithm}[h!]
-    \caption{Q-learning (Off-policy TD Control)}
-    \label{alg:q_learning}
-
-    \textbf{Algorithm parameters:} step size $\alpha \in (0, 1]$, small $\epsilon > 0$
-
-    Initialize $Q(s, a)$ for all $s \in \mathcal{S}^+, a \in \mathcal{A}(s)$ arbitrarily, except that $Q(\text{terminal}, \cdot) = 0$
-
-    \textbf{Loop for each episode:}
-    \For{each episode}{
-        Initialize $S$
-        \textbf{Loop for each step of episode:}
-        \While{$S$ is not terminal}{
-            Choose $A$ from $S$ using policy derived from $Q$ (e.g., $\epsilon$-greedy)
-            Take action $A$, observe $R$, $S_0$
-            $Q(S, A) \leftarrow Q(S, A) + \alpha \cdot \left[R + \max_a Q(S_0, a) - Q(S, A)\right]$
-            $S \leftarrow S_0$
+        \Comment{3. Policy Improvement}
+        \emph{policy-stable} $\leftarrow$ \emph{true}
+        \ForAll{$s \in S$}{
+            $\text{old-action} \leftarrow \pi(s)$\;
+            $\pi(s) \leftarrow \arg\max_a \sum_{s', r} p(s', r|s, a) \left[ r + \gamma V(s') \right]$\;
+            \If{$\text{old-action} \neq \pi(s)$}{
+                \emph{policy-stable} $\leftarrow$ \emph{false}
+            }
         }
-    }
-\end{algorithm}
+        \eIf{$\text{policy-stable}$}
+        {
+            \Return $V_{\pi} \approx v_*$ and $\pi \approx \pi_*$\;
+        }{
+            Goto \texttt{2. Policy Prediction}
+        }
+    \end{algorithm}
 
 
-\chapter{Setting up and running the program}
-TODO
+    \section{Value Iteration Algorithm in DP}
+    \begin{algorithm}[H]
+        \label{alg:value-iteration}
+        \SetAlgoLined
+        \textbf{Value Iteration Algorithm}\\
+        \textbf{Algorithm parameter:} a small threshold $\epsilon > 0$ determining accuracy of estimation\\
+        \textbf{Initialize} $V(s)$, for all $s \in S$, arbitrarily except that $V(\text{terminal}) = 0$\\
+        \textbf{Loop:}\\
+        \quad \textbf{for each} $s \in S:$\\
+        \quad \quad $v \leftarrow V(s)$\\
+        \quad \quad $V(s) \leftarrow \max_a \sum_{s', r} p(s', r|s, a)(r + \gamma V(s'))$\\
+        \quad \quad $\delta \leftarrow \max(\delta, |v - V(s)|)$\\
+        \textbf{until} $\delta < \epsilon$\\
+        \textbf{Output} a deterministic policy $\pi$, such that\\
+        $\pi(s) \leftarrow \argmax_a \sum_{s', r} p(s', r|s, a)(r + \gamma V(s'))$\\
+    \end{algorithm}
+
+
+    \section{Monte Carlo Prediction}
+    \begin{algorithm}[h!]
+        \caption{First-visit MC prediction for estimating $V^\pi$}
+        \label{alg:mc}
+
+        \SetKwInput{Input}{Input}
+
+        \Input{A policy $\pi$ to be evaluated}
+
+        \emph{Initialize:}\\
+        $V(s) \in \mathbb{R}$, arbitrarily, for all $s \in S$\\
+        \emph{Returns($s$)}: an empty list, for all $s \in S$
+
+        \emph{Loop forever (for each episode):}\\
+        \While{true}{
+            Generate an episode following $\pi$: $S_0, A_0, R_1, S_1, A_1, R_2, \ldots, S_{T-1}, A_{T-1}, R_T$
+
+            $G \leftarrow 0$
+
+            \emph{Loop for each step of episode, $t = T-1, T-2, \ldots, 0$:}\\
+            \For{$t \leftarrow T-1$ \KwTo $0$}{
+                $G \leftarrow G + R_{t+1}$
+
+                \uIf{$S_t$ does not appear in $S_0, S_1, \ldots, S_{t-1}$}{
+                    Append $G$ to \emph{Returns($S_t$)}
+                    $V(S_t) \leftarrow \text{average}(\text{Returns}(S_t))$
+                }
+            }
+        }
+    \end{algorithm}
+
+
+    \section{Q-Learning Off-policy TD Control}
+    \begin{algorithm}[h!]
+        \caption{Q-learning (Off-policy TD Control)}
+        \label{alg:q_learning}
+
+        \textbf{Algorithm parameters:} step size $\alpha \in (0, 1]$, small $\epsilon > 0$
+
+        Initialize $Q(s, a)$ for all $s \in \mathcal{S}^+, a \in \mathcal{A}(s)$ arbitrarily, except that $Q(\text{terminal}, \cdot) = 0$
+
+        \textbf{Loop for each episode:}
+        \For{each episode}{
+            Initialize $S$
+            \textbf{Loop for each step of episode:}
+            \While{$S$ is not terminal}{
+                Choose $A$ from $S$ using policy derived from $Q$ (e.g., $\epsilon$-greedy)
+                Take action $A$, observe $R$, $S_0$
+                $Q(S, A) \leftarrow Q(S, A) + \alpha \cdot \left[R + \max_a Q(S_0, a) - Q(S, A)\right]$
+                $S \leftarrow S_0$
+            }
+        }
+    \end{algorithm}
+
+
+    \section{Tabular Dyna-Q}
+    \begin{algorithm}[h!]
+        \SetKwComment{Comment}{/* }{ */}
+        \caption{Tabular Dyna-Q}
+        \label{alg:dyna-q}
+        \Comment{1. Initialization}
+        Initialize $Q(s, a)$ and $Model(s, a)$ for all $s \in S$ and $a \in A(s)$\;
+        $S \leftarrow$ current (nonterminal) state\;
+
+        \While{True}{
+            \Comment{2. Action Selection}
+            $A \leftarrow$ $\epsilon$-greedy($S, Q$)\;
+
+            \Comment{3. Take action and observe the environment}
+            Take action $A$; observe resultant reward $R$, and new state $S_0$\;
+
+            \Comment{4. Q-Value Update}
+            $Q(S, A) \leftarrow Q(S, A) + \alpha \left( R + \gamma \max_{a'} Q(S_0, a') - Q(S, A) \right)$\;
+
+            \Comment{5. Model Update}
+            $Model(S, A) \leftarrow R, S_0$ (assuming deterministic environment)\;
+
+            \For{$i \leftarrow 1$ to $n$}{
+                \Comment{6. Model-based Planning}
+                $S \leftarrow$ random previously observed state\;
+                $A \leftarrow$ random action previously taken in $S$\;
+                $R, S_0 \leftarrow Model(S, A)$\;
+                $Q(S, A) \leftarrow Q(S, A) + \alpha \left( R + \gamma \max_{a'} Q(S_0, a') - Q(S, A) \right)$\;
+            }
+
+            $S \leftarrow S_0$\;
+
+        }
+    \end{algorithm}
+
+
+    \section{Random Sample One-Step Tabular Q-Planning}
+    \begin{algorithm}[H]
+        \label{alg:random-sample-one-step-tabular-q-planning}
+        \SetKwInOut{Input}{Input}
+        \SetKwInOut{Output}{Output}
+        \SetAlgoLined
+        \Input{
+            $S$: Set of states \\
+            $A$: Set of actions \\
+            $\alpha$: Learning rate \\
+            $\gamma$: Discount factor \\
+        }
+        \While{True}{
+            Select a state $s \in S$, action $a \in A(s)$ at random\;
+            Send $s, a$ to a sample model, and obtain a sample next reward $r$ and a sample next state $s'$\;
+            Apply one-step tabular Q-learning update to $s, a, r, s'$:
+            \[
+                Q(s, a) \leftarrow Q(s, a) + \alpha \cdot \left( r + \gamma \cdot \max_{a'} Q(s', a') - Q(s, a) \right)
+            \]
+        }
+        \caption{Random-sample one-step tabular Q-planning}
+    \end{algorithm}
+
+
+    \chapter{Setting up and running the program}
+    TODO
+\end{document}
