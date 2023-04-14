@@ -4,16 +4,16 @@
 
     The motivation for this chapter comes from the influential book on reinforcement learning by Richard Sutton and Andrew Barto and Foundations of Reinforcement Learning with Application in Finance by Ashwin Rao and Tikhon Jelvis~\cite{rao2022foundations, sutton2018reinforcement}.
 
-    This chapter explore the application of Reinforcement Learning techniques in the context of portfolio allocation. In \cref{sec:markov-models-for-rl} we will provide an introduction to Markov models, first explore \emph{Markov Processes}, \emph{Markov Reward Processes} and \emph{Markov Decision Processes}, which are the fundamental building blocks of Reinforcement Learning. Afterward, we divide Reinfocement Learning into two main categories. In \cref{sec:model-based-methods}, we will discuss \emph{Model-based} Reinforcement Learning methods, and in \cref{sec:model-free-methods} we will discuss \emph{Model-free} Reinforcement Learning methods in details with advantages and disadvantages of each approach. Let start with introduction to AI in general and its different types of learning:
+    This chapter explores the application of Reinforcement Learning techniques in the context of portfolio allocation. In \cref{sec:markov-theory} we will provide an introduction to Markov models, first explore \emph{Markov Processes}, \emph{Markov Reward Processes} and \emph{Markov Decision Processes}, which are the fundamental building blocks of Reinforcement Learning. Afterward, we divide Reinforcement Learning into two main categories. In \cref{sec:model-based-methods}, we will discuss \emph{Model-based} Reinforcement Learning methods, and in \cref{sec:model-free-methods} we will discuss \emph{Model-free} Reinforcement Learning methods in detail with advantages and disadvantages of each approach. Let's start with an introduction to AI in general and its different types of learning:
 
     \paragraph{Supervised Learning}
     In supervised learning (SL), a model is trained on a labeled dataset, where the input data is paired with corresponding output labels. The model learns to make predictions based on the labeled examples, and the goal is to minimize the error between predicted outputs and actual labels. Common applications of supervised learning include image classification, speech recognition, and sentiment analysis.
 
     \paragraph{Semi-supervised Learning}
-    Semi-supervised learning (SSL) is a combination of supervised and unsupervised learning. It uses a small labeled dataset along with a large unlabeled dataset for training. The model leverages the limited labeled examples to learn patterns from the unlabeled data, and then makes predictions on unseen data. SSL is useful when obtaining labeled data is expensive or time-consuming. It is often used in scenarios where obtaining a large labeled dataset is challenging, such as in medical diagnosis or fraud detection.
+    Semi-supervised learning (SSL) is a combination of supervised and unsupervised learning. It uses a small labeled dataset along with a large unlabeled dataset for training. The model leverages the limited labeled examples to learn patterns from the unlabeled data and then makes predictions on unseen data. SSL is useful when obtaining labeled data is expensive or time-consuming. It is often used in scenarios where obtaining a large labeled dataset is challenging, such as in medical diagnosis or fraud detection.
 
     \paragraph{Unsupervised Learning}
-    In unsupervised learning (UL), the model learns from unlabeled data without any predefined output labels. The goal is to find underlying patterns, structures, or relationships within the data. Common unsupervised learning tasks include clustering, dimensionality reduction, and anomaly detection. UL is used in scenarios where labeled data is scarce or not available, and the model needs to discover patterns autonomously from the data.
+    In unsupervised learning (UL), the model learns from unlabeled data without any predefined output labels. The goal is to find underlying patterns, structures, or relationships within the data. Everyday unsupervised learning tasks include clustering, dimensional reduction, and anomaly detection. UL is used in scenarios where labeled data is scarce or not available, and the model needs to discover patterns autonomously from the data.
 
     The last type is Reinforcement Learning and this entire chapter will be devoted to it, let's dive into it in more detail.
 
@@ -21,19 +21,19 @@
     \section{Introduction}\label{sec:rl-introduction}
     Reinforcement learning (RL) is an exciting field at the intersection of artificial intelligence (AI) and machine learning (ML) that deals with training agents to make optimal decisions in dynamic environments. RL is inspired by the way humans learn from experience, like \texttt{trial-and-error}, and an agent interacts with an environment the same way and receives feedback in the form of \emph{rewards} (typically positive number, e.g.: $1$) or \emph{penalties} (typically negative number, e.g.: $-1$), and uses this feedback to learn and improve its decision-making abilities.
 
-    At the heart of RL lies the concept of an agent, which that takes actions in an environment to achieve specific goals. The environment is typically modeled as a Markov decision process (MDP), which is a mathematical framework that describes how an agent interacts with an environment in discrete time steps. An MDP is defined by a tuple $(S, A, P, R)$, where $S$ is the state space, $A$ is the action space, $P$ is the transition probability function, and $R\in\mathbb{R}$ is the reward.
+    At the heart of RL lies the concept of an agent, which takes actions in an environment to achieve specific goals. The environment is typically modeled as a Markov decision process (MDP), which is a mathematical framework that describes how an agent interacts with an environment in discrete time steps. An MDP is defined by a tuple $(S, A, P, R)$, where $S$ is the state space, $A$ is the action space, $P$ is the transition probability function, and $R\in\mathbb{R}$ is the reward.
 
-    The goal of an RL agent is to learn a policy, denoted by $\pi$, which is a mapping from states to actions that maximizes the cumulative reward $G_t$ over time $T$. The agent uses this policy to select actions at each time step, and the environment responds with a new state and a reward. The agent then updates its policy based on the observed rewards and states, aiming to improve its decision-making abilities and achieve higher rewards in the long run. RL does not require labeled data, because learns from observations and rewards via interaction with the environment.
+    The goal of an RL agent is to learn a policy, denoted by $\pi$, which is a mapping from states to actions that maximize the cumulative reward $G_t$ over time $T$. The agent uses this policy to select actions at each time step, and the environment responds with a new state and a reward. The agent then updates its policy based on the observed rewards and states, aiming to improve its decision-making abilities and achieve higher rewards in the long run. RL does not require labeled data, because learns from observations and rewards via interaction with the environment.
 
-%    RL algorithms can be broadly categorized into two main types: model-free and model-based. Model-free algorithms are then further divided into value-based and policy-based methods, such as Q-learning (value-based) and policy gradient methods (policy-based), learn directly from the interactions with the environment without explicitly modeling the transition probabilities and rewards. Model-based algorithms, on the other hand, learn a model of the environment and use it to make decisions. These algorithms have their strengths and weaknesses, and the choice between them depends on the specific problem and requirements.
+%    RL algorithms can be broadly categorized into two main types: model-free and model-based. Model-free algorithms are then further divided into value-based and policy-based methods, such as Q-learning (value-based) and policy gradient methods (policy-based), which learn directly from the interactions with the environment without explicitly modeling the transition probabilities and rewards. Model-based algorithms, on the other hand, learn a model of the environment and use it to make decisions. These algorithms have their strengths and weaknesses, and the choice between them depends on the specific problem and requirements.
 
-    The sequence of states, actions and rewards that the agent experiences is called a trajectory, and it look like this:
+    The sequence of states, actions, and rewards that the agent experiences is called a trajectory, and it looks like this:
     \begin{equation}
         \label{eq:trajectory}
         (S_0, A_0, R_1, S_1, A_1, R_2, S_2, A_2, \dots, S_{T-1}, A_{T-1}, R_T, S_T)
     \end{equation}
 
-    This sequence of \emph{state-action-reward} can be finite or infinite, depending on the environment and the agent's goal. Pretty good example of this is the game of chess, where the game ends when one of the players wins or the game is a draw. In this case, the trajectory is finite, and the agent's goal is to maximize the cumulative reward over time $T$. On the other hand, the self-driving car example is an infinite-horizon problem, where the agent's goal is to maximize the cumulative reward over an infinite time horizon or until the car reaches its destination~\cite{FITMT25127}.
+    This sequence of \emph{state-action-reward} can be finite or infinite, depending on the environment and the agent's goal. A pretty good example of this is the game of chess, where the game ends when one of the players wins or the game is a draw. In this case, the trajectory is finite, and the agent's goal is to maximize the cumulative reward over time $T$. On the other hand, the self-driving car example is an infinite-horizon problem, where the agent's goal is to maximize the cumulative reward over an infinite time horizon or until the car reaches its destination~\cite{FITMT25127}.
 
     \begin{figure}[h]
         \includegraphics[width=0.7\linewidth]{image/agent-environment}
@@ -42,7 +42,8 @@
         \label{fig:rl-introduction}
     \end{figure}
 
-    Because RL agent is categorized by the way it learns, there are many different types of RL agents. We will try to differentiate them in this chapter, because it is important to understand teh differences between them, to understand the behavior of the agent and to choose the right algorithm for the problem. Based on the different computable approaches we can categorize RL agents:
+    Because RL agent is categorized by the way it learns, there are many different types of RL agents. We will try to differentiate them in this chapter, because it is important to understand the differences between them, to understand the behavior of the agent and to choose the right algorithm for the problem. Based on the different approaches we can categorize RL agents:
+
     \begin{multicols}{2}
         \begin{itemize}
             \item \textbf{Value-based}
@@ -76,7 +77,7 @@
         \end{itemize}
     \end{multicols}
 
-    \emph{Model-based} algorithm are closely relate to \emph{Planning algorithms} which are trying to create a model of the environment and use it to make decisions, they have knowledge of the transition probabilities and rewards from the beginning, we will discuss them in \cref{sec:model-based-methods}. \emph{Value-based} algorithms can implicitly infer a policy, but do not explicitly compute it, we will discuss them in \cref{sec:value-based-methods}, and \emph{Policy-based} algorithms compute a policy function by themselves, and are discussed in \cref{sec:policy-based-methods}. Another agents like \emph{Actor-critic methods} compute a policy function and a state-value function at the same time~\cite{rl-course-david-silver, sutton2018reinforcement}.
+    \emph{Model-based} algorithms are closely related to \emph{Planning algorithms} which are trying to create a model of the environment and use it to make decisions, they have knowledge of the transition probabilities and rewards from the beginning, we will discuss them in \cref{sec:model-based-methods}. \emph{Value-based} algorithms can implicitly infer a policy, but do not explicitly compute it, we will discuss them in \cref{sec:value-based-methods}, and \emph{Policy-based} algorithms compute a policy function by themselves, and are discussed in \cref{sec:policy-based-methods}. Another agent like \emph{Actor-critic methods} compute a policy function and a state-value function at the same time~\cite{rl-course-david-silver, sutton2018reinforcement}.
 
     \begin{figure}[h]
         \includegraphics[width=0.5\linewidth]{image/model-value-policy}
@@ -87,7 +88,7 @@
 
 
     \section{Markov Theory}\label{sec:markov-models-for-rl}
-    This section provides introduction to Markov theory, which is the fundamental building blocks of Reinforcement Learning. We begin by \emph{Markov Process}, described in~\cref{subsec:markov-process}, which is a stochastic process that satisfies the Markov property. We then move on to \emph{Markov Reward Process}, described in~\cref{subsubsec:markov-reward-process}, which is a Markov process with a reward function. Finally, we describe the most important for RL \emph{Markov Decision Process}, described in~\cref{subsec:markov-decision-process}, which is a Markov Reward process with a decision-making ability.
+    This section provides an introduction to Markov theory, which is the fundamental building block of Reinforcement Learning. We begin by \emph{Markov Process}, described in~\cref{subsec:markov-process}, which is a stochastic process that satisfies the Markov property. We then move on to \emph{Markov Reward Process}, described in~\cref{subsubsec:markov-reward-process}, which is a Markov process with a reward function. Finally, we describe the most important for RL \emph{Markov Decision Process}, described in~\cref{subsec:markov-decision-process}, which is a Markov Reward process with decision-making ability.
 
     \subsection{Markov Process}\label{subsec:markov-process}
     The Markov process (MP) (also called Markov Chains) describes the states of an environment and models the dynamics of state transitions. In an MP, an agent can only observe the changing states of the environment and has no influence over them. Markov processes have two key properties. Firstly, state transitions are non-deterministic and influenced by randomness. States are modeled as realizations of random variables, defined in \cref{subsubsec:probability-functions}. Secondly, the future state is only dependent on the current state, and not on previous states, simplifying causality with the Markov property~\cite{FITMT25127}.
@@ -109,7 +110,7 @@
         \{X(t) : t \in T\}.
     \end{equation}
 
-    In stochastic processes the probability that the environment assumes a certain state depends on the realized states of previous random variables. For example, if the weather forecast is assumed to be a stochastic process, then the yesterday’s weather may still have an influence on tomorrow’s weather. To represent this causality complicates the modeling of stochastic processes, so that with definition of Markov property the dependence of future states is assumed only on the current state. This is the second important property of Markov process~\cite{FITMT25127}.
+    In stochastic processes the probability that the environment assumes a certain state depends on the realized states of previous random variables. For example, if the weather forecast is assumed to be a stochastic process, then yesterday’s weather may still have an influence on tomorrow’s weather. To represent this causality complicates the modeling of stochastic processes so that with the definition of Markov property the dependence of future states is assumed only on the current state. This is the second important property of the Markov process~\cite{FITMT25127}.
 
     \subsubsection{Markov Property}\label{subsubsec:markov-property}
     The Markov property, which is defined using conditional probability, states that ``The future is independent of the past, given the present."
@@ -124,7 +125,7 @@
     Given n possible states, $s\in S$, then the probability of transitioning from state $s$ to state $s'$ can be represented as a matrix $P$, and because probability summation rule, the sum of transition probabilities from state $s$ to any other state $s'$ must equal to 1.
 
     \begin{definition}
-        The Markov process is stochastic process that satisfies the Markov property and is described as tuple $\left(\mathcal{S}, \mathcal{P}\right)$ for which holds:\cite{ABATE2021102207}
+        The Markov process is a stochastic process that satisfies the Markov property and is described as tuple $\left(\mathcal{S}, \mathcal{P}\right)$ for which holds:\cite{ABATE2021102207}
         \begin{itemize}
             \item $\mathcal{S} = s_1, s_2, ..., s_n$ is a finite set of states
             \item $\mathcal{P}$ is an $n\times n$ transition probability matrix which sums to 1 for each row, so each value $p_{ij}$ is the probability of transitioning from state $s_i$ to state $s_j$ in interval $\left< 0;1 \right>$
@@ -146,7 +147,7 @@
         \item Specification of the transition probability function $P$.
         \item Specification of the probability distribution of start states (denote this as $\mu : N \in[0, 1])$.
     \end{itemize}
-    Given $\mu$ and $P$, we can generate sampling traces of the Markov Process and answer questions such as probability distribution of states at specific future time steps or expected time of first occurrence of a specific state, given a certain starting probability distribution $\mu$. The separation of concerns between $P$ and $\mu$ is key to the conceptualization of Markov Processes~\cite{rao2022foundations}.
+    Given $\mu$ and $P$, we can generate sampling traces of the Markov Process and answer questions such as the probability distribution of states at specific future time steps or the expected time of the first occurrence of a specific state, given a certain starting probability distribution $\mu$. The separation of concerns between $P$ and $\mu$ is key to the conceptualization of Markov Processes~\cite{rao2022foundations}.
 
     \subsubsection{Terminal States}
     Markov Processes can terminate at specific states (e.g., based on rules for winning or losing in games). Termination can occur after a variable number of time steps (episodic) or after a fixed number of time steps (as in many financial applications). If all sampling traces of the Markov Process reach a terminal state, they are called episodic sequences. The notion of episodic sequences is important in Reinforcement Learning. In some financial applications, the Markov Process terminates after a fixed number of time steps $T$, and states with time index $t = T$ are labeled as terminal states. States with time index $t < T$ transition to states with time index $t + 1$~\cite{rao2022foundations}.
@@ -177,12 +178,12 @@
         \centering
     \end{figure}
 
-    The examples shown here only include states and transition probabilities. To fully define an environment within the framework of RL, actions and rewards also need to be defined.
+    The examples shown here only include states and transition probabilities. To fully define an environment within the framework of RL, actions, and rewards also need to be defined.
 
     \subsection{Markov Reward Process}\label{subsubsec:markov-reward-process}
     Markov Reward Process (MRP) is a Markov Process with rewards. These rewards are random, and all we need to do is to specify the probability distributions of these rewards as we make state transitions. The main purpose of Markov Reward Processes is to calculate how much reward we would accumulate (in expectation, from each of the non-terminal states) if we let the process run indefinitely, bearing in mind that future rewards need to be discounted appropriately $\gamma$ (otherwise, the sum of rewards could blow up to $\infty$). In order to solve the problem of calculating expected accumulative rewards, defined in \cref{par:expected-reward}, from each non-terminal state, we will first set up some formalism for Markov Reward Processes and develop some theory on calculating rewards accumulation.
 
-    The main objective of an RL agent is to maximize the sum of rewards from each time-step. The agent can observe different episodes in the Markov process, but lacks the means to determine the actual quality of an episode. By calculating the reward, we can precisely measure the goodness of an episode or even a single state using the \emph{state-value function}, defined in \cref{subsubsec:state-value-function}. This allows the agent to actively transition to favorable states and maximize the reward.
+    The main objective of an RL agent is to maximize the sum of rewards from each time step. The agent can observe different episodes in the Markov process but lacks the means to determine the actual quality of an episode. By calculating the reward, we can precisely measure the goodness of an episode or even a single state using the \emph{state-value function}, defined in \cref{subsubsec:state-value-function}. This allows the agent to actively transition to favorable states and maximize the reward.
 
 %    \begin{definition}
 %        A Markov Reward Process is a Markov Process with a time-indexed sequence of Reward random variables $R_t \in D$ (a countable subset of $R$) for time steps $t = 1, 2, \cdot$, satisfying the Markov Property (including Rewards): $P[(Rt+1, St+1)|St, St−1, ..., S0] = P[(Rt+1, St+1)|St]$ for all $t ≥ 0$.
@@ -209,11 +210,11 @@
     \end{definition}
 
     \subsubsection{Reward function}\label{par:reward-function}
-    The reward function $\mathcal{R}(s)$ is a function that maps a state $s$ to a reward $r$ and specify how much reward and agent expects from the environment given current state $s$. If an agent is in a state $s$ at time $t$, the agent receives reward  $R_{t+1}$  at time $t + 1$,  when it transitions to a subsequent state $s'$. Rewards of an episode can be represented as a sequence $(R_1, R_2, \ldots, R_t)$~\cite{FITMT25127}.
+    The reward function $\mathcal{R}(s)$ is a function that maps a state $s$ to a reward $r$ and specifies how much reward and agent expects from the environment given current state $s$. If an agent is in a state $s$ at time $t$, the agent receives reward  $R_{t+1}$  at time $t + 1$,  when it transitions to a subsequent state $s'$. Rewards of an episode can be represented as a sequence $(R_1, R_2, \ldots, R_t)$~\cite{FITMT25127}.
 
     % TODO: Agent reference
 
-    \paragraph{When to receive reward?} An RL agent, defined in \verb|\cref{TODO}|, should receive a reward for a good action and a penalty for a bad action. Good actions are those that lead to the agent's main goal, while bad actions are those that lead to a state that is not desirable for the agent. That is, an agent should not receive (one small) reward when it can then receive a large penalty, for example in chess by taking one piece, when it can then lose the game by getting checkmate~\cite{sutton2018reinforcement}.
+    \paragraph{When to receive the reward?} An RL agent, defined in \verb|\cref{TODO}|, should receive a reward for a good action and a penalty for a bad action. Good actions are those that lead to the agent's main goal, while bad actions are those that lead to a state that is not desirable for the agent. That is, an agent should not receive (one small) reward when it can then receive a large penalty, for example in chess by taking one piece, when it can then lose the game by getting checkmate~\cite{sutton2018reinforcement}.
 
     \subsubsection{Expected reward}\label{par:expected-reward}
     The expected reward, denoted as $G_t$ at time $t$ is the discounted sum of rewards in a single episode. Can be used to calculate the sum of discounted rewards in an episode.
@@ -233,9 +234,9 @@
     The calculation also involves the discount factor $\gamma$ which is a value in the interval $\langle 0, 1 \rangle$. If $\gamma$ is equal to one, the series value goes to infinity. The agent can only calculate the reward in the case of always terminating episodes. If $\gamma$ is less than one, the reward has a finite value, allowing the agent to determine the quality of an episode. The discount factor is not only useful mathematically but also for tuning the agent's rewards. If early rewards in an episode are more significant than later ones, $\gamma$ should be close to zero. If the rewards represent monetary gains, then it is the case, as early rewards earn additional interest. On the other hand, the closer $\gamma$ is to one, the more important later rewards are.
 
     \subsubsection{State-value Function}\label{subsubsec:state-value-function}
-    The state-value function provides information about the long-term expected reward for each state in an environment. With this information, an agent can determine which state to transition to in order to maximize the reward of an episode. Specifically, the agent should choose the state that has the highest long-term expected reward. If the agent observes a sequence of states and rewards, it can remember the subsequent rewards for each state, calculate the reward of an episode, and iteratively update the probabilities for higher occurrence of rewards over multiple episodes. As the number of episodes approaches infinity, the estimated probabilities converge to the true probabilities, and the long-term expected reward of a state can be accurately determined. Intuitively, the more episodes and consequent rewards an agent observes, the better it can estimate the value of each state. We will introduce the methods for determining the state-value function and the action-value function in the next subsection, along with a recursive iterative approach for calculating the state-value function based on Bellman's equation~\cite{FITMT25127}.
+    The state-value function provides information about the long-term expected reward for each state in an environment. With this information, an agent can determine which state to transition to in order to maximize the reward of an episode. Specifically, the agent should choose the state that has the highest long-term expected reward. If the agent observes a sequence of states and rewards, it can remember the subsequent rewards for each state, calculate the reward of an episode, and iteratively update the probabilities for a higher occurrence of rewards over multiple episodes. As the number of episodes approaches infinity, the estimated probabilities converge to the true probabilities, and the long-term expected reward of a state can be accurately determined. Intuitively, the more episodes and consequent rewards an agent observes, the better it can estimate the value of each state. We will introduce the methods for determining the state-value function and the action-value function in the next subsection, along with a recursive iterative approach for calculating the state-value function based on Bellman's equation~\cite{FITMT25127}.
 
-    Since episodes may start with different states due to state transitions probabilities, the expected reward of a particular state is the expected value of the conditional density function over the probabilities of rewards for that state. Thus, $G_t$ can be treated mathematically as a continuous random variable.
+    Since episodes may start with different states due to state transition probabilities, the expected reward of a particular state is the expected value of the conditional density function over the probabilities of rewards for that state. Thus, $G_t$ can be treated mathematically as a continuous random variable.
     To derive \emph{Bellman's equation}, defined later in this subsection, we need to make use of the definition of the \emph{(Recursive) State-value function}~\cite{FITMT25127, rao2022foundations}.
     \begin{equation}
         \begin{split}
@@ -247,7 +248,7 @@
     \end{equation}
     where $\gamma$ is the discount factor, $\mathcal{R}(s)$ is the immediate reward for state $s$, $\mathcal{P}(s'|s)$ is the transition probability from state $s$ to state $s'$, and $\mathcal{S}$ is the set of all possible states in the environment. The last equation expresses that the long-term expected reward of a state depends only on the immediate reward and the long-term expected reward of the subsequent states.
 
-    In the case of Finite Markov Reward Processes, let's assume that the state space is denoted as $\mathcal{S} = \{s_1, s_2, ..., s_n\}$, and the subset of states of interest is denoted as $\mathcal{N}$ with $m \leq n$ states. We can use bold-face notation to represent functions as column vectors and matrices, since we are dealing with finite states/transitions. So, $V$ is a column vector of length $m$, $P$ is an $m \times m$ matrix, and $R$ is a column vector of length $m$ (with rows/columns corresponding to states in $\mathcal{N}$). We can express the equation in vector and matrix notation as follows:
+    In the case of Finite Markov Reward Processes, let's assume that the state space is denoted as $\mathcal{S} = \{s_1, s_2, ..., s_n\}$, and the subset of states of interest is denoted as $\mathcal{N}$ with $m \leq n$ states. We can use bold-face notation to represent functions as column vectors and matrices since we are dealing with finite states/transitions. So, $V$ is a column vector of length $m$, $P$ is an $m \times m$ matrix, and $R$ is a column vector of length $m$ (with rows/columns corresponding to states in $\mathcal{N}$). We can express the equation in vector and matrix notation as follows:
     \begin{equation}
         \begin{split}
             V&=R+\gamma P\cdot V\\
@@ -256,13 +257,13 @@
     \end{equation}
     where $I_m$ is the identity matrix of size $m\times m$, and $\gamma$ is the discount factor~\cite{rao2022foundations}.
 
-    By extending the equation to include actions, we arrive at the most important equation in all of reinforcement learning: the Bellman equation, defined in ~\cref{subsubsec:bellman-equation}. It states that to calculate the long-term expected reward from a state, an agent only needs to add together the reward of the current state and the long-term expected reward of the next state~\cite{FITMT25127}.
+    By extending the equation to include actions, we arrive at the most important equation in all of the reinforcement learning: the Bellman equation, defined in ~\cref{subsubsec:bellman-equation}. It states that to calculate the long-term expected reward from a state, an agent only needs to add together the reward of the current state and the long-term expected reward of the next state~\cite{FITMT25127}.
 
     \subsection{Markov Decision Process}\label{subsec:markov-decision-process}
-    The Markov Decision Process (MDP) allows an agent to actively influence changes in the state of the environment through its actions. Within the MDP, the agent has the ability to jointly determine the subsequent state to which the environment should transition. The agent's primary goal is to strategically choose actions that maximize expected payoff. In the previous subsections, we addressed the aspect of \emph{sequential uncertainty (e.g., MRP)} using the Markov process framework and extended it to include the uncertain reward $R_t\in\mathcal{R}$ at each state transition $p(s',r,s)$, referred to as Markov reward processes. However, this framework lacks the notion of \emph{sequential decision making} and in this section this notion is introduced in terms of MDP, a generalization of MRP that includes the notion of \emph{sequential decision making}~\cite{rao2022foundations}.
+    The Markov Decision Process (MDP) allows an agent to actively influence changes in the state of the environment through its actions. Within the MDP, the agent has the ability to jointly determine the subsequent state to which the environment should transition. The agent's primary goal is to strategically choose actions that maximize the expected payoff. In the previous subsections, we addressed the aspect of \emph{sequential uncertainty (e.g., MRP)} using the Markov process framework and extended it to include the uncertain reward $R_t\in\mathcal{R}$ at each state transition $p(s',r,s)$, referred to as Markov reward processes. However, this framework lacks the notion of \emph{sequential decision making} and in this section, this notion is introduced in terms of MDP, a generalization of MRP that includes the notion of \emph{sequential decision making}~\cite{rao2022foundations}.
 %
     \begin{definition}
-        Markov decision process (MDP) is Markov reward process with actions. It is an tuple $(S,A,\mathcal{P},\mathcal{R},\gamma)$, where:
+        Markov decision process (MDP) is the Markov reward process with actions. It is an tuple $(S,A,\mathcal{P},\mathcal{R},\gamma)$, where:
         \begin{itemize}
             \item $\mathcal{S}$ is finite set of states $S$ (known as the State Space), a set $T \subseteq S$ (known as the set of Terminal States)
             \item $\mathcal{A}$ is finite set of actions $A$ (known as the Action Space)
@@ -275,8 +276,9 @@
     \subsubsection{Stochastic Policy}\label{subsubsec:policy}
     A policy, denoted by $\pi$, in the context of MDPs, is a function that maps states to actions. It represents the agent's strategy or decision-making rule for selecting actions based on the current state.
     \begin{definition}
-        A policy is defined as: $\pi: S \rightarrow A$, where $S$ is the set of states and $A$ is the set of actions. Notation for a policy is as follows:
+        A policy is defined as $\pi: S \rightarrow A$, where $S$ is the set of states and $A$ is the set of actions. Notation for a policy is as follows:
         \begin{equation}
+            \label{eq:policy}
             \pi(a|s)=\mathbb{P}(A_t=a|S_t=s)
         \end{equation}
     \end{definition}
@@ -337,10 +339,10 @@
         \end{equation}
     \end{definition}
 
-    The optimal policy function $\pi^*(a|s)$ always selects an action $a$ with a selection probability of 1 for which $q_*(s, a)$ is maximal for a given state $s$. It also follows that the optimal policy is deterministic, meaning for the same state, the optimal policy function always selects exactly the same action. The transition from stochastic to deterministic policy is explained by the \emph{greedy selection}\footnote{Always choose action with the highest expexted reward.} of actions in the last equation.
+    The optimal policy function $\pi^*(a|s)$ always selects an action $a$ with a selection probability of 1 for which $q_*(s, a)$ is maximal for a given state $s$. It also follows that the optimal policy is deterministic, meaning for the same state, the optimal policy function always selects exactly the same action. The transition from stochastic to deterministic policy is explained by the \emph{greedy selection}\footnote{Always choose action with the highest expected reward.} of actions in the last equation.
 
     \subsubsection{Bellman's Optimality Equation}\label{subsubsec:bellman-optimality-equation}
-    The optimal state-value function $v^*(s)$ must satisfy Bellman's equation, which provides an recursive rule for determining the long-term expected return of each state. In order to incorporate actions, the State-value function for a Markov Reward Process (MRP) is extended to include actions as the second parameter, leading to Bellman's optimality equation for $v^*(s)$:
+    The optimal state-value function $v^*(s)$ must satisfy Bellman's equation, which provides a recursive rule for determining the long-term expected return of each state. In order to incorporate actions, the State-value function for a Markov Reward Process (MRP) is extended to include actions as the second parameter, leading to Bellman's optimality equation for $v^*(s)$:
     \begin{equation}
         \begin{split}
             \textcolor[RGB]{51,204,51}{v^*(s)}&=\max_{a\in\mathcal{A}}\in\mathcal{A}\mathbb{E}[R_{t+1}+\gamma\textcolor[RGB]{51,204,51}{v^*(S_{t+1})}|S_t=s,A_t=a]\\
@@ -363,18 +365,18 @@
 
 
     \section{Value-based learning}\label{sec:value-based-learning}
-    This section presents value-based algorithms that iteratively compute state-value or action-value functions of states and actions. These functions are then used to derive continuously improving policies. Therefore, these algorithms are referred to as value-based algorithms. First some terms should be mentioned: \emph{Prediction} is in most cases interchangeable with \emph{Evaluation}, the same applies to \emph{Improvement}, which can be changed to \emph{Control}, these two terms will be used later in this section. However, we will try to stick to the \emph{Prediction} and \emph{Evaluation}, as it is more common in the literature and makes a bit more sense based on the context of the topic.
+    This section presents value-based algorithms that iteratively compute state-value or action-value functions of states and actions. These functions are then used to derive continuously improving policies. Therefore, these algorithms are referred to as value-based algorithms. First, some terms should be mentioned: \emph{Prediction} is in most cases interchangeable with \emph{Evaluation}, and the same applies to \emph{Improvement}, which can be changed to \emph{Control}, these two terms will be used later in this section. However, we will try to stick to the \emph{Prediction} and \emph{Evaluation}, as it is more common in the literature and makes a bit more sense based on the context of the topic.
 
     \subsection{Dynamic Programming}\label{subsec:dynamic-programming}
-    The term dynamic programming (DP) refers to a collection of algorithms that can be used to compute optimal policies in Markov decision processes (MDPs) when a perfect model of the environment is available. Classical DP algorithms are limited in reinforcement learning due to their assumptions of a perfect model and computational expense. DP uses value functions to organize the search for good policies, and the Bellman optimality equations define optimal value functions (\emph{State-value function} and \emph{Action-value function}). DP algorithms are effective for problems with finite state, action, and reward sets. However, for continuous problems, exact solutions are limited. One approach is to approximate solutions by discretizing the state and action spaces, and applying finite-state DP methods. Second approach is to use function approximation to approximate the value functions. The latter approach is the focus of this thesis.
+    The term dynamic programming (DP) refers to a collection of algorithms that can be used to compute optimal policies in Markov decision processes (MDPs) when a perfect model of the environment is available. Classical DP algorithms are limited in reinforcement learning due to their assumptions of a perfect model and computational expense. DP uses value functions to organize the search for good policies, and the Bellman optimality equations define optimal value functions (\emph{State-value function} and \emph{Action-value function}). DP algorithms are effective for problems with the finite states, action, and reward sets. However, for continuous problems, exact solutions are limited. One approach is to approximate solutions by discretizing the state and action spaces and applying finite-state DP methods. The second approach is to use function approximation to approximate the value functions. The latter approach is the focus of this thesis.
 
-    DP planning algorithms consists of the evaluation of a given policy, called policy prediction, defined in \cref{par:policy-prediction} and the subsequent improvement of the policy, called policy improvement, defined in \cref{par:policy-improvement}. The goal of these two steps is to infer $v^*(s)$ or $q^*(s,a)$ for all the states and actions in a procedure called Generalized Policy Iteration, defined in \cref{subsubsec:generalized-policy-iteration}~\cite{sutton2018reinforcement, FITMT25127}.
+    DP planning algorithms consist of the evaluation of a given policy, called policy prediction, defined in \cref{par:policy-prediction} and the subsequent improvement of the policy, called policy improvement, defined in \cref{par:policy-improvement}. The goal of these two steps is to infer $v^*(s)$ or $q^*(s,a)$ for all the states and actions in a procedure called Generalized Policy Iteration, defined in \cref{subsubsec:generalized-policy-iteration}~\cite{sutton2018reinforcement, FITMT25127}.
 
     \subsubsection{Policy Iteration}\label{subsubsec:policy-iteration}
-    Policy iteration consist of 2 steps: \emph{policy evaluation} and \emph{policy improvement}. The policy prediction step, defined in \cref{par:policy-prediction}, is used to estimate the value function $v_{\pi}$ for a given policy $\pi$. The policy improvement step, defined in \cref{par:policy-improvement} is used to improve the policy $\pi$ by selecting the action that maximizes the value function $v_{\pi}$~\cite{sutton2018reinforcement}.
+    Policy iteration consists of 2 steps: \emph{policy evaluation} and \emph{policy improvement}. The policy prediction step, defined in \cref{par:policy-prediction}, is used to estimate the value function $v_{\pi}$ for a given policy $\pi$. The policy improvement step, defined in \cref{par:policy-improvement} is used to improve the policy $\pi$ by selecting the action that maximizes the value function $v_{\pi}$~\cite{sutton2018reinforcement}.
 
     \paragraph{Policy Prediction}\label{par:policy-prediction}
-    Policy evaluation, or prediction, is the process of computing the state-value function for an arbitrary policy. The state-value function, denoted as $v^\pi(s)$, represents the expected sum of discounted rewards from a given state $s$ when following policy $\pi$. If the dynamics of the environment are completely known, the policy evaluation can be formulated as a system of simultaneous linear equations, which can be solved iteratively using update rules based on the Bellman equation for $v^\pi$. This process involves finding successive approximations of the value function, starting from an initial approximation, and updating it according to the Bellman equation until convergence is achieved to $v_k(s) \approx v_{\pi}(s)$ with:
+    Policy evaluation, or prediction, is the process of computing the state-value function for an arbitrary policy. The state-value function denoted as $v^\pi(s)$, represents the expected sum of discounted rewards from a given state $s$ when following policy $\pi$. If the dynamics of the environment are completely known, the policy evaluation can be formulated as a system of simultaneous linear equations, which can be solved iteratively using update rules based on the Bellman equation for $v^\pi$. This process involves finding successive approximations of the value function, starting from an initial approximation, and updating it according to the Bellman equation until convergence is achieved to $v_k(s) \approx v_{\pi}(s)$ with:
     \begin{equation}
         v_{k+1}(s)=\sum_{a\in\mathcal{A}}\pi(a|s)\left(R(s,a)+\gamma\sum_{s'\in\mathcal{S}}P(s'|s,a)v_k(s')\right)
     \end{equation}
@@ -384,7 +386,7 @@
     \end{equation}
 
     \paragraph{Policy Improvement}\label{par:policy-improvement}
-    This equation is then the Bellman's equation for $q_{\pi}(s,a)$ and can be used in the Policy Improvement step to create a new policy. It should also be ensured that the new, deterministic policy is better or equal to the old policy, when for all states applies:
+    This equation is then Bellman's equation for $q_{\pi}(s,a)$ and can be used in the Policy Improvement step to create a new policy. It should also be ensured that the new, deterministic policy is better or equal to the old policy, when for all states apply:
     \begin{equation}
         q_{\pi}(s,\pi'(s))\geq v_{\pi}(s)
     \end{equation}
@@ -446,7 +448,7 @@
         \pi_*\xrightarrow{E}q_{\pi_*}
     \end{equation}
 
-    Since MC methods do not require knowledge of the environment dynamics, a non-deterministic policy should be used for episode generation to ensure exploration of all states and actions. A stochastic policy, such as the $\epsilon$-greedy approach, is commonly used in MC methods for exploration~\cite{FITMT25127}.
+    Since MC methods do not require knowledge of the environment dynamics, a non-deterministic policy should be used for episode generation to ensure the exploration of all states and actions. A stochastic policy, such as the $\epsilon$-greedy approach, is commonly used in MC methods for exploration~\cite{FITMT25127}.
 
     \paragraph{Epsilon-Greedy Policy Exploration}
     The \textbf{$\epsilon$-greedy} approach for exploration selects actions randomly according to:
@@ -457,14 +459,14 @@
             \frac{\epsilon}{|\mathcal{A}|}&\text{if }a\neq A^*\text{ for }a\in\mathcal{A}
         \end{cases}
     \end{equation}
-    where a greedy action is the action with the highest estimated action value according to the current policy. The process of modifying action values in the policy evaluation step and setting a new policy in the policy improvement step is referred to as training the RL agent. It follows from \cref{eq:mc} that MC methods use the $G_t$ return of an episode, which can only be computed when the episode is completed. Therefore, MC methods can only be used in environments with finite, i.e. always ending, episodes. This strategy is called \textbf{Bootstrapping}, when the methods do not need to wait for the end of the episode, but only need \emph{n-steps} to improve the policy, the whole strategy is called \emph{n-steps Bootstrapping} and next method \emph{Temporal-Difference} uses this strategy to improve convergence to optimal value-function~cite{FITMT25127, sutton2018reinforcement, rl-course-david-silver}.
+    where a greedy action is an action with the highest estimated action value according to the current policy. The process of modifying action values in the policy evaluation step and setting a new policy in the policy improvement step is referred to as training the RL agent. It follows from \cref{eq:mc} that MC methods use the $G_t$ return of an episode, which can only be computed when the episode is completed. Therefore, MC methods can only be used in environments with finite, i.e. always ending, episodes. This strategy is called \textbf{Bootstrapping}, when the methods do not need to wait for the end of the episode, but only need \emph{n-steps} to improve the policy, the whole strategy is called \emph{n-steps Bootstrapping} and next method \emph{Temporal-Difference} uses this strategy to improve convergence to optimal value-function~cite{FITMT25127, sutton2018reinforcement, rl-course-david-silver}.
 
     \subsection{Temporal-Difference Methods}\label{subsec:temporal-difference-methods}
 
     Temporal-difference (TD) learning is a fundamental concept in reinforcement learning that combines ideas from Monte Carlo and dynamic programming (DP). TD methods allow for learning from raw experience without a model of the environment's dynamics, similar to Monte Carlo methods, but also update estimates based on other learned estimates, without waiting for a final outcome (like DP methods) using \emph{n-step Bootstrapping}, defined in \cref{subsubsec:n-step-bootstrapping}. The relationship between TD, DP, and Monte Carlo is a recurring theme in reinforcement learning theory, and these ideas can be blended and combined in various ways. Both TD and Monte Carlo methods are used for policy evaluation, estimating the value function for a given policy. However, TD methods differ from Monte Carlo methods in that they update their value function estimates based on the non-terminal states observed in the experience, and they do not have to wait until the end of the episode to determine the increment to the value function. Instead, TD methods only need to wait until the next time step to form a target and make a useful update using the observed reward and the estimate of the value function for the next state~\cite{rl-course-david-silver, sutton2018reinforcement}.
 
     \subsubsection{n-step Bootstrapping}\label{subsubsec:n-step-bootstrapping}
-    The n-step bootstrapping is a strategy to improve the convergence of the value-function. The idea is to use the value-function to estimate the value-function, instead of using the return of the episode. The n-step bootstrapping for \emph{n-step return} is defined as:
+    The n-step bootstrapping is a strategy to improve the convergence of the value function. The idea is to use the value-function to estimate the value function, instead of using the return of the episode. The n-step bootstrapping for \emph{n-step return} is defined as:
     \begin{equation}
         G_{t:t+n}=R_{t+1}+\gamma R_{t+2}+\gamma^2R_{t+3}+\cdots+\gamma^{n-1}R_{t+n}+\gamma^nV(S_{t+n})
     \end{equation}
@@ -505,12 +507,12 @@
     In addition to TD(0), there are also other variations of TD methods such as TD($\lambda$), which is a family of methods that use eligibility traces to combine TD(0) updates with Monte Carlo-like updates. TD($\lambda$) methods have a parameter $\lambda$ that controls the trade-off between the bias and variance of the updates. When $\lambda$ is set to 0, TD($\lambda$) reduces to TD(0), and when $\lambda$ is set to 1, TD($\lambda$) reduces to Monte Carlo updates. TD($\lambda$) methods update the value function for not only the current state but also for all the states visited in the episode, weighted by their eligibility traces, defined in \verb|\cref{TODO}|, which are updated at each time step. The eligibility trace keeps track of the recent history of state visits and decays over time with a decay factor $\lambda$, which determines the credit assignment to different states~\cite{sutton2018reinforcement}.
 
     \subsubsection{On-Policy Learning (SARSA)}\label{sec:td-sarsa}
-    The TD methods use the action-value function for the evaluation step and iteratively determine $q_\pi(s,a)$. A TD method that implements this practically is called SARSA and adjusts the action-value function in the evaluation step for a state-action pair at each time-step of the episode as:
+    The TD methods use the action-value function for the evaluation step and iteratively determine $q_\pi(s,a)$. A TD method that implements this practice is called SARSA and adjusts the action-value function in the evaluation step for a state-action pair at each time-step of the episode as:
     \begin{equation}
         q_{t+1}(s,a)=q_t(s,a)+\alpha\left(R_{t+1}+\gamma q_t(s',a')-q_t(s,a)\right)
     \end{equation}
 
-    The TD methods, such as SARSA, utilize the action-value function for evaluating and updating the action-value estimates. SARSA adjusts the action-value function at each time-step of the episode based on the sequence of transitions \( (s, a, r, s', a') \) generated by the environment dynamics and the current epsilon-greedy policy. The updated action-value function is used to determine the new policy at the next time-step. This process is repeated iteratively until optimal action-value and policy functions are found. SARSA is an on-policy algorithm, as it evaluates and improves the same policy used for selecting actions:
+    The TD methods, such as SARSA, utilize the action-value function for evaluating and updating the action-value estimates. SARSA adjusts the action-value function at each time step of the episode based on the sequence of transitions \( (s, a, r, s', a') \) generated by the environment dynamics and the current epsilon-greedy policy. The updated action-value function is used to determine the new policy at the next time step. This process is repeated iteratively until optimal action value and policy functions are found. SARSA is an on-policy algorithm, as it evaluates and improves the same policy used for selecting actions:
     \begin{equation}
         q_{t+1}(s,a)=q_t(s,a)+\alpha\left(R_{t+1}+\gamma\max_{a^*}q_t(s',a^*)-q_t(s,a)\right)
     \end{equation}
@@ -529,76 +531,109 @@
     \begin{figure}[h!]
         \centering
         \includegraphics[width=0.9\textwidth]{image/q-learning}
-        \caption{Q-learning table. How the training process updates the Q-table and plan moves~\cite{article}.}
+        \caption{Q-learning table. How the training process updates the Q-table~\cite{article}.}
         \label{fig:q-learning}
     \end{figure}
 
     \subsection{Function Approximation}\label{subsec:function-approximation}
-    The Monte Carlo and Temporal Difference algorithms discussed earlier are known as tabular methods because they rely on a matrix of action returns and values of dimension $|\mathcal{S}|\mathcal{A}|$. However, when the number of states or actions is extremely large, as in the case of \emph{Portfolio Allocation}, where the state space is the entire stock market, which may include data from thousands of stocks, the economic situation of the entire world, and the current political situation, all of these things need to be taken into account, so the state space is huge. The agent managing which assets it allocates funds to uses these observations, which very often change every signle second, so this matrix becomes excessively huge. This poses a problem in terms of memory requirements, and it becomes almost impossible for an agent using MC or TD methods to comprehensively evaluate all the states and derive a policy~\cite{sutton2018reinforcement}.
+    The Monte Carlo and Temporal Difference algorithms discussed earlier are known as tabular methods because they rely on a matrix of action returns and values of dimension $|\mathcal{S}|\mathcal{A}|$. However, when the number of states or actions is extremely large, as in the case of \emph{Portfolio Allocation}, where the state space is the entire stock market, which may include data from thousands of stocks, the economic situation of the entire world, and the current political situation, all of these things need to be taken into account, so the state space is huge. The agent managing which assets it allocates funds to uses these observations, which very often change every single second, so this matrix becomes excessively huge. This poses a problem in terms of memory requirements, and it becomes almost impossible for an agent using MC or TD methods to comprehensively evaluate all the states and derive a policy~\cite{sutton2018reinforcement, FITMT25127}.
 
-    Approximate Solution Methods, which utilize parametrized function approximators such as decision trees, regression methods, or neural networks, differ from Tabular Methods in that they do not rely on matrices to estimate action-value returns. These methods have emerged as a solution approach to the limitations of Tabular Methods, as they are more memory efficient and capable of generalization. When neural networks with hidden layers are used as function approximators, the resulting algorithms are classified as Deep Reinforcement Learning (DRL)~\cite{FITMT25127}.
+    Approximate Methods, which utilize parametrized function approximators such as decision trees, regression methods, or neural networks, differ from Tabular Methods in that they do not rely on matrices to estimate action-value returns. These methods have emerged as a solution approach to the limitations of Tabular Methods, as they are more memory efficient and capable of generalization. When neural networks are used as function approximators, then these algorithms are classified as Deep Reinforcement Learning (DRL)~\cite{FITMT25127}.
 
-    The Approximate Solution Methods use a function approximator $f_{\bm{\theta}}$ to approximate the action-value function \(q_\pi(s,a)\) or the state-value function \(v_\pi(s)\) as:
-
-    \(\hat{v}(s,w)\approx v_{\pi}(s)\) or \(\hat{q}(s,a,w)\approx q_{\pi}(s,a)\), where \(w\in\mathbb{R}^d,d\in\mathbb{N}\)
-
-    The weight vector $\mathbf{w}$ represents the weight vectors of the neural network in the context of iterative Stochastic Gradient Descent (SGD) procedure. The loss function $E(\mathbf{w})$ is defined over this weight vector, and the weight vector is updated during SGD as long as the error continuously decreases, i.e., until $(s, a, \mathbf{w}) \approx q_{\pi}(s, a)$.
-
-    For the loss function, Mean Square Error (MSE) can be used, which is commonly used in regression optimization problems. In this case, $\mathcal{T}$ is the set of training data from which the target variable $y$ is taken. However, unlike in classical supervised learning, where the target variable is known, here $y = q_{\pi}(s,a)$, so the target is assumed to be the loss function. Thus, for function approximators applied to MC methods and SGD assumed as the optimization algorithm, the loss function for one-step SARSA is defined as:
-
+    The mean square error is defined as:
     \begin{equation}
-        \frac{1}{2}\left(R_{t+1}+\gamma q_{\pi}(s',a',\mathbf{w})-q_{\pi}(s,a,\mathbf{w})\right)^2
+        \overline{VE}(\bm{w})\doteq\sum_{s\in\mathcal{S}}\mu(s)\left[v_{\pi}(s)-\hat{v}(s,\bm{w})\right]
     \end{equation}
+
+    where \(\mu(s)\) is the probability of visiting state \(s\), and \(\hat{v}(s,\bm{w})\) is the output of the function approximator for state \(s\) and weight vector \(\bm{w}\).
+    The objective is to minimize the error between the target output and the output of the function approximator, this is done by minimizing the $\overline{VE}(s)$.
+
+    \subsubsection{Stochastic Gradient Descent}\label{subsubsec:stochastic-gradient-descent}
+    Stochastic gradient descent (SGD) is a widely used method for function approximation in value prediction. It is well-suited for online reinforcement learning. In SGD, the weight vector is updated at each time step based on a small step in the direction of the negative gradient of the squared error for a single example. The step size is controlled by a positive parameter called the learning rate. The target output for each example may be a noisy approximation or a bootstrapping target~\cite{sutton2018reinforcement}.
+
+    The Approximate Solution Methods use a \emph{function approximator} to approximate the action-value function \(q_\pi(s,a)\) or the state-value function \(v_\pi(s)\) as:
+    \(\hat{v}(s,\bm{w})\approx v_{\pi}(s)\) or \(\hat{q}(s,a,\bm{w})\approx q_{\pi}(s,a)\), where \(\bm{w}\in\mathbb{R}^d,d\in\mathbb{N}\)
+
+    The Gradient-descent update for state-value prediction is:
+    \begin{equation}
+        \label{eq:sgd}
+        \bm{w}_{t+1}=\bm{w}_t-\alpha\left[v_\pi(S_t)-\hat{v}(S_t, \bm{w})\right]\nabla \hat{v}(S_t, \bm{w})
+    \end{equation}
+    where \(\alpha\) is the learning rate, and \(\nabla \hat{v}(S_t, \bm{w})\) is the gradient of the function approximator with respect to the weight vector \(\bm{w}\).
+
+    The \cref{eq:sgd} can be extended to n-step returns:
+    \begin{equation}
+        \begin{split}
+            \bm{w}_{t+n}\doteq\bm{w}_{t+n-1}+\alpha\left[G_{t:t+n}-\hat{v}(S_t,\bm{w}_{t+n-1})\right]\nabla\hat{v}(S_t,\bm{w}_{t+n-1})
+        \end{split}
+    \end{equation}
+    where the n-step return is:
+    \begin{equation}
+        \begin{split}
+            G_{t:t+n}\doteq R_{t+1}+\gamma R_{t+2}+\dots+\gamma^{n-1}R_{t+n}+\gamma^n\hat{v}(S_{t+n},\bm{w}_{t+n-1})
+        \end{split}
+    \end{equation}
+
+    On the other hand the Gradient-descent update for action-value prediction is:
+    \begin{equation}
+        \bm{w}_{t+1}=\bm{w}_t+\alpha \left[U_t-\hat{q}(S_t,A_t,\bm{w}_t)\right]\nabla \hat{q}(S_t,A_t,\bm{w}_t)
+    \end{equation}
+    where the $U_t$ is the TD target, which is the sum of the reward and the discounted value of the next state, and the $\nabla \hat{q}(S_t,A_t,\bm{w}_t)$ is the gradient of the function approximator with respect to the weight vector \(\bm{w}\)~\cite{sutton2018reinforcement}.
 
     The weights for one-step SARSA are updated using the following rule:
-
     \begin{equation}
-        \mathbf{w}_{t+1}=\mathbf{w}_t+\alpha\left(R_{t+1}+\gamma q_{\pi}(s',a',\mathbf{w})-q_{\pi}(s,a,\mathbf{w})\right)\nabla q_{\pi}(s,a,\mathbf{w})
+        \bm{w}_{t+1}=\bm{w}_t+\alpha\left[R_{t+1}+\gamma q_{\pi}(S_{t+1},A_{t+1},\bm{w})-q_{\pi}(S_t,A_t,\bm{w})\right]\nabla q_{\pi}(S_t,A_t,\bm{w})
+    \end{equation}
+    and can be extended to \emph{n-step SARSA}:
+    \begin{equation}
+        \bm{w}_{t+1}=\bm{w}_t+\alpha\left[G_{t:t+n}-\hat{q}_{\pi}(S_t,A_t,\bm{w})\right]\nabla\hat{q}_{\pi}(S_t,A_t,\bm{w})
     \end{equation}
 
-    The update is performed in a way that each vector's component responsible for a part of the error is updated accordingly, with a higher share of the error being adjusted if the slope of the error with respect to that component is large. The weights are adjusted until the difference between two subsequent updates is less than a defined $\varepsilon$ value (typically a small number), at which point $q_{\pi}$ is considered found and the optimal policy can be derived. In practice, early-stopping is often used in deep learning instead of $\varepsilon$.
 
-    Now that the vectors of state-action values are no longer represented as a look-up table, they can be written as an approximation by the neural network. Additionally, the $\varepsilon$-greedy approach for action selection can be applied in the policy improvement step~\cite{FITMT25127}.
+    The update is performed in a way that each vector's component responsible for a part of the error is updated accordingly, with a higher share of the error being adjusted if the slope of the error with respect to that component is large. The weights are adjusted until the difference between two subsequent updates is less than a defined $\varepsilon$ value (typically a small number), at which point $q_{\pi}$ is considered found and the optimal policy can be derived. In practice, early stopping is often used in deep learning instead of $\varepsilon$. Now that the vectors of state-action values are no longer represented as a look-up table, they can be written as an approximation by the neural network. Additionally, the $\varepsilon$-greedy approach for action selection can be applied in the policy improvement step~\cite{FITMT25127}.
 
     \begin{equation}
-        \mathbf{\hat{y}} = \begin{pmatrix}
-                               \hat{q}(s,\textcolor[RGB]{51,204,51}{a_1},\mathbf{w}) \\
-                               \vdots                                                \\
-                               \hat{q}(s,\textcolor[RGB]{51,204,51}{a_n},\mathbf{w})
+        \bm{\hat{y}} = \begin{pmatrix}
+                           \hat{q}(s,\textcolor[RGB]{51,204,51}{a_1},\bm{w}) \\
+                           \textcolor[RGB]{51,204,51}{\vdots}                \\
+                           \hat{q}(s,\textcolor[RGB]{51,204,51}{a_n},\bm{w})
         \end{pmatrix}
     \end{equation}
 
 
     \section{Policy-based learning}\label{sec:policy-based}
-    Methods that directly parameterize the policy, analogous to parameterizing state-value and action-value functions in subsection 2.3.4, are discussed in this section. Subsection 2.4.1 introduces and explains stochastic policy gradient methods. Subsequent subsections discuss various stochastic policy-gradient algorithms. Subsection 2.4.3 elaborates on the concept of actor-critic methods, while subsection 2.4.4 explains trust-region methods and the policy gradient algorithm (PPO) used in Chapter 4.
+    Methods that directly parameterize the policy, analogous to parameterizing state-value and action-value functions in \cref{subsec:function-approximation}, are discussed in this section.
 
-    All algorithms that use a parameterized policy are referred to as policy gradient methods. We can represent the policy with a parameter vector \( \bm{\theta} \in \mathbb{R}^d \), where \( d \in \mathbb{N} \). Then, extending Definition 2.6, we can formulate the probability of executing action \( a \) in state \( s \) with parameters \( \bm{\theta} \) at time-step \( t \) of policy \( \pi_{\bm{\theta}} \) as:
-%
+    \subsection{Stochastic Policy Gradient Methods}\label{subsec:policy-gradient}
+    All algorithms that use a parameterized policy are referred to as policy gradient methods. We can represent the policy with a parameter vector \( \bm{\theta} \in \mathbb{R}^d \), where \( d \in \mathbb{N} \). Then, extending \cref{eq:policy}, we can formulate the probability of executing action \( a \) in state \( s \) with parameters \( \bm{\theta} \) at time-step \( t \) of policy \( \pi_{\bm{\theta}} \) as:
     \begin{equation}
         \pi(a|s,\bm{\theta})=P(A_t=a|S_t=s,\bm{\theta}_t=\bm{\theta})
     \end{equation}
 
     If a performance measure \( J(\bm{\theta}) \) is introduced on the parameter vector, then the policy gradient methods can iteratively update the parameter vector using the gradient ascent procedure as follows:
-
     \begin{equation}
-        \bm{\theta}_{t+1}=\bm{\theta}_t+\alpha\nabla J(\bm{\theta}_t)
+        \bm{\theta}_{t+1}=\bm{\theta}_t+\alpha\widehat{\nabla J(\bm{\theta}_t)}
     \end{equation}
+    where $\widehat{\nabla J(\bm{\theta}_t)}$ is a stochastic estimate whose expectation is the true gradient of \( J(\bm{\theta}) \) concerning \( \bm{\theta} \).
 
-    Deriving a loss function for the performance measure in policy gradient methods is not as straightforward as in the case of value-based methods. Similar to the distinction between MC methods and TD methods, we need to differentiate between finite and infinite episodes. For both cases, the theorem on policy gradients provides a way to compute the gradient \( \nabla J(\bm{\theta}) \).
+    Deriving a loss function for the performance measure in policy gradient methods is not as straightforward as in the case of value-based methods. Similar to the distinction between MC methods and TD methods, we need to differentiate between finite and infinite episodes. For both cases, the theorem on policy gradients provides a way to compute the gradient \( \nabla J(\bm{\theta}) \)~\cite{sutton2018reinforcement, FITMT25127}.
 
-    For finite episodes, we can measure the quality of the parameter vector based on the return of the first state of the episode. The policy gradient for
+    \subsubsection{The Policy Gradient Theorem}\label{subsubsec:policy-gradient-theorem}
+    For finite episodes, we can measure the quality of the parameter vector based on the return of the first state of the episode. The policy gradient theorem for the episodic case establishes the gradient of the return of the first state of the episode with respect to the parameter vector.
+
+    First note that the gradient of the state-value function can be
+    written in terms of the action-value function as~\cite{sutton2018reinforcement}:
+
 
     \begin{equation}
         \begin{split}
             \nabla v_{\pi_{\bm{\theta}}}(s)&=\nabla\left(\sum_{a}\pi(a|s,\bm{\theta})q_{\pi_{\bm{\theta}}}(s,a)\right)\\
             &=\sum_{a}(\nabla\pi(a|s,\bm{\theta})q_{\pi_{\bm{\theta}}}(s,a)+\pi(a|s,\bm{\bm{\theta}})\nabla q_{\pi_{\bm{\theta}}}(s,a))\\
             &\mspace{10mu}\vdots\\
-            &=\sum_{s}\sum_{k=0}^{\infty}\mathbb{P}(s_0\rightarrow s,k,\pi_{\bm{\theta}})\sum_{a}\nabla\pi(a|s,\bm{\theta})q_\pi(s,a)
+            &=\sum_{s}\sum_{k=0}^{\infty}Pr(s_0\rightarrow s,k,\pi_{\bm{\theta}})\sum_{a}\nabla\pi(a|s,\bm{\theta})q_{\pi_\theta}(s,a)
         \end{split}
     \end{equation}
-
-
-    where $P(s \rightarrow s', k, \pi_{\bm{\theta}})$ is the probability of a state transition from $s$ to $s'$ in $k$ steps under policy $\pi(a | s, \theta)$. This probability thus serves as a weighting of the gradient of the return. Moreover, if $\eta(s) = \sum_{k=0}^{\infty} P(s \rightarrow s', k, \pi_{\theta})$ is defined, it can be further written:
+    where $Pr(s_0 \rightarrow s, k, \pi_{\bm{\theta}})$ is the probability of a state transition from $s$ to $s'$ in $k$ steps under policy $\pi(a | s, \theta)$. This probability thus serves as a weighting of the gradient of the return. Moreover, if $\eta(s) = \sum_{k=0}^{\infty} P(s \rightarrow s', k, \pi_{\theta})$ is defined, it can be further written:
 
     \begin{equation}
         \label{eq:policy_gradient}
@@ -612,25 +647,34 @@
         \end{split}
     \end{equation}
 
-    The gradient of \(J(\bm{\theta})\) is proportional to the probability sum of \(\sum_s \mu(s)\), which denotes the likelihood that the agent is in state \(s\), multiplied by the sum of weighted gradients of the probabilities for the selection of actions. The proportionality constant is represented as \(\sum_s \eta(s)\).
+    The \cref{eq:policy_gradient} shows, that \(J(\bm{\theta})\) is proportional to the probability sum of \(\sum_s \mu(s)\), which denotes the likelihood that the agent is in the state \(s\), multiplied by the sum of weighted gradients of the probabilities for the selection of actions. The proportionality constant is represented as \(\sum_s \eta(s)\). Practically, this equation provides insight that when the agent is in a state, it should move in the direction of weights that represent the greatest increase in the probability of selecting an action in that state, weighted by the expected return for that state and action~\cite{FITMT25127}.
 
-    Practically, this equation provides insight that when the agent is in a state, it should move in the direction of weights that represent the greatest increase in the probability of selecting an action in that state, weighted by the expected return for that state and action~\cite{FITMT25127}.
-
-    In the case of infinite episodes, the performance measure \(J(\bm{\theta})\) is the average reward per time-step. The gradient \(\nabla J(\bm{\theta})\) can then be determined by the theorem of policy gradients for infinite episodes:
+    In the case of infinite episodes, the performance measure \(J(\bm{\theta})\) is the average reward per time-step. The gradient \(\nabla J(\bm{\theta})\) can then be determined by the theorem of policy gradients for infinite episodes, see \cref{eq:policy_gradient_infinite}, thus the calculations of the gradient for the infinite case correspond to those of the episodic case.
     \begin{equation}
-        \nabla J(\bm{\theta})=\sum_s\mu(s)\sum_a\nabla\pi(a|s,\bm{\theta})q_\pi(\bm{\theta})(s,a)
-    \end{equation}
-    The calculations of the gradient for the infinite case correspond to those of the episodic case.
-
-    \subsection{REINFORCE - Monte Carlo Policy Gradient}\label{subsec:monte-carlo-policy-gradient-methods}
-    The REINFORCE algorithm, also known as Monte-Carlo Policy Gradient, is a purely policy-based approach that utilizes the return of complete finite episodes for parameter updates. Similar to classical Monte Carlo (MC) methods, it adjusts the return gradually with each time-step, unlike MC methods where the return is updated at the end of each episode. In this algorithm, the weight vector $\bm{\theta}$ is updated using the product of the return $G_t$ and the gradient vector $\nabla \ln \pi(a | s, \bm{\theta})$, which represents the steepest increase in the probability of selecting action $a$ in state $s$. This weight adjustment ensures that $\bm{\theta}$ is updated with the scaling factor $G_t$.
-
-    \begin{equation}
-        \bm{\theta}_{t+1}=\bm{\theta}_{t}+\alpha\gamma^{t}G_t\nabla\ln\pi(a|s,\bm{\theta}_t)
+        \label{eq:policy_gradient_infinite}
+        \nabla J(\bm{\theta})=\sum_s\mu(s)\sum_a\nabla\pi(a|s,\bm{\theta})q_{\pi_\theta})(s,a)
     \end{equation}
 
+    \subsection{REINFORCE: Monte Carlo Policy Gradient}\label{subsec:monte-carlo-policy-gradient-methods}
+    The REINFORCE algorithm, also known as Monte-Carlo Policy Gradient, is a purely policy-based approach that utilizes the return of complete finite episodes for parameter updates. Similar to classical Monte Carlo (MC) methods, it adjusts the return gradually with each time step, unlike MC methods where the return is updated at the end of each episode. In this algorithm, the weight vector $\bm{\theta}$ is updated using the product of the return $G_t$ and the gradient vector $\nabla \ln \pi(a | s, \bm{\theta})$, which represents the steepest increase in the probability of selecting action $a$ in state $s$. This weight adjustment ensures that $\bm{\theta}$ is updated with the scaling factor $G_t$~\cite{FITMT25127, sutton2018reinforcement, rl-course-david-silver}.
 
-    The algorithm employs stochastic gradient ascent for optimization, as the weights are updated at each time-step. Depending on whether the action space of the environment is discrete or continuous, the policy parametrizations described in the previous subsection can be used for the gradient $\nabla\ln\pi(a|s,\bm{\theta}_t)$. One drawback of this algorithm is the high variability in returns between time-steps and the associated "slowness" of the learning process. This variance arises from the non-adaptive and loose formulation of the scaling factor.
+    \begin{equation}
+        \begin{split}
+            \bm{\theta}_{t+1}&\doteq\bm{\theta}_{t}+\alpha G_t \frac{\nabla\pi(A_t|S_t,\bm{\theta}_t)}{\pi(A_t,S_t,\bm{\theta}_t)}\\
+            \bm{\theta}_{t+1}&\doteq\bm{\theta}_{t}+\alpha G_t \nabla\ln\pi(A_t|S_t,\bm{\theta}_t)
+        \end{split}
+    \end{equation}
+    and the final equation used in the algorithm looks like this (including discount factor):
+    \begin{equation}
+        \begin{split}
+            \bm{\theta}_{t+1}&\doteq\bm{\theta}_{t}+\alpha\gamma^t G_t \nabla\ln\pi(A_t|S_t,\bm{\theta}_t)
+        \end{split}
+        \label{eq:REINFORCE}
+    \end{equation}
+
+    The algorithm employs stochastic gradient ascent for optimization, as the weights are updated at each time step. Depending on whether the action space of the environment is discrete or continuous, the policy parametrizations described in the previous subsection can be used for the gradient $\nabla\ln\pi(a|s,\bm{\theta}_t)$. One drawback of this algorithm is the high variability in returns between time steps and the associated "slowness" of the learning process. This variance arises from the non-adaptive and loose formulation of the scaling factor.
+
+    See \cref{alg:REINFORCE} for the pseudocode of the REINFORCE algorithm.
 
     \subsection{Actor-Critic Policy Gradient Methods}\label{subsec:actor-critic-policy-gradient-methods}
     The Actor-Critic Policy Gradient methods utilize the long-term expected return for an action in a state, denoted as $q_{\pi_{\bm{\theta}}}(s, a)$, as a scaling factor for the largest increase in the probability of selecting that action in the given state. In order to address the issues of high variance and slow learning in REINFORCE, the theorem on policy gradients is extended to include a baseline $b(s)$ that acts adaptively on the scaling factor for each state. The policy gradient update formula can be written as:
@@ -639,7 +683,7 @@
         \nabla J(\bm{\theta})\propto\sum\mu(s)\sum(q_\pi(\bm{\theta})(s,a)-b(s))\nabla\pi(a|s,\bm{\theta})
     \end{equation}
 
-    If the baseline is set to zero for all states, the initial \cref{eq:policy_gradient} is obtained. Alternatively, a vector of constants can also be used as the baseline. The concept of Actor-Critic methods can be formulated, when a function approximator with bootstrapping, such as TD(0) or SARSA(0), is used as the baseline. In this case, the Critic computes the scaling factor and the Actor adjusts the policy parameter $\bm{\bm{\theta}}$. The weight update formula for the Actor network is then as follows:
+    If the baseline is set to zero for all states, the initial \cref{eq:policy_gradient} is obtained. Alternatively, a vector of constants can also be used as the baseline. The concept of Actor-Critic methods can be formulated, when a function approximator with bootstrapping, such as TD(0) or SARSA(0), is used as the baseline. In this case, the Critic computes the scaling factor and the Actor adjusts the policy parameter $\bm{\bm{\theta}}$. The weight update formula for the Actor-network is then as follows:
     \begin{equation}
         \begin{split}
             \bm{\theta^{t+1}}&=\bm{\theta}_{t}+\alpha(q_{\pi_{\bm{\theta}}}(s,a)-b(s))\frac{\nabla_{\pi}(a|s,\bm{\theta_{t}})}{\pi(a|s,\bm{\theta_{t}})} \\
@@ -653,79 +697,70 @@
         \end{split}
     \end{equation}
 
+%
+%    \section{Model-based}\label{sec:model-based}
+%    As mentioned in Section~\cref{sec:rl-introduction}, RL algorithms can be broadly categorized into two main types: model-free and model-based. Model-based methods rely on \emph{planning} as their primary component, while model-free methods rely on \emph{learning}~\cite{sutton2018reinforcement}. Despite their distinctions, both approaches involve computing value functions and using them to update approximate value functions based on future events.
+%
+%    One popular approach is to use a probabilistic model of the environment, which can be represented as a transition function $P(s_{t+1}|s_t, a_t)$ that describes the probability of transitioning from state $s_t$ to state $s_{t+1}$ when taking action $a_t$. Some popular probabilistic model-based RL methods include Monte Carlo Tree Search, Neural Network Dynamics, and Probabilistic Ensembles with Trajectory Sampling.
+%
+%    Another approach in model-based RL is to use a learned deterministic model of the environment, which can be represented as a function $f(s_t, a_t)$ that directly maps states and actions to the next states. Deterministic model-based RL methods, such as World Models, learn an encoder to represent states, a recurrent neural network (RNN) to model dynamics, and a decoder to generate predicted next states.
+%
+%    \subsection{Planning}\label{subsec:planning}
+%    A model of the environment refers to anything that an agent can use to predict the outcome of its actions. It can be either stochastic, where there are multiple possible outcomes with associated probabilities, or deterministic, where the outcome is fixed. Distribution models provide a description of all possible outcomes and their probabilities, while sample models generate a single outcome sampled from the probabilities.
+%
+%    Planning, in the context of artificial intelligence, refers to a computational process that takes a model of the environment as input and produces or improves a policy for interacting with the environment. There are two main approaches to planning: \emph{state-space} planning and \emph{plan-space} planning. In \emph{state-space} planning, the focus is on searching through the \textbf{space of states} to find an optimal policy or path to a goal. Value functions are computed over states to guide the search. On the other hand, in \emph{plan-space} planning, the search is conducted through the \textbf{space of plans}, where operators transform one plan into another, and value functions, if any, are defined over the space of plans. Plan-space methods are challenging to efficiently apply to the stochastic sequential decision problems that are the primary focus in reinforcement learning~\cite{sutton2018reinforcement}.
+%
+%    The common structure in \emph{state-space} planning and learning methods, as presented in this chapter, is that value functions are computed as intermediate steps using simulated experience. Value functions are used to estimate the expected future rewards of different actions or states, and they play a key role in improving the policy of an agent. A simulated experience is generated by using the model to simulate the environment, and the agent can update its value functions based on this simulated experience to guide its decision-making process.
+%
+%    \begin{center}
+%        \begin{tikzpicture}[auto]
+%% Nodes
+%            \node[] (s) {model};
+%            \node[right=1cm of s] (a) {simulated experience};
+%            \node[right=2cm of a] (r) {values};
+%            \node[right=1cm of r] (s_p) {policy};
+%
+%% Arrows
+%            \draw[thick, ->] (s) -- (a);
+%            \draw[thick, ->] (a) -- (r) node[midway, anchor=south] {backups};
+%            \draw[thick, ->] (r) -- (s_p);
+%        \end{tikzpicture}
+%    \end{center}
+%
+%    Dynamic programming methods fit the structure of making sweeps through the space of states, generating possible transitions, computing backed-up values, and updating state estimates. Other state-space planning methods also fit this structure, with differences in updates, order, and retention of backed-up information. Planning methods are related to learning methods in estimating value functions through backing-up operations. Learning methods use real experience from the environment, while planning uses simulated experience from a model. Ideas and algorithms can be transferred between planning and learning. Planning in small, incremental steps allows for efficient interruption and redirection, which is beneficial for intermixing planning with acting and learning the model. Planning in small steps may be the most efficient approach for large planning problems~\cite{sutton2018reinforcement}.
+%
+%    See \cref{alg:random-sample-one-step-tabular-q-planning}
+%
+%    \subsection{Dyna-Q}\label{sec:dyna-q}
+%    Dyna-Q includes all of the processes shown in the \cref{fig:dyna-q-learning}: planning, acting, model-learning, and direct RL—all occurring continually. The Dyna-Q algorithm is a learning method that combines both planning and direct RL approaches (MC and TD). Planning involves optimizing strategies through simulations using a learned environment model, while direct RL focuses on improving the value and policy functions using real experiences from interactions with the environment, as depicted in \cref{fig:dyna-q-learning}. The Dyna agent interacts with the real environment to collect empirical data and iteratively improves its policy using \cref{eq:q-learning}. At the same time, an environment model is learned using real experiences, and simulation data generated by the model are used to update the action-value function using the Q-Learning update method.
+%
+%    In tasks such as path planning, obtaining real experiences from interactions with the environment can be costly and time-consuming. However, using the learned environment model to generate simulation experiences is faster and more convenient, which can reduce the training time of the algorithm. See the~\cref{alg:dyna-q}.
+%
+%    \begin{figure}
+%        \centering
+%        \includegraphics[width=0.5\textwidth]{image/dyna-q-learning}
+%        \caption{Dyna-Q learning process.}
+%        \label{fig:dyna-q-learning}
+%    \end{figure}
+%
+%    \subsection{Trajectory Sampling}\label{subsec:trajectory-sampling}
+%
+%    \subsection{Summary}\label{subsec:summary}
+%
+%    Model-based RL offers several advantages over model-free methods. One major advantage is sample efficiency, as the agent can use the learned model of the environment to plan and generate simulated trajectories for learning, reducing the need for costly real-world interactions. Additionally, model-based RL can enable the agent to handle complex, high-dimensional state spaces and long-horizon tasks more effectively.
+%
+%    However, model-based RL also faces challenges. One challenge is the accuracy of the learned model, as any errors in the model can lead to suboptimal policies. Another challenge is the computational cost of planning and decision-making using the learned model, as it requires additional computation compared to direct action selection in model-free methods.
+%
+%    In conclusion, model-based RL is a promising approach that can offer sample-efficient learning and improved performance in complex environments. Various methods, such as probabilistic models and deterministic models, have been proposed in the literature. Despite some challenges, model-based RL continues to be an active area of research in machine learning.
+%
+%
+%    \section{Exploration vs. Exploitation}\label{sec:exploration-vs-exploitation}
+%
+%    \subsection{Greedy}\label{subsec:greedy}
+%
+%    \subsection{Epsilon-Greedy}\label{subsec:epsilon-greedy}
+%
+%    \subsection{Upper Confidence Bound}\label{subsec:upper-confidence-bound}
 
-    \section{Model-based}\label{sec:model-based}
-    As mentioned in Section~\cref{sec:rl-introduction}, RL algorithms can be broadly categorized into two main types: model-free and model-based. Model-based methods rely on \emph{planning} as they primary component, while model-free methods rely on \emph{learning}~\cite{sutton2018reinforcement}. Despite their distinctions, both approaches involve computing value functions and using them to update approximate value functions based on future events.
-
-    One popular approach is to use a probabilistic model of the environment, which can be represented as a transition function $P(s_{t+1}|s_t, a_t)$ that describes the probability of transitioning from state $s_t$ to state $s_{t+1}$ when taking action $a_t$. Some popular probabilistic model-based RL methods include Monte Carlo Tree Search, Neural Network Dynamics, and Probabilistic Ensembles with Trajectory Samplin.
-
-    Another approach in model-based RL is to use a learned deterministic model of the environment, which can be represented as a function $f(s_t, a_t)$ that directly maps states and actions to next states. Deterministic model-based RL methods, such as World Models, learn an encoder to represent states, a recurrent neural network (RNN) to model dynamics, and a decoder to generate predicted next states.
-
-    \subsection{Planning}\label{subsec:planning}
-    A model of the environment refers to anything that an agent can use to predict the outcome of its actions. It can be either stochastic, where there are multiple possible outcomes with associated probabilities, or deterministic, where the outcome is fixed. Distribution models provide a description of all possible outcomes and their probabilities, while sample models generate a single outcome sampled from the probabilities.
-
-    Planning, in the context of artificial intelligence, refers to a computational process that takes a model of the environment as input and produces or improves a policy for interacting with the environment. There are two main approaches to planning: \emph{state-space} planning and \emph{plan-space} planning. In \emph{state-space} planning, the focus is on searching through the \textbf{space of states} to find an optimal policy or path to a goal. Value functions are computed over states to guide the search. On the other hand, in \emph{plan-space} planning, the search is conducted through the \textbf{space of plans}, where operators transform one plan into another, and value functions, if any, are defined over the space of plans. Plan-space methods are challenging to efficiently apply to the stochastic sequential decision problems that are the primary focus in reinforcement learning~\cite{sutton2018reinforcement}.
-
-    The common structure in \emph{state-space} planning and learning methods, as presented in this chapter, is that value functions are computed as intermediate steps using simulated experience. Value functions are used to estimate the expected future rewards of different actions or states, and they play a key role in improving the policy of an agent. Simulated experience is generated by using the model to simulate the environment, and the agent can update its value functions based on this simulated experience to guide its decision-making process.
-
-    \begin{center}
-        \begin{tikzpicture}[auto]
-% Nodes
-            \node[] (s) {model};
-            \node[right=1cm of s] (a) {simulated experience};
-            \node[right=2cm of a] (r) {values};
-            \node[right=1cm of r] (s_p) {policy};
-
-% Arrows
-            \draw[thick, ->] (s) -- (a);
-            \draw[thick, ->] (a) -- (r) node[midway, anchor=south] {backups};
-            \draw[thick, ->] (r) -- (s_p);
-        \end{tikzpicture}
-    \end{center}
-
-    Dynamic programming methods fit the structure of making sweeps through the space of states, generating possible transitions, computing backed-up values, and updating state estimates. Other state-space planning methods also fit this structure, with differences in updates, order, and retention of backed-up information. Planning methods are related to learning methods in estimating value functions through backing-up operations. Learning methods use real experience from the environment, while planning uses simulated experience from a model. Ideas and algorithms can be transferred between planning and learning. Planning in small, incremental steps allows for efficient interruption and redirection, which is beneficial for intermixing planning with acting and learning of the model. Planning in small steps may be the most efficient approach for large planning problems~\cite{sutton2018reinforcement}.
-
-    See \cref{alg:random-sample-one-step-tabular-q-planning}
-
-    \subsection{Dyna-Q}\label{sec:dyna-q}
-%    \begin{wrapfigure}{r}{0.35\textwidth}
-%        \label{fig:dyna-q-learning-graph}
-%        \begin{center}
-%            \includegraphics[width=0.33\textwidth]{image/dyna-q-graph}
-%        \end{center}
-%    \end{wrapfigure}
-    Dyna-Q includes all of the processes shown in the \cref{fig:dyna-q-learning}: planning, acting, model-learning, and direct RL—all occurring continually. The Dyna-Q algorithm is a learning method that combines both planning and direct RL approaches (MC and TD). Planning involves optimizing strategies through simulations using a learned environment model, while direct RL focuses on improving the value and policy functions using real experiences from interactions with the environment, as depicted in \cref{fig:dyna-q-learning}. The Dyna agent interacts with the real environment to collect empirical data and iteratively improves its policy using \cref{eq:q-learning}. At the same time, an environment model is learned using real experiences, and simulation data generated by the model are used to update the action-value function using the Q-Learning update method.
-
-    In tasks such as path planning, obtaining real experiences from interactions with the environment can be costly and time-consuming. However, using the learned environment model to generate simulation experiences is faster and more convenient, which can reduce the training time of the algorithm. See the~\cref{alg:dyna-q}.
-
-    \begin{figure}
-        \centering
-        \includegraphics[width=0.5\textwidth]{image/dyna-q-learning}
-        \caption{Dyna-Q learning process.}
-        \label{fig:dyna-q-learning}
-    \end{figure}
-
-    \subsection{Trajectory Sampling}\label{subsec:trajectory-sampling}
-
-    \subsection{Summary}\label{subsec:summary}
-
-    Model-based RL offers several advantages over model-free methods. One major advantage is sample efficiency, as the agent can use the learned model of the environment to plan and generate simulated trajectories for learning, reducing the need for costly real-world interactions. Additionally, model-based RL can enable the agent to handle complex, high-dimensional state spaces and long-horizon tasks more effectively.
-
-    However, model-based RL also faces challenges. One challenge is the accuracy of the learned model, as any errors in the model can lead to suboptimal policies. Another challenge is the computational cost of planning and decision-making using the learned model, as it requires additional computation compared to direct action selection in model-free methods.
-
-    In conclusion, model-based RL is a promising approach that can offer sample-efficient learning and improved performance in complex environments. Various methods, such as probabilistic models and deterministic models, have been proposed in the literature. Despite some challenges, model-based RL continues to be an active area of research in machine learning.
-
-
-    \section{Exploration vs. Exploitation}\label{sec:exploration-vs-exploitation}
-
-    \subsection{Greedy}\label{subsec:greedy}
-
-    \subsection{Epsilon-Greedy}\label{subsec:epsilon-greedy}
-
-    \subsection{Upper Confidence Bound}\label{subsec:upper-confidence-bound}
-
-
-    \section{Deep Reinforcement Learning}\label{sec:deep-reinforcement-learning}
-    TODO
 
 \end{document}

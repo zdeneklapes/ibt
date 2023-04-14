@@ -121,7 +121,7 @@
         \label{alg:dyna-q}
         \Comment{1. Initialization}
         Initialize $Q(s, a)$ and $Model(s, a)$ for all $s \in S$ and $a \in A(s)$\;
-        $S \leftarrow$ current (nonterminal) state\;
+        $S \leftarrow$ current (non-terminal) state\;
 
         \While{True}{
             \Comment{2. Action Selection}
@@ -171,6 +171,27 @@
             \]
         }
         \caption{Random-sample one-step tabular Q-planning}
+    \end{algorithm}
+
+
+    \section{REINFORCE: Monte-Carlo Policy-Gradient Control (episodic) for $\pi^*$}
+    \begin{algorithm}[h!]
+        \SetKwComment{Comment}{/* }{ */}
+        \caption{REINFORCE Algorithm}
+        \label{alg:REINFORCE}
+
+        \Comment{Input:}
+        a differentiable policy parameterized $\pi(a|s, \theta)$\;
+        \textbf{Algorithm parameter:} step size $\alpha > 0$\;
+        Initialize policy parameter $\theta \in \mathbb{R}^d$ (e.g., to 0)\;
+
+        \While{Loop forever (for each episode):}{
+            Generate an episode $S_0, A_0, R_1, \ldots , S_T-1, A_T-1, R_T$, following $\pi(\cdot|\cdot, \theta)$\;
+            \For{Loop for each step of the episode $t = 0, 1, \ldots , T - 1$:}{
+                $G_t \leftarrow \sum_{k=t+1}^{T} R_k$ (return)\;
+                $\theta \leftarrow \theta + \alpha_t G_t \nabla_{\theta} \ln \pi(A_t|S_t, \theta)$\;
+            }
+        }
     \end{algorithm}
 
 
