@@ -211,9 +211,7 @@
     \subsubsection{Reward function}\label{par:reward-function}
     The reward function $\mathcal{R}(s)$ is a function that maps a state $s$ to a reward $r$ and specifies how much reward and agent expects from the environment given current state $s$. If an agent is in a state $s$ at time $t$, the agent receives reward  $R_{t+1}$  at time $t + 1$,  when it transitions to a subsequent state $s'$. Rewards of an episode can be represented as a sequence $(R_1, R_2, \ldots, R_t)$~\cite{FITMT25127}.
 
-    % TODO: Agent reference
-
-    \paragraph{When to receive the reward?} An RL agent, defined in \verb|\cref{TODO}|, should receive a reward for a good action and a penalty for a bad action. Good actions are those that lead to the agent's main goal, while bad actions are those that lead to a state that is not desirable for the agent. That is, an agent should not receive (one small) reward when it can then receive a large penalty, for example in chess by taking one piece, when it can then lose the game by getting checkmate~\cite{sutton2018reinforcement}.
+    \paragraph{When to receive the reward?} An Reinforcement Learning Agent, which we will introduce later, should receive a reward for a good action and a penalty for a bad action. Good actions are those that lead to the agent's main goal, while bad actions are those that lead to a state that is not desirable for the agent. That is, an agent should not receive (one small) reward when it can then receive a large penalty, for example in chess by taking one piece, when it can then lose the game by getting checkmate~\cite{sutton2018reinforcement}.
 
     \subsubsection{Expected reward}\label{par:expected-reward}
     The expected reward, denoted as $G_t$ at time $t$ is the discounted sum of rewards in a single episode, is defined as:
@@ -761,28 +759,30 @@
     From \cref{eq:normal_distribution_policy}, it can be seen that the policy parameter vector can be described as $ \theta = (\theta_{\mu}, \theta_{\sigma}) $, and its parameters can be computed using a single neural network. This enables the implementation of continuous actions for stochastic policies~\cite{FITMT25127, sutton2018reinforcement, rl-course-david-silver}.
 
 
-%    \section{RL algorithms}
-%    TODO
-%
-%    \subsection{Asynchronous Actor Critic}
-%    TODO
-%
-%    \subsection{Deep Deterministic Policy Gradient}
-%    TODO
-%
-%    \subsection{Deep Q Network}
-%    TODO
-%
-%    \subsection{Proximal Policy Optimization}
-%    TODO
-%
-%    \subsection{Soft Actor Critic}
-%    TODO
-%
-%    \subsection{Twin Delayed DDPG}
-%    TODO
-%
-%
+    \section{RL algorithms}
+    Algorithms used in Experiments and their implementation in the OpenAI Gym environment for training and testing.
+
+    TODO
+
+    \subsection{Asynchronous Actor Critic}
+    TODO
+
+    \subsection{Deep Deterministic Policy Gradient}
+    TODO
+
+    \subsection{Deep Q Network}
+    TODO
+
+    \subsection{Proximal Policy Optimization}
+    TODO
+
+    \subsection{Soft Actor Critic}
+    TODO
+
+    \subsection{Twin Delayed DDPG}
+    TODO
+
+
 %    \section{Model-based}\label{sec:model-based}
 %    As mentioned in Section~\cref{sec:rl-introduction}, RL algorithms can be broadly categorized into two main types: model-free and model-based. Model-based methods rely on \emph{planning} as their primary component, while model-free methods rely on \emph{learning}~\cite{sutton2018reinforcement}. Despite their distinctions, both approaches involve computing value functions and using them to update approximate value functions based on future events.
 %
