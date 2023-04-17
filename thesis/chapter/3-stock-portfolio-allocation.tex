@@ -1,57 +1,187 @@
 \documentclass[../xlapes02]{subfiles}
 \begin{document}
     \chapter{Stock Portfolio Allocation}\label{sec:stock-portfolio-allocation}
-    TODO
+    The goal of this chapter is to describe the stock portfolio allocation problem in \cref{sec:portfolio-management-task}, and the environment, defined in \cref{sec:environment} that we have created to solve it. We will also describe the datasets that we have used to train and test our agent, in \cref{sec:data-engineering}.
 
 
-    \section{Data Engineering}\label{ch:data-engineering}
-    TODO
+    \section{Portfolio Management Task}\label{sec:portfolio-management-task}
+    Let's consider a portfolio consisting of $N$ risky assets traded over $T$ time slots. The objective of portfolio management is to maximize profits while minimizing risks. We denote the closing prices of all assets at time slot $t$ as $\mathbf{p}(t) \in \mathbb{R}^N$. The price relative vector $\mathbf{y}(t) \in \mathbb{R}^N$ is defined as the element-wise division of $\mathbf{p}(t)$ by $\mathbf{p}(t-1)$, representing the relative change in prices from one time slot to the next~\cite{finrl-portfolio-allocation-2020}:
 
-    \subsection{Data Collection}\label{sec:data-collection}
-    TODO
+    \begin{equation}
+        \mathbf{y}(t)=\left[\frac{\mathbf{p_1}(t)}{\mathbf{p_1}(t-1)}, \frac{\mathbf{p_2}(t)}{\mathbf{p_2}(t-1)}, \cdots, \frac{\mathbf{p_N}(t)}{\mathbf{p_N}(t-1)}\right]\text{ , for }t=1,\ldots,T
+    \end{equation}
 
-    \subsection{Dataset Preprocessing}\label{sec:dataset-preprocessing}
-    TODO
+    where $\mathbf{p}(0) \in \mathbb{R}^N$ is the vector of opening prices at $t = 1$. Let $\mathbf{w}(t) \in \mathbb{R}^N$ denote the portfolio weights for each of $N$ risky assets, which are updated at the beginning of time slot $t$. Let $v(t) \in \mathbb{R}$ denote the portfolio value at the beginning of time slot $t+1$, ignoring transaction costs. The relative portfolio value is defined as the ratio between the portfolio value at the end of time slot $t$ and that at the beginning of time slot $t$~\cite{finrl-portfolio-allocation-2020}:
 
-    \subsubsection{Fundamental Analysis}\label{sec:fundamental-analysis}
-    TODO
+    \begin{equation}
+        v(t)=v(t-1)(\mathbf{w}(t)^\top\mathbf{y}(t))\text{ , for }t=1,\ldots,T
+    \end{equation}
 
-    \subsubsection{Technical Analysis}\label{sec:technical-analysis}
-    TODO
+    where $v(0)$ is the initial capital, $v(t-1)$ is the portfolio value at the end of time slot $t-1$ according to the previous realocation (using $v(t-2)$ and weights $w(t-1)$), and $\mathbf{w}(t)^\top\mathbf{y}(t)$ is the portfolio change according to the new weights. The rate of portfolio return is defined as the ratio between the portfolio value at the end of time slot $t-1$ and that at the end of time slot $t$~\cite{finrl-portfolio-allocation-2020}:
+    \begin{equation}
+        \rho(t)=\frac{v(t)}{v(t-1)}-1=\mathbf{w}(t)^\top\mathbf{y}(t)-1\text{ , for }t=1,\ldots,T
+    \end{equation}
 
-    \subsubsection{Combined Fundamental and Technical Analysis}\label{sec:combined-fundamental-and-technical-analysis}
-    TODO
+    The risk of a portfolio is defined as the variance of the rate of portfolio return $\varrho(t)$:
+    \begin{equation}
+        \text{Risk}(t)=\text{Var}(\rho(t))=\text{Var}(\mathbf{w}(t)^\top \mathbf{y}(t) - 1)
+    \end{equation}
 
-    \subsection{Dataset Splitting}\label{sec:dataset-splitting}
-    TODO
+    If there is no transaction cost, the final portfolio value is:
+    \begin{equation}
+        v(T) = v(0) \prod_{t=2}^T\mathbf{w}(t)^\top \mathbf{y}(t)
+    \end{equation}
+
+    The portfolio management task~\cite{enwiki:1043516653} involves finding an optimal portfolio weight vector $\mathbf{w}^*(t) \in \mathbb{R}^N$ at time slot $t$ such that $\mathbf{w}^*(t)$ is the argmax of the objective function:
+    \begin{equation}
+        w^*(t)=\argmax_{w(t)}\mathbf{w}^\top(t)\mathbf{y}(t)-\lambda\mathbf{w}^\top(t)\text{Cov}(\mathbf{y}(t))\mathbf{w}(t),
+    \end{equation}
+    where $\lambda > 0$ is the risk aversion parameter, $\mathbf{y}(t) \in \mathbb{R}^N$ is the estimated price relative vector at time slot $t$ based on a regression model using predictive financial features and the Capital Asset Pricing Model (CAPM)~\cite{fama-2004}, and $\text{Cov}(\mathbf{y}(t))$ is the estimated sample covariance matrix at time slot $t$ using historical data. The objective is to maximize the portfolio's expected return while considering the risk (variance) of the portfolio, with the constraint that the portfolio weights sum up to 1 and are bounded between 0 and 1 for each asset~\cite{finrl-portfolio-allocation-2020}:
+    \begin{equation}
+        \sum_{i=1}^{N}w_i(t)=1,\quad w_i(t)\in[0,1],\quad t=1,\ldots,T
+    \end{equation}
 
 
     \section{Environment}\label{sec:environment}
-    TODO
-
-    \subsection{Action Space}\label{subsec:action-space}
-    TODO
+    In this section, we describe our approach to environment modelling by first defining the action space \cref{subsec:action-space}, state and observation space~\cref{subsec:state-space}, and reward function~\cref{subsec:reward-function}. The theory behind this was already described in~\cref{ch:reinforcement-learning}, so now we will focus on the practical implementation of the environment.
 
     \subsection{State and Observation Space}\label{subsec:state-space}
-    TODO
+    In portfolio Management, \emph{State space} and \emph{Observation space} is the same. It is defined as the matrix $N\times F$, where $N$ is the number os risky assets (companies) and $F$ is the number of features. The features are the financial fundamental or technical indicators. The state space is the matrix of the features of the risky assets at time $t$. The observation space is the matrix of the features of the risky assets at time $t+1$, more about Data Engineering in~\cref{sec:data-engineering}.
+
+    \subsection{Action Space}\label{subsec:action-space}
+    The action space is the vector of the weights of the $N$ risky assets and one weight is preserved for cash. The weights are bounded between 0 and 1, when the weights (action) is provided by an agent, then for their normalization is used softmax function. The softmax function is defined as:
+    \begin{equation}
+        \sigma(\mathbf{z})_i=\frac{e^{z_i}}{\sum_{j=1}^{N}e^{z_j}}
+    \end{equation}
+    which is a generalization of the logistic function to multiple dimensions. The softmax function is used to convert a vector of arbitrary real values to a vector of real values in the range (0, 1) that add up to 1. This is useful for representing a probability distribution over $N$ different possible outcomes.
 
     \subsection{Reward Function}\label{subsec:reward-function}
+    The reward function is defined as the rate of portfolio return $\rho(t)$:
+    \begin{equation}
+        \begin{split}
+            \rho(t)&=\frac{v(t)}{v(t-1)}-1\\
+            &=\mathbf{w}(t)_{1:N-1}^\top\mathbf{y}(t)-1\\
+        \end{split}
+    \end{equation}
+    where $\mathbf{w}(t)_{1:N-1}^\top$ represents the new portfolio weights excluding the weight for cash, and $\mathbf{y}(t)$ denotes the estimated price relative vector at time slot $t$. The weight for cash is not considered in the reward function as it has no impact on the portfolio return.
+
+
+    \section{Data Engineering}\label{sec:data-engineering}
+    Data engineering is critical in AI for ensuring data quality, data preparation, data integration, scalability, data governance, and performance optimization. It involves cleaning, organizing, and transforming data for accurate model training, handling large volumes of data, and adhering to regulations. High-quality data and effective data engineering processes are crucial for developing reliable and scalable AI models. In this section, we describe our approach to data engineering used for Portfolio Management by first defining the data collection~\cref{subsec:data-collection}, dataset preprocessing~\cref{subsec:dataset-preprocessing}, and dataset splitting~\cref{subsec:dataset-splitting}.
+
+    \subsection{Data Collection}\label{subsec:data-collection}
+    A raw data was gathered from these sources:
+    \begin{itemize}
+        \item Yahoo Finance: https://finance.yahoo.com/
+        \item Financial Modeling Prep: https://financialmodelingprep.com/
+    \end{itemize}
+    these sources provide a lot of financial data for 60000+ tickers, with history over 30 years.
+
+    We focus on tickers (companies) from Dow Jones Industrial Average (DJIA), which includes 30 companies. More about which companies are included in DJIA, you can see~\cite{enwiki:1141766585}.
+
+    \subsection{Data Preprocessing}\label{subsec:dataset-preprocessing}
+    In this section, we describe our approach to dataset preprocessing by first defining the data cleaning~\cref{subsubsec:data-cleaning}, feature engineering~\cref{subsubsec:feature-engineering}.
+
+    \subsubsection{Data Cleaning}\label{subsubsec:data-cleaning}
+    In our datasets we use the following companies data: prices, financial statements, and technical indicators. The prices are used for calculating the returns, the financial statements are used for calculating the financial ratios, and the technical indicators are used for calculating the technical ratios. The financial and technical ratios are used for feature engineering. The data cleaning is done by removing the rows with missing values. The missing values are replaced with the mean of the column. If in any date the data is missing completely, then the all rows until that next date are removed for other companies as well. This can mostly happen for the companies that are not listed on the stock exchange for a any time period. The data cleaning is done for all the datasets.
+
+    \subsection{Feature Engineering}\label{subsubsec:feature-engineering}
+    In this subsection, we describe our approach to feature engineering which we divide into three parts: fundamental analysis, described in~\cref{subsubsec:fundamental-analysis}, technical analysis, described in~\cref{subsubsec:technical-analysis}, and combined fundamental and technical analysis is described in~\cref{subsubsec:combined-fundamental-and-technical-analysis}.
+
+    \subsubsection{Fundamental Analysis}\label{subsubsec:fundamental-analysis}
+    Fundamental data refers to the basic and essential information about a company or an asset that is used to analyze its financial health, performance, and valuation. It includes data related to a company's financial statements, business operations, management team, industry, and economic environment. Fundamental data is commonly used by investors, analysts, and financial professionals to make investment decisions and assess the intrinsic value of an asset. For fundamental analysis, we use the following Income Statement, Balance Sheet and Cash Flow of each company. For our first dataset, we use the following financial ratios: Net Profit Margin. Return on Assets (ROA), Return on Equity (ROE), Current Ratio, Cash Ratio, Inventory Turnover, Receivables Turnover, Payables Turnover, Debt Ratio, Debt to Equity Ratio,A Price to Earnings Ratio (PE Ratio), Price to Book Ratio (PB Ratio), and Dividend Yield. Now we describe each of these ratios.
+
+    \paragraph{Net Income}\label{par:net-income}
+    Net income is the amount of money a company makes after subtracting all expenses and taxes. It is also known as the bottom line because it is found on the last line of a company's income statement. The Net Income is calculated as:
+    \begin{equation}
+        \begin{split}
+            Net\ Income&=R-COGS-E-I-T\\
+        \end{split}
+    \end{equation}
+    where $R$ is the revenue, $COGS$ is the cost of goods sold, $E$ is the expenses, $I$ is the interest, and $T$ is the taxes.
+
+    \paragraph{Operating Profit Margin}\label{par:operating-profit-margin}
+    The Operating Margin represents how efficiently a company is able to generate profit through its core operations. It is expressed on a per-sale basis after accounting for variable costs but before paying any interest or taxes (EBIT). Higher margins are considered better than lower margins, and can be compared between similar competitors but not across different industries. To calculate the operating margin, divide operating income (earnings) by sales (revenues)~\cite{investopedia-operating-margin}:
+    \begin{equation}
+        Operating\ Margin=\frac{Operating\ Income}{Sales}
+    \end{equation}
+    where $Operating\ Income$ refers to the adjusted revenue of a company after all expenses of operation and depreciation are subtracted. Expenses of operation or operating expenses are simply the costs incurred in order to keep the business running~\cite{investopedia-operating-income}. $Sales$ may be defined as money paid by customers. Sales are a company's core revenue for a given period~\cite{investopedia-operating-margin}.
+
+    \paragraph{Net Profit Margin}\label{par:net-profit-margin}
+    The Net Profit Margin is a profitability ratio that measures a company's ability to generate income after all expenses and taxes have been paid. It is calculated by dividing a company's net income by its total revenue. The net profit margin is a measure of how much of each dollar of revenue is left over after all expenses and taxes have been paid. It is a useful metric for comparing the profitability of different companies in the same industry. The higher the net profit margin, the more profitable a company is. The net profit margin is calculated as follows:
+    \begin{equation}
+        \begin{split}
+            Net\ Profit\ Margin&=\frac{Net\ Income}{Revenue}\\
+        \end{split}
+    \end{equation}
+    where interest, $T$ is taxes~\cite{investopedia-net-profit-margin}.
+
+    \paragraph{Return On Assets}\label{par:return-on-assets}
+    Return on assets (ROA) is a measure of profitability that calculates how much profit a company makes with the money it has invested. It is calculated by dividing a company's net income by its total assets. The higher the ROA, the more profitable a company is. The ROA is calculated as follows:
+    \begin{equation}
+        \begin{split}
+            Return\ On\ Assets&=\frac{Net\ Income}{Total\ Assets}\\
+            &=\frac{Net\ Income}{Total\ Liabilities+Total\ Assets}\\
+        \end{split}
+    \end{equation}
+    where $Net\ Income$ is the net income of a company, $Total\ Assets$ is the total assets of a company, and $Total\ Liabilities$ is the total liabilities of a company~\cite{investopedia-return-on-assets}.
+
+    \paragraph{Return On Equity}\label{par:return-on-equity}
     TODO
 
-    \subsection{Datasets}\label{sec:datasets}
+    \paragraph{Current Ratio}\label{par:current-ratio}
+    TODO
+
+    \paragraph{Quick Ratio}\label{par:quick-ratio}
+    TODO
+
+    \paragraph{Cash Ratio}\label{par:cash-ratio}
+    TODO
+
+    \paragraph{Inventory Turnover}\label{par:inventory-turnover}
+    TODO
+
+    \paragraph{Receivables Turnover}\label{par:receivables-turnover}
+    TODO
+
+    \paragraph{Payables Turnover}\label{par:payables-turnover}
+    TODO
+
+    \paragraph{Debt Ratio}\label{par:debt-ratio}
+    TODO
+
+    \paragraph{Debt Equity Ratio}\label{par:debt-equity-ratio}
+    TODO
+
+    \paragraph{Price Earnings Ratio}\label{par:price-earnings-ratio}
+    TODO
+
+    \paragraph{Price Book Value Ratio}\label{par:price-book-value-ratio}
+    TODO
+
+    \paragraph{Dividend Yield}\label{par:dividend-yield}
+    TODO
+
+    \subsubsection{Technical Analysis}\label{subsubsec:technical-analysis}
+    TODO
+
+    \subsubsection{Combined Fundamental and Technical Analysis}\label{subsubsec:combined-fundamental-and-technical-analysis}
+    TODO
+
+    \subsection{Dataset Splitting}\label{subsec:dataset-splitting}
     TODO
 
 
     \section{Implementation Details}\label{sec:implementation-details}
     TODO
 
-    \subsection{Code Base}\label{sec:code-base}
+    \subsection{Code Base}\label{subsec:code-base}
     TODO
 
-    \subsubsection{Wandb}\label{sec:wandb}
+    \subsubsection{Wandb}\label{subsubsec:wandb}
     TODO
 
-    \subsection{Neural Networks}\label{sec:neural-network}
+    \subsection{Neural Networks}\label{subsec:neural-network}
     TODO
 
 % TODO: Training Agent
