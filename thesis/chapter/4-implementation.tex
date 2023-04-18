@@ -167,7 +167,7 @@
     \section{Feature Selection}\label{sec:feature-selection}
     The technical indicators are calculated based on the historical data of the stock prices. For calculation of these indicator was used framework Finta, which provides over 80 different functions for calculation of technical indicators. The framework is written in Python and is available on GitHub~\cite{finta}.
 
-    Firstly we compute all technical indicators for all stocks in the dataset. Then we compute the correlation matrix between all indicators. The correlation matrix is a square matrix that contains the correlation coefficient between all pairs of indicators. The correlation coefficient is a measure of the linear correlation between two variables. Because the figure for all indicators is too large, we only show the correlation matrix for uncorrelated indicators, which we used in dataset, see ~\cref{fig:ta_correlation_matrix_uncorrelated_indicators}.
+    Firstly we compute all technical indicators for all stocks in the dataset. Then we compute the correlation matrix between all indicators. The correlation matrix is a square matrix that contains the correlation coefficient between all pairs of indicators. The correlation coefficient is a measure of the linear correlation between two variables. The corelation drop coefficient is $0.5$, when $|\rho| > 0.5$, then we drop the one indicator, where $\rho$ is the correlation between two indicators, defined in~\cref{eq:corr}. Because the figure for all indicators is too large, we only show the correlation matrix for uncorrelated indicators, which we used in dataset, see ~\cref{fig:ta_correlation_matrix_uncorrelated_indicators}.
     \begin{figure}[h]
         \includegraphics[width=0.95\linewidth]{image/ta_correlation_matrix_uncorrelated_indicators}
         \centering
@@ -177,6 +177,7 @@
 
     The correlation coefficient $\rho$ is calculated using \emph{Pearson Method} as follows~\cite{enwiki:1146097966}:
     \begin{equation}
+        \label{eq:corr}
         \begin{split}
             \rho&=\frac{\sum_{i=1}^{n}(x_i-\bar{x})(y_i-\bar{y})}{\sqrt{\sum_{i=1}^{n}(x_i-\bar{x})^2}\sqrt{\sum_{i=1}^{n}(y_i-\bar{y})^2}}\\
         \end{split}
@@ -190,20 +191,5 @@
     The $60\%$ of data is for training and the $40\%$ of data is for testing. The dataset starts at 2008-03-20 and ends at 2022-12-16.
     Dataset consists of daily data.
 
-
-    \section{Weights \& Biases}\label{subsubsec:wandb}
-    Weights \& Biases is a machine learning experiment tracking and visualization tool that helps data scientists and machine learning practitioners monitor and manage their experiments. It provides a unified interface for logging and visualizing experiment metrics, hyperparameters, and other relevant information, making it easier to analyze, compare, and reproduce experiments.
-
-    Wandb offers a wide range of features, including:
-    \begin{itemize}
-        \item Experiment tracking: Wandb allows users to log experiment metrics such as loss, accuracy, and other custom metrics in real-time during training. These metrics are logged to a central dashboard, making it easy to monitor and compare multiple experiments.
-        \item Hyperparameter tuning: Wandb supports hyperparameter sweeps, allowing users to explore different hyperparameter configurations in parallel and find optimal hyperparameter settings for their models.
-        \item Visualizations: Wandb provides various visualization tools, including interactive plots, histograms, confusion matrices, and more, to help users analyze and understand experiment results.
-        \item Artifact management: Wandb allows users to log and version datasets, models, and other artifacts, making it easy to track and reproduce experiments with specific data and model versions.
-        \item Collaboration: Wandb enables team collaboration by allowing users to share experiment results, visualizations, and artifacts with team members, facilitating communication and collaboration among team members.
-    \end{itemize}
-
-    Agent's traning and testing runs are logged publicly on Wandb Website. The results of each run together with saved models and datasets can be found at~\url{https://wandb.ai/investai/portfolio-allocation}.
-    W\&B Api is very reach and offer a lot of features, thefore we will not describe them in this thesis. The documentation can be found at~\url{https://docs.wandb.ai/}.
 
 \end{document}
