@@ -82,8 +82,3 @@ doc/**
 
 # Logs
 logs/
-
-# Images
-*.jpg
-*.jpeg
-*.png
