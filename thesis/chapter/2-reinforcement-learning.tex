@@ -135,14 +135,14 @@
         \end{itemize}
     \end{definition}
 
-    \begin{align*}
-        \mathcal{P}=\begin{bmatrix}
-                        p_{11} & p_{12} & p_{13} & \dots  & p_{1n} \\
-                        p_{21} & p_{22} & p_{23} & \dots  & p_{2n} \\
-                        \vdots & \vdots & \vdots & \ddots & \vdots \\
-                        p_{n1} & p_{n2} & p_{n3} & \dots  & p_{nn}
-        \end{bmatrix}
-    \end{align*}
+%    \begin{align*}
+%        \mathcal{P}=\begin{bmatrix}
+%                        p_{11} & p_{12} & p_{13} & \dots  & p_{1n} \\
+%                        p_{21} & p_{22} & p_{23} & \dots  & p_{2n} \\
+%                        \vdots & \vdots & \vdots & \ddots & \vdots \\
+%                        p_{n1} & p_{n2} & p_{n3} & \dots  & p_{nn}
+%        \end{bmatrix}
+%    \end{align*}
 
     \subsubsection{Starting States}
     The probability distribution of start states is denoted as $\mu : N \rightarrow [0,1]$ in order to perform simulations and compute the probability distribution of states at specific future time steps. A Markov Process is fully specified by the transition probability function $\mathcal{P}$, which governs the complete dynamics of the process.
@@ -543,12 +543,12 @@
 
     In this case, the learned action-value function, $Q$, directly approximates $q_*$, the optimal action-value function, independent of the policy being followed. This dramatically simplifies the analysis of the algorithm and enables early convergence proofs. The policy still has an effect in that it determines which state-action pairs are visited and updated. However, all that is required for correct convergence is that all pairs (transition matrix, example in \cref{fig:q-learning}) continue to be updated. This is a minimal requirement in the sense that any method guaranteed to find optimal behavior in the general case must require it. The Q-learning algorithm is show in \cref{alg:q_learning}~\cite{rl-course-david-silver, sutton2018reinforcement}.
 
-    \begin{figure}[h!]
-        \centering
-        \includegraphics[width=0.9\textwidth]{image/q-learning}
-        \caption{Q-learning table. How the training process updates the Q-table~\cite{article}.}
-        \label{fig:q-learning}
-    \end{figure}
+%    \begin{figure}[h!]
+%        \centering
+%        \includegraphics[width=0.9\textwidth]{image/q-learning}
+%        \caption{Q-learning table. How the training process updates the Q-table~\cite{article}.}
+%        \label{fig:q-learning}
+%    \end{figure}
 
     \subsection{Function Approximation}\label{subsec:function-approximation}
     The Monte Carlo and Temporal Difference algorithms discussed earlier are known as tabular methods because they rely on a matrix of action returns and values of dimension $|\mathcal{S}|\mathcal{A}|$. However, when the number of states or actions is extremely large, as in the case of \emph{Portfolio Allocation}, where the state space is the entire stock market, which may include data from thousands of stocks, the economic situation of the entire world, and the current political situation, all of these things need to be taken into account, so the state space is huge. The agent managing which assets it allocates funds to uses these observations, which very often change every single second, so this matrix becomes excessively huge. This poses a problem in terms of memory requirements, and it becomes almost impossible for an agent using MC or TD methods to comprehensively evaluate all the states and derive a policy~\cite{sutton2018reinforcement, FITMT25127}.
