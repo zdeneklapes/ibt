@@ -36,8 +36,58 @@
     \section{The focus of the Study}\label{sec:the-focus-of-the-study}
 
 
-    \section{Experiments}\label{sec:metrics-comparison}
+    \section{Experimental Setup}\label{sec:experimental-setup}
     All experiments were focused on a several metrics. First is if the model can beat the standart indexes, like S\&P 500, DJIA, and others. Second what dataset is more suitable for training the model. Third metric find the optimal hyperparameters for the model. And the last metric is the time of training and testing the model. All experiments will be described in the in accordance to our testign period which is from
+
+    \subsection{Hyperparameters}\label{subsec:hyperparameters}
+    The hyperparameter sweep was performed on the following hyperparameters with given configuration, and sweep was performed according to the wandb documentation~\cref{sec:wandb}:
+    \begin{center}
+        \begin{tabular}{|l|c|}
+            \hline
+            \textbf{Parameter}        & \textbf{Values/range}                           \\ \hline
+            policy                    & MlpPolicy                                       \\ \hline
+            learning\_rate            & <0.0001, 0.01>                                  \\ \hline
+            n\_steps                  & [32, 64, 128, 256, 512, 1024, 2048]             \\ \hline
+            gamma                     & <0.9, 0.999>                                    \\ \hline
+            gae\_lambda               & <0.8, 0.999>                                    \\ \hline
+            ent\_coef                 & <0.0001, 0.01>                                  \\ \hline
+            vf\_coef                  & <0.0001, 0.01>                                  \\ \hline
+            max\_grad\_norm           & <0.5, 0.99>                                     \\ \hline
+            rms\_prop\_eps            & <0.0001, 0.01>                                  \\ \hline
+            sde\_sample\_freq         & <4, 32>                                         \\ \hline
+            batch\_size               & [32, 64, 128, 256, 512, 1024, 2048, 4096, 8192] \\ \hline
+            n\_epochs                 & <1, 10>                                         \\ \hline
+            clip\_range               & <0.1, 0.3>                                      \\ \hline
+            clip\_range\_vf           & [None, 0.05, 0.1, 0.15, 0.2]                    \\ \hline
+            target\_kl                & <0.01, 0.05>                                    \\ \hline
+            buffer\_size              & [1000, 2000, 3000, 4000, 5000]                  \\ \hline
+            learning\_starts          & <100, 1000>                                     \\ \hline
+            tau                       & <0.001, 0.01>                                   \\ \hline
+            train\_freq               & <1, 4>                                          \\ \hline
+            gradient\_steps           & <1, 4>                                          \\ \hline
+            target\_update\_interval  & <1, 4>                                          \\ \hline
+            target\_entropy           & <0.1, 0.2>                                      \\ \hline
+            policy\_delay             & <1, 4>                                          \\ \hline
+            target\_policy\_noise     & <0.1, 0.2>                                      \\ \hline
+            target\_noise\_clip       & <0.1, 0.2>                                      \\ \hline
+            exploration\_fraction     & <0.1, 0.2>                                      \\ \hline
+            exploration\_initial\_eps & <0.1, 0.2>                                      \\ \hline
+            exploration\_final\_eps   & <0.1, 0.2>                                      \\ \hline
+        \end{tabular}
+    \end{center}
+
+    The training was performed with the following algorithms: A2C, PPO, SAC, DDPG, TD3. For each algorithm were hyperparameters chosen randomly from the given range or values. This proces repeats 10 times for each algorithm and dataset. As mentioned earlier, we've used 3 datasets. That means we trained 30 models of each algorithm, with total amount of trained agents 150.
+
+    \begin{landscape}
+        \begin{figure}
+            \centering
+            \includegraphics[width=\linewidth]{image/figure/wb}
+            \caption{W\&B Chart of parameters and their performance}
+            \label{fig:wb-chart}
+        \end{figure}
+    \end{landscape}
+
+    TODO: description of best and worst hyperparametersnd why
 
     \subsection{Baselines and Backtesting}\label{subsec:baselines-and-backtesting}
     In this subsubsection we show, how the agent performs in comparison to the baselines. We use the following baselines:
@@ -52,146 +102,89 @@
 
     \begin{figure}[h!]
         \centering
-        \begin{subfigure}[b]{\experimentimgwidth\textwidth}
+        \begin{subfigure}[t]{\experimentimgwidth\textwidth}
             \centering
             \includegraphics[width=\linewidth]{image/figure/returns_max}
-            \caption{The model with Best Total Reward}
+            \caption{The model with The Highest Cumulative Reward}
             \label{fig:returns_max}
         \end{subfigure}
         \hfill
-        \begin{subfigure}{\experimentimgwidth\textwidth}
+        \begin{subfigure}[t]{\experimentimgwidth\textwidth}
             \centering
             \includegraphics[width=\linewidth]{image/figure/returns_min}
             \caption{The model with The Smallest Cumulative Reward}
             \label{fig:returns_min}
         \end{subfigure}
-        \caption{Cumulative return.}
-        \label{fig:Cumulative Return}
-    \end{figure}
-
-    The image~\cref{fig:Cumulative Return} illustrates that a model can produce good results if it is configured with appropriate hyperparameters. Conversely, a model that is not configured with suitable hyperparameters fails to generate satisfactory results. The model that performs the best with optimal hyperparameters surpasses standard indexes such as S\&P 500 and DJIA, whereas the model that performs the worst with inadequate hyperparameters cannot outperform these benchmarks. How we tune hyperparameters is described in~\cref{subsec:hyperparameters}
-
-    \begin{figure}[h!]
-        \centering
-        \begin{subfigure}[t]{0.3\textwidth}
+        \vspace{0.5cm}
+        \begin{subfigure}[t]{\experimentimgwidth\textwidth}
             \centering
             \includegraphics[width=\linewidth]{image/figure/drawdown_underwater_max}
             \caption{The model with The Highest Cumulative Reward}
             \label{fig:drawdown_underwater_max}
         \end{subfigure}
         \hfill
-        \begin{subfigure}[t]{0.3\textwidth}
-            \centering
-            \includegraphics[width=\linewidth]{image/figure/drawdown_underwater_min}
-            \caption{The model with The Smallest Cumulative Reward}
-            \label{fig:drawdown_underwater_min}
-        \end{subfigure}
-        \hfill
-        \begin{subfigure}[t]{0.3\textwidth}
+        \begin{subfigure}[t]{\experimentimgwidth\textwidth}
             \centering
             \includegraphics[width=\linewidth]{image/figure/drawdown_underwater_dji}
             \caption{The DJI index}
             \label{fig:drawdown_underwater_dji}
         \end{subfigure}
-        \caption{The drawdowns.}
-        \label{fig:Drawdown underwater}
+        \caption{Cumulative return.}
+        \label{fig:cumulative_return}
     \end{figure}
 
-    If we look at the drawdown graphs, they are literally the same, but ~\cref{fig:drawdown_underwater_max} is a bit worse than ~\cref{fig:drawdown_underwater_min} at large drawdowns. But~\cref{fig:drawdown_underwater_dji} is the worst of all at large drawdowns.
+    The image~\cref{fig:cumulative_return} illustrates that a model can produce good results if it is configured with appropriate hyperparameters. Conversely, a model that is not configured with suitable hyperparameters fails to generate satisfactory results. The model that performs the best with optimal hyperparameters surpasses standard indexes such as S\&P 500 and DJIA, whereas the model that performs the worst with inadequate hyperparameters cannot outperform these benchmarks. How we tune hyperparameters is described in~\cref{subsec:hyperparameters}
+
+    If we look at the draw-down graphs in~\cref{fig:cumulative_return}, we can see that our tuned model is much better than DJI index at large drawdowns, even both our models perform very well compared to the DJI index.
+
 
     \begin{figure}[h!]
         \centering
-        \begin{subfigure}[b]{\experimentimgwidth\textwidth}
+        %
+        \begin{subfigure}[t]{\experimentimgwidth\textwidth}
             \centering
             \includegraphics[width=\linewidth]{image/figure/monthly_returns_heatmap_max}
             \caption{The model with the highest cumulative reward}
         \end{subfigure}
         \hfill
-        \begin{subfigure}{\experimentimgwidth\textwidth}
-            \centering
-            \includegraphics[width=\linewidth]{image/figure/monthly_returns_heatmap_min}
-            \caption{The model with the smallest cumulative reward}
-        \end{subfigure}
-        \caption{The monthly returns.}
-        \label{fig:Monthly returns heatmap}
-    \end{figure}
-
-
-
-    \begin{figure}[h!]
-        \centering
-        \begin{subfigure}[b]{\experimentimgwidth\textwidth}
+        \begin{subfigure}[t]{\experimentimgwidth\textwidth}
             \centering
             \includegraphics[width=\linewidth]{image/figure/annual_returns_max}
             \caption{The model with the highest cumulative reward}
         \end{subfigure}
+        \vspace{0.5cm}
+
+        %
+        \begin{subfigure}[t]{\experimentimgwidth\textwidth}
+            \centering
+            \includegraphics[width=\linewidth]{image/figure/monthly_returns_heatmap_min}
+            \caption{The model with the smallest cumulative reward}
+        \end{subfigure}
         \hfill
-        \begin{subfigure}{\experimentimgwidth\textwidth}
+        \begin{subfigure}[t]{\experimentimgwidth\textwidth}
             \centering
             \includegraphics[width=\linewidth]{image/figure/annual_returns_min}
             \caption{The model with the smallest cumulative reward}
         \end{subfigure}
-        \caption{The annual returns.}
-        \label{fig:Annual returns}
-    \end{figure}
+        \vspace{0.5cm}
 
-    \begin{figure}[h!]
-        \centering
-        \begin{subfigure}[b]{\experimentimgwidth\textwidth}
+        %
+        \begin{subfigure}[t]{\experimentimgwidth\textwidth}
             \centering
-            \includegraphics[width=\linewidth]{image/figure/return_quantiles_max}
-            \caption{The model with the highest cumulative reward}
+            \includegraphics[width=\linewidth]{image/figure/monthly_returns_heatmap_dji}
+            \caption{The DJI index}
         \end{subfigure}
         \hfill
-        \begin{subfigure}{\experimentimgwidth\textwidth}
+        \begin{subfigure}[t]{\experimentimgwidth\textwidth}
             \centering
-            \includegraphics[width=\linewidth]{image/figure/return_quantiles_min}
-            \caption{The model with the smallest cumulative reward}
+            \includegraphics[width=\linewidth]{image/figure/annual_returns_dji}
+            \caption{The DJI index}
         \end{subfigure}
-        \caption{The quantiles of the returns.}
-        \label{fig:Return quantiles}
+
+        %
+        \caption{The monthly returns.}
+        \label{fig:month_annual_returns}
     \end{figure}
-
-
-    \begin{figure}[h!]
-        \centering
-        \begin{subfigure}[b]{\experimentimgwidth\textwidth}
-            \centering
-            \includegraphics[width=\linewidth]{image/figure/rolling_beta_max}
-            \caption{The model with the highest cumulative reward}
-        \end{subfigure}
-        \hfill
-        \begin{subfigure}{\experimentimgwidth\textwidth}
-            \centering
-            \includegraphics[width=\linewidth]{image/figure/rolling_beta_min}
-            \caption{The model with the smallest cumulative reward}
-        \end{subfigure}
-        \caption{The rolling beta.}
-        \label{fig:Rolling Beta}
-    \end{figure}
-
-%    \begin{figure}[h!]
-%        \centering
-%        \begin{subfigure}[b]{\experimentimgwidth\textwidth}
-%            \centering
-%            \includegraphics[width=\linewidth]{image/figure/rolling_sharpe_max}
-%            \caption{The model with the highest cumulative reward}
-%        \end{subfigure}
-%        \hfill
-%        \begin{subfigure}{\experimentimgwidth\textwidth}
-%            \centering
-%            \includegraphics[width=\linewidth]{image/figure/rolling_sharpe_min}
-%            \caption{The model with the smallest cumulative reward}
-%        \end{subfigure}
-%        \caption{The rolling Sharpe ratio.}
-%        \label{fig:Rolling Sharpe}
-%    \end{figure}
-
-    \subsection{Reinforcement Learning Algorithms}\label{subsec:rl-algorithms}
-    TODO
-
-    \subsection{Hyperparameters}\label{subsec:hyperparameters}
-    TODO
 
 
     \section{Summary}\label{sec:summary}
