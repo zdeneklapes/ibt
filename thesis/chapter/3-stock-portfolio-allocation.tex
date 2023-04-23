@@ -8,7 +8,7 @@
     Let's consider a portfolio consisting of $N$ risky assets traded over $T$ time slots. The objective of portfolio management is to maximize profits while minimizing risks. We denote the closing prices of all assets at time slot $t$ as $\mathbf{p}(t) \in \mathbb{R}^N$. The price relative vector $\mathbf{y}(t) \in \mathbb{R}^N$ is defined as the element-wise division of $\mathbf{p}(t)$ by $\mathbf{p}(t-1)$, representing the relative change in prices from one-time slot to the next~\cite{finrl-portfolio-allocation-2020}:
 
     \begin{equation}
-        \mathbf{y}(t)=\left[\frac{\mathbf{p_1}(t)}{\mathbf{p_1}(t-1)}, \frac{\mathbf{p_2}(t)}{\mathbf{p_2}(t-1)}, \cdots, \frac{\mathbf{p_N}(t)}{\mathbf{p_N}(t-1)}\right]\text{ , for }t=1,\ldots,T
+        \mathbf{y}(t)=\left[\frac{\mathbf{p_1}(t)}{\mathbf{p_1}(t-1)}, \frac{\mathbf{p_2}(t)}{\mathbf{p_2}(t-1)}, \cdots, \frac{\mathbf{p_N}(t)}{\mathbf{p_N}(t-1)}, 1\right]\text{ , for }t=1,\ldots,T
     \end{equation}
 
     where $\mathbf{p}(0) \in \mathbb{R}^N$ is the vector of opening prices at $t = 1$. Let $\mathbf{w}(t) \in \mathbb{R}^N$ denote the portfolio weights for each of $N$ risky assets, which are updated at the beginning of time slot $t$. Let $v(t) \in \mathbb{R}$ denote the portfolio value at the beginning of time slot $t+1$, ignoring transaction costs. The relative portfolio value is defined as the ratio between the portfolio value at the end of time slot $t$ and that at the beginning of time slot $t$~\cite{finrl-portfolio-allocation-2020}:
@@ -29,7 +29,7 @@
 
     If there is no transaction cost, the final portfolio value is:
     \begin{equation}
-        v(T) = v(0) \prod_{t=2}^T\mathbf{w}(t)^\top \mathbf{y}(t)
+        v(t) = v(0) \prod_{t=2}^T\mathbf{w}(t)^\top \mathbf{y}(t)
     \end{equation}
 
     The portfolio management task~\cite{enwiki:1043516653} involves finding an optimal portfolio weight vector $\mathbf{w}^*(t) \in \mathbb{R}^N$ at time slot $t$ such that $\mathbf{w}^*(t)$ is the argmax of the objective function:
@@ -49,7 +49,7 @@
     In portfolio Management, \emph{State space} and \emph{Observation space} is the same. It is defined as the matrix $N\times F$, where $N$ is the number of risky assets (companies) and $F$ is the number of features. The features are the financial fundamental or technical indicators. The state space is the matrix of the elements of the risky assets at time $t$. The observation space is the matrix of the features of the risky assets at time $t+1$, more about Data Engineering in~\cref{sec:data-engineering}.
 
     \subsection{Action Space}\label{subsec:action-space}
-    The action space is the vector of the weights of the $N$ risky assets and one weight is preserved for cash. The weights are bounded between 0 and 1 when the weights (action) are provided by an agent, then for their normalization is used softmax function. The softmax function is defined as:
+    The action space is the vector of the weights of the $N$ risky assets and one weight is for cash. The weights are bounded between 0 and 1 when the weights (action) are provided by an agent, then for their normalization is used softmax function. The softmax function is defined as:
     \begin{equation}
         \sigma(\bm{w}(t))_i=\frac{e^{\bm{w}(t)_i}}{\sum_{j=1}^{N}e^{\bm{w}(t)_j}}
     \end{equation}
@@ -60,7 +60,7 @@
     \begin{equation}
         \begin{split}
             \rho(t)&=\frac{v(t)}{v(t-1)}-1\\
-            &=\mathbf{w}(t)_{1:N-1}^\top\mathbf{y}(t)-1\\
+            &=\mathbf{w}(t)^\top\mathbf{y}(t)-1\\
         \end{split}
     \end{equation}
     where $\mathbf{w}(t)_{1:N-1}^\top$ represents the new portfolio weights excluding the weight for cash, and $\mathbf{y}(t)$ denotes the estimated price relative vector at time slot $t$. The weight for cash is not considered in the reward function as it has no impact on the portfolio return.

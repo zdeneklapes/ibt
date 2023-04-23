@@ -78,16 +78,26 @@
 
     The training was performed with the following algorithms: A2C, PPO, SAC, DDPG, TD3. For each algorithm were hyperparameters chosen randomly from the given range or values. This proces repeats 10 times for each algorithm and dataset. As mentioned earlier, we've used 3 datasets. That means we trained 30 models of each algorithm, with total amount of trained agents 150.
 
-    \begin{landscape}
-        \begin{figure}
-            \centering
-            \includegraphics[width=\linewidth]{image/figure/wb}
-            \caption{W\&B Chart of parameters and their performance}
-            \label{fig:wb-chart}
-        \end{figure}
-    \end{landscape}
+    \begin{figure}
+        \centering
+        \includegraphics[width=\linewidth, height=0.2\paperheight]{image/figure/wb1}
+        \caption{W\&B Chart of parameters and their performance}
+        \label{fig:wb-chart1}
+    \end{figure}
+    \begin{figure}
+        \centering
+        \includegraphics[width=\linewidth, height=0.2\paperheight]{image/figure/wb1}
+        \caption{W\&B Chart of parameters and their performance}
+        \label{fig:wb-chart2}
+    \end{figure}
+    \begin{figure}
+        \centering
+        \includegraphics[width=\linewidth, height=0.2\paperheight]{image/figure/wb1}
+        \caption{W\&B Chart of parameters and their performance}
+        \label{fig:wb-chart3}
+    \end{figure}
 
-    TODO: description of best and worst hyperparametersnd why
+    We represent the agent performance during the test period in \cref{fig:wb-chart1}. To compare the performance, we chose the \emph{test/total\_reward} attribute, whose value color distinguishes the individual training runs. The higher the reversion (the agent performs better), the color of the curve reaches yellow, while the color changes to purple for poor performance. We can clearly see what parameters are the best for the agent, to achieve the highest performance. The best parameters are:
 
     \subsection{Baselines and Backtesting}\label{subsec:baselines-and-backtesting}
     In this subsubsection we show, how the agent performs in comparison to the baselines. We use the following baselines:
