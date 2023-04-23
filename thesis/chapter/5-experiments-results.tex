@@ -149,30 +149,50 @@
         \label{tab:best-worst-datasets}
         \begin{tabular}{|l|l|l|}
             \hline
-            \textbf{Run ID} & \textbf{Dataset Name} & \textbf{test/total\_reward}                  \\ \hline
-            p3irnh80        & Combined              & \textcolor[RGB]{50,150,50}{\textbf{1.97214}} \\ \hline
-            8tml2ozg        & Combined              & \textcolor[RGB]{50,150,50}{\textbf{1.97061}} \\ \hline
-            zfjr0ks0        & Fundamental Analysis  & \textcolor[RGB]{150,50,50}{\textbf{1.62093}} \\ \hline
-            pky1wslb        & Combined              & \textcolor[RGB]{150,50,50}{\textbf{1.63348}} \\ \hline
+            \textbf{Run ID} & \textbf{Dataset Name} & \textbf{test/total\_reward}                \\ \hline
+            p3irnh80        & Combined              & \textcolor[RGB]{50,150,50}{\textbf{1.972}} \\ \hline
+            8tml2ozg        & Combined              & \textcolor[RGB]{50,150,50}{\textbf{1.970}} \\ \hline
+            zfjr0ks0        & Fundamental Analysis  & \textcolor[RGB]{150,50,50}{\textbf{1.620}} \\ \hline
+            pky1wslb        & Combined              & \textcolor[RGB]{150,50,50}{\textbf{1.633}} \\ \hline
         \end{tabular}
-        \caption{Permormance of the datasets used for training the two best and two worst models.}
+        \caption{Permormance of the datasets used for training the two best and two worst models used in the previous section for comparing hyperparameters as well.}
     \end{table}
-
 
     \begin{table}[!ht]
         \centering
-        \label{tab:best-worst-datasets}
+        \label{tab:worst-datasets}
         \begin{tabular}{|l|l|l|}
             \hline
-            \textbf{Run ID} & \textbf{Dataset Name} & \textbf{test/total\_reward}                  \\ \hline
-            p3irnh80        & Combined              & \textcolor[RGB]{50,150,50}{\textbf{1.97214}} \\ \hline
-            8tml2ozg        & Combined              & \textcolor[RGB]{50,150,50}{\textbf{1.97061}} \\ \hline
-            zfjr0ks0        & Fundamental Analysis  & \textcolor[RGB]{150,50,50}{\textbf{1.62093}} \\ \hline
-            pky1wslb        & Combined              & \textcolor[RGB]{150,50,50}{\textbf{1.63348}} \\ \hline
+            \textbf{Run ID} & \textbf{Dataset Name} & \textbf{test/total\_reward}                \\ \hline
+            zfjr0ks0        & Fundamental Analysis  & \textcolor[RGB]{150,50,50}{\textbf{1.620}} \\ \hline
+            pky1wslb        & Combined              & \textcolor[RGB]{150,50,50}{\textbf{1.633}} \\ \hline
+            2161deh4        & Technical Analysis    & \textcolor[RGB]{150,50,50}{\textbf{1.642}} \\ \hline
+            ipl1v8io        & Technical Analysis    & \textcolor[RGB]{150,50,50}{\textbf{1.643}} \\ \hline
+            2161deh4        & Technical Analysis    & \textcolor[RGB]{150,50,50}{\textbf{1.642}} \\ \hline
+            2161deh4        & Technical Analysis    & \textcolor[RGB]{150,50,50}{\textbf{1.642}} \\ \hline
         \end{tabular}
-        \caption{Permormance of the datasets used for training the two best and two worst models.}
+        \caption{The datasets with the poorest performing models.}
     \end{table}
 
+    \begin{table}[!ht]
+        \centering
+        \label{tab:best-datasets}
+        \begin{tabular}{|l|l|l|}
+            \hline
+            \textbf{Run ID} & \textbf{Dataset Name} & \textbf{test/total\_reward}                \\ \hline
+            p3irnh80        & Combined              & \textcolor[RGB]{50,150,50}{\textbf{1.972}} \\ \hline
+            8tml2ozg        & Combined              & \textcolor[RGB]{50,150,50}{\textbf{1.970}} \\ \hline
+            geaioz9h        & Fundamental Analysis  & \textcolor[RGB]{50,150,50}{\textbf{1.965}} \\ \hline
+            8iq9e37s        & Combined              & \textcolor[RGB]{50,150,50}{\textbf{1.956}} \\ \hline
+            y3zz2sv3        & Combined              & \textcolor[RGB]{50,150,50}{\textbf{1.955}} \\ \hline
+            4qr3nk43        & Fundamental Analysis  & \textcolor[RGB]{50,150,50}{\textbf{1.945}} \\ \hline
+        \end{tabular}
+        \caption{The datasets with the best performing models.}
+    \end{table}
+
+    Based on the~\crefrange{tab:best-worst-datasets}{tab:best-datasets} it appears that the performance of the models is highly dependent on the choice of hyperparameters, making it difficult to determine the worst dataset. However, it seems clear that when the hyperparameters are well-tuned, the \emph{Combined Dataset} performs the best, while the \emph{Fundamental Dataset} also performs well.
+
+    All the information, including hyperparameters, datasets, and other details, are available online at the following URL: \url{https://wandb.ai/investai/portfolio-allocation}. The website contains extensive information about the experiments and includes many more details.
 
     \subsection{Baselines and Backtesting}\label{subsec:baselines-and-backtesting}
     In this subsubsection we show, how the agent performs in comparison to the baselines. We use the following baselines:
