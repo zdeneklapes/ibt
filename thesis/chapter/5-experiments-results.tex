@@ -4,40 +4,37 @@
 
 \begin{document}
     \chapter{Experiments and Results}\label{sec:experiments-and-results}
-    In this chapter, we describe our approach to testing the performance of the proposed models. We describe the technology used, in~\cref{sec:wandb}, and the metrics used to evaluate the performance of the models and the baselines used for comparison, in~\cref{sec:metrics-comparison}. Finally, we present the results of our experiments~cref{sec:summary}.
+    In this section we present the results of all the experiments performed. We will also discuss any problems that arose during the conduct of these experiments and provide further information on how we selected certain methods and hyperparameters for more extensive testing.
 
-    All experiments were conducted in Python 3.10.4. We used the Weights \& Biases Sweep technology to find the optimal hyperparameters.
-
-    The experiments were performed on a computer with the following specifications:
+    By performing a series of experiments, we show how our agent performs in a given environment. We compare the best and worst performing models and discuss the results of our experiments with the baseline models and benchmarks in~\cref{sec:experiments}. We also discuss and compare the hyperparameter settings and the advantages and disadvantages of all the datasets used in~\cref{subsec:hyperparameters}. We also provide some information on how we approached performance testing of the proposed models and what technologies were used for the MLOps concepts, such as tracking training and test runs~\cref{sec:wandb}. Finally, we discuss the results of our experiments and provide a summary of our findings~\cref{sec:summary}.
+    \\
+    \\
+    The computer used for experiments has the following specifications:
     \begin{itemize}
-        \item Ubuntu 20.04.6 LTS (GNU/Linux 5.4.0-146-generic x86\_64)
-        \item 2 x Intel Xeon CPU E5-2620 v3 @ 2.40GHz, six cores
-        \item 2 x 32 GB RAM \& 2133MHz, quad channel
-        \item 4 x NVIDIA GTX 1080 (Pascal), 8GB RAM
+        \item Operating System: Ubuntu 20.04.6 LTS (GNU/Linux 5.4.0-146-generic x86\_64)
+        \item CPU: 2 x Intel Xeon CPU E5-2620 v3 @ 2.40GHz, each with six cores, for a total of 12 cores.
+        \item RAM: 2 x 32 GB RAM running at 2133MHz, using quad-channel architecture for faster memory access
+        \item GPU: 4 x NVIDIA GTX 1080 (Pascal) with 8GB RAM each, providing a total of 32GB GPU memory.
     \end{itemize}
+    This configuration is well-suited for AI workloads that can benefit from both CPU and GPU parallelism, such as deep learning. The combination of two Intel Xeon CPUs provides a total of 12 cores, which can be utilized for parallel CPU processing. The 64GB of RAM, along with quad-channel architecture, provides fast access to memory, which is essential for large-scale machine learning tasks. The 4 NVIDIA GTX 1080 GPUs provide additional processing power and GPU memory, which can be leveraged by deep learning frameworks such as TensorFlow or PyTorch to accelerate model training and inference.
 
 
     \section{Weights \& Biases}\label{sec:wandb}
-    Weights \& Biases is a machine learning experiment tracking and visualization tool that helps data scientists and machine learning practitioners monitor and manage their experiments. It provides a unified interface for logging and visualizing experiment metrics, hyperparameters, and other relevant information, making it easier to analyze, compare, and reproduce experiments.
+    Weights \& Biases (W\&B) is a powerful machine learning experiment tracking and visualization tool that helps data scientists and machine learning practitioners manage their experiments. With W\&B, users can log experiment metrics in real-time, track hyperparameters, and compare and reproduce experiments easily. W\&B offers various visualization tools like interactive plots, histograms, and confusion matrices, which help users analyze and understand experiment results.
 
-    Wandb offers a wide range of features, including:
     \begin{itemize}
-        \item Experiment tracking: Wandb allows users to log experiment metrics such as loss, accuracy, and other custom metrics in real-time during training. These metrics are logged to a central dashboard, making it easy to monitor and compare multiple experiments.
-        \item Hyperparameter tuning: Wandb supports hyperparameter sweeps, allowing users to explore different hyperparameter configurations in parallel and find optimal hyperparameter settings for their models.
-        \item Visualizations: Wandb provides various visualization tools, including interactive plots, histograms, confusion matrices, and more, to help users analyze and understand experiment results.
-        \item Artifact management: Wandb allows users to log and version datasets, models, and other artifacts, making it easy to track and reproduce experiments with specific data and model versions.
-        \item Collaboration: Wandb enables team collaboration by allowing users to share experiment results, visualizations, and artifacts with team members, facilitating communication and collaboration among team members.
+        \item Experiment tracking: W\&B allows users to log experiment metrics such as loss, accuracy, and other custom metrics in real-time during training. These metrics are logged to a central dashboard, making it easy to monitor and compare multiple experiments.
+        \item Hyperparameter tuning: W\&B supports hyperparameter sweeps, allowing users to explore different hyperparameter configurations in parallel and find optimal hyperparameter settings for their models.
+        \item Visualization: W\&B provides a variety of visualization tools, including interactive graphs, histograms, confusion matrices, and more, to help users analyze and understand experimental results. We use some of the W\&B graphs to compare hyperparameters and their values to understand their effect on the overall range of rewards~\crefrange{fig:wb-chart1}{fig:wb-chart3}.
+        \item Artifact management: W\&B allows users to log and version datasets, models, and other artifacts, making it easy to track and reproduce experiments with specific data and model versions.
+        \item Collaboration: W\&B enables team collaboration by allowing users to share experiment results, visualizations, and artifacts with team members, facilitating communication and collaboration among team members.
     \end{itemize}
 
-    Agent's traning and testing runs are logged publicly on Wandb Website. The results of each run together with saved models and datasets can be found at~\url{https://wandb.ai/investai/portfolio-allocation}.
-    W\&B Api is very reach and offer a lot of features, therefore we will not describe them in this thesis. The documentation can be found at~\url{https://docs.wandb.ai/}.
+    In this paper, for example, training and test runs are publicly recorded on the W\&B website. The results of each run, including the stored models and datasets, can be found at the following URL: \url{https://wandb.ai/investai/portfolio-allocation}. W\&B provides a rich API that offers many additional features not mentioned in this description. For more information, please refer to the W\&B documentation at \url{https://docs.wandb.ai/} for a detailed description of all features and APIs.
 
 
-    \section{The focus of the Study}\label{sec:the-focus-of-the-study}
-
-
-    \section{Experimental Setup}\label{sec:experimental-setup}
-    All experiments were focused on a several metrics. First is if the model can beat the standart indexes, like S\&P 500, DJIA, and others. Second what dataset is more suitable for training the model. Third metric find the optimal hyperparameters for the model. And the last metric is the time of training and testing the model. All experiments will be described in the in accordance to our testign period which is from
+    \section{Experiments}\label{sec:experiments}
+    All experiments focused on several metrics. The first is whether the model can outperform standard indices such as the S\&P 500, DJIA and others. Second, what dataset is more appropriate for training the model. The third metric is finding the optimal hyperparameters for the model. And the last metric is the time to train and test the model. All experiments will be described in accordance with our testing period, which is from 2017-01-25 to 2022-12-16.
 
     \subsection{Hyperparameters}\label{subsec:hyperparameters}
     The hyperparameter sweep was performed on the following hyperparameters with given configuration, and sweep was performed according to the wandb documentation~\cref{sec:wandb}:
@@ -195,6 +192,8 @@
         \caption{The monthly returns.}
         \label{fig:month_annual_returns}
     \end{figure}
+
+    % TODO: tabel with best models hyperparameters and dataset name
 
 
     \section{Summary}\label{sec:summary}
