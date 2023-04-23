@@ -29,7 +29,8 @@
 
     If there is no transaction cost, the final portfolio value is:
     \begin{equation}
-        v(t) = v(0) \prod_{t=2}^T\mathbf{w}(t)^\top \mathbf{y}(t)
+        \label{eq:portfolio-value}
+        v(t) = \prod_{i=0}^{T} v(i)
     \end{equation}
 
     The portfolio management task~\cite{enwiki:1043516653} involves finding an optimal portfolio weight vector $\mathbf{w}^*(t) \in \mathbb{R}^N$ at time slot $t$ such that $\mathbf{w}^*(t)$ is the argmax of the objective function:
@@ -63,6 +64,6 @@
             &=\mathbf{w}(t)^\top\mathbf{y}(t)-1\\
         \end{split}
     \end{equation}
-    where $\mathbf{w}(t)_{1:N-1}^\top$ represents the new portfolio weights excluding the weight for cash, and $\mathbf{y}(t)$ denotes the estimated price relative vector at time slot $t$. The weight for cash is not considered in the reward function as it has no impact on the portfolio return.
+    where $\mathbf{w}(t)^\top$ represents the new portfolio weights excluding the weight for cash, and $\mathbf{y}(t)$ denotes the estimated price relative vector at time slot $t$. The weight for cash is not considered in the reward function as it has no impact on the portfolio return.
 
 \end{document}

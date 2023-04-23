@@ -82,6 +82,11 @@
     \subsubsection{Best and worst hyperparameters}\label{subsubsec:best-and-worst-hyperparameters}
     The performance is being evaluated based on the \emph{test/total\_reward} attribute. The value of this attribute is being used to distinguish individual training runs, and the color of the curve represents the value of this attribute. The higher the value of \emph{test/total\_reward}, the curve is colored in \textcolor[RGB]{255,128,0}{orange} indicating better performance. On the other hand, the lower the value of \emph{test/total\_reward}, the curve is colored in \textcolor[RGB]{100,0,200}{purple} for poor performance. By examining the graphs presented in~\crefrange{fig:wb-chart1}{fig:wb-chart3}, we can identify the optimal parameters for the agent to achieve peak performance.
 
+    \paragraph{Performance Metric}
+    The initial value of \emph{test/total\_reward} is set to $1$, and its value is calculated as the cumulative product of the rewards obtained by the agent during the testing phase, as per equation~\ref{eq:portfolio-value}.
+
+    For instance, if the agent receives rewards of $0.9$ and $1$ in the first step, then the value of \emph{test/total\_reward} would be $0.9 \times 1 = 0.9$ in the second step. If in the second step the agent receives rewards of $1.1$, then the value of \emph{test/total\_reward} would be $0.9 \times 1.1 = 0.99$ in the third step, and so on. Thus, if the final value of \emph{test/total\_reward} is $1.9$, it indicates that the agent received a total reward of $0.9$ over all the steps, which is equivalent to a portfolio return of $90\%$ over the testing period.
+
     \newpage
     \begin{figure}[h!]
         \centering
@@ -195,36 +200,45 @@
     All the information, including hyperparameters, datasets, and other details, are available online at the following URL: \url{https://wandb.ai/investai/portfolio-allocation}. The website contains extensive information about the experiments and includes many more details.
 
     \subsection{Baselines and Backtesting}\label{subsec:baselines-and-backtesting}
-    In this subsubsection we show, how the agent performs in comparison to the baselines. We use the following baselines:
+    In this subsubsection, we compare the performance of the agent to several baselines, including well-known market indexes and investment strategies. The following strategies and indexes were used as baselines:
+
     \begin{itemize}
-        \item \textbf{GSPC} - The S\&P 500 Index is a free-float capitalization-weighted index of the 500 largest publicly traded companies in the United States. The index is maintained by S\&P Dow Jones Indices, a division of S\&P Global. The S\&P 500 index is a price-weighted index, which means that each component stock's price contributes to the index in proportion to its weight. The index is not adjusted for either dividends or splits. It is one of the most commonly followed equity indices.
-        \item \textbf{DJI} - The Dow Jones Industrial Average (DJIA), also referred to as the Dow Jones, the Dow 30, or simply the Dow, is a stock market index that measures the stock performance of 30 large companies listed on stock exchanges in the United States. The average is a price-weighted index, which means that each component stock's price contributes to the index in proportion to its weight. The index is not adjusted for either dividends or splits. It is one of the most commonly followed equity indices.
-        \item \textbf{RUT} - The Russell 2000 is a stock market index that measures the performance of 2,000 small-cap companies in the United States. It is a subset of the Russell 3000 index, which represents approximately 98\% of the total market capitalization of the US equity market.
-        \item \textbf{IXIC} - The NASDAQ Composite is a stock market index that tracks the performance of all the companies listed on the NASDAQ stock exchange, which is primarily composed of technology and growth-oriented companies. The index was launched in 1971 and is considered one of the most widely-followed stock market indices in the world.
-        \item \textbf{Minimum Variance} - The Minimum Variance is a portfolio allocation strategy that seeks to minimize the variance of the portfolio's returns. The strategy is based on the assumption that the variance of the portfolio's returns is a measure of risk~\cite{investopedia-portfolio-variance}.
-        \item \textbf{Maximum Sharpe Ratio} - The Maximum Sharpe Ratio is a portfolio allocation strategy that seeks to maximize the Sharpe ratio of the portfolio. The strategy is based on the assumption that the Sharpe ratio is a measure of risk-adjusted return~\cite{investopedia-sharpe-ratio}.
+        \item \textbf{The S\&P 500 Index (GSPC)} is a capitalization-weighted index that tracks the performance of 500 large publicly traded companies in the US. The index is maintained by S\&P Dow Jones Indices and is one of the most widely followed equity indices.
+        \item \textbf{The Dow Jones Industrial Average (DJIA)} is a price-weighted index that tracks the stock performance of 30 large companies listed on US stock exchanges. It is also one of the most commonly followed equity indices.
+        \item \textbf{The Russell 2000 (RUT)} is a stock market index that tracks the performance of 2,000 small-cap companies in the US. It is a subset of the Russell 3000 index, which represents about 98\% of the total market capitalization of the US equity market.
+        \item \textbf{The NASDAQ Composite (IXIC)} is a stock market index that tracks the performance of all the companies listed on the NASDAQ stock exchange, which is primarily composed of technology and growth-oriented companies. It is one of the most widely-followed stock market indices in the world.
+        \item \textbf{Minimum Variance} is a portfolio allocation strategy that aims to minimize the variance of the portfolio's returns. The strategy assumes that the variance of the portfolio's returns is a measure of risk~\cite{investopedia-portfolio-variance}.
+        \item \textbf{Maximum Sharpe Ratio} is a portfolio allocation strategy that aims to maximize the Sharpe ratio of the portfolio. The strategy assumes that the Sharpe ratio is a measure of risk-adjusted return~\cite{investopedia-sharpe-ratio}.
     \end{itemize}
 
+    \subsubsection{Cumulative Returns}
+    The figure shown in~\cref{fig:cumulative_return} demonstrates that appropriate hyperparameter tuning can lead to successful results from a model, whereas unsuitable hyperparameters can result in unsatisfactory outcomes. The model that performs the best is trained with optimal hyperparameters and surpasses standard indexes such as DJI, RUT, IXIC, and S\&P500, albeit not consistently throughout the testing period. Towards the end of the testing period, the model outperforms S\&P500 for a brief period of time.
     \begin{figure}[h!]
         \centering
         \begin{subfigure}[t]{\experimentimgwidth\textwidth}
             \centering
             \includegraphics[width=\linewidth]{image/figure/returns_max}
-            \caption{The model with The Highest Cumulative Reward}
+            \caption{The model with the highest \emph{text/total\_reward}}
             \label{fig:returns_max}
         \end{subfigure}
         \hfill
         \begin{subfigure}[t]{\experimentimgwidth\textwidth}
             \centering
             \includegraphics[width=\linewidth]{image/figure/returns_min}
-            \caption{The model with The Smallest Cumulative Reward}
+            \caption{The model with the smallest \emph{text/total\_reward}}
             \label{fig:returns_min}
         \end{subfigure}
-        \vspace{0.5cm}
+        \caption{Cumulative return.}
+        \label{fig:cumulative_return}
+    \end{figure}
+
+    \subsubsection{Drawdowns}
+    By examining the draw-down graphs in \cref{fig:drawdown}, it is evident that our tuned model is better than the DJI index for larger drawdowns (around $6\%$), although both of our models perform well in comparison to the DJI index.
+    \begin{figure}[h!]
         \begin{subfigure}[t]{\experimentimgwidth\textwidth}
             \centering
             \includegraphics[width=\linewidth]{image/figure/drawdown_underwater_max}
-            \caption{The model with The Highest Cumulative Reward}
+            \caption{The model with the highest \emph{text/total\_reward}}
             \label{fig:drawdown_underwater_max}
         \end{subfigure}
         \hfill
@@ -234,54 +248,58 @@
             \caption{The DJI index}
             \label{fig:drawdown_underwater_dji}
         \end{subfigure}
-        \caption{Cumulative return.}
-        \label{fig:cumulative_return}
+        \caption{Drawdown.}
+        \label{fig:drawdown}
     \end{figure}
 
-    The image~\cref{fig:cumulative_return} illustrates that a model can produce good results if it is configured with appropriate hyperparameters. Conversely, a model that is not configured with suitable hyperparameters fails to generate satisfactory results. The model that performs the best with optimal hyperparameters surpasses standard indexes such as S\&P 500 and DJIA, whereas the model that performs the worst with inadequate hyperparameters cannot outperform these benchmarks. How we tune hyperparameters is described in~\cref{subsec:hyperparameters}
+    \subsubsection{Monthly and Annual Returns}
+    In figure \cref{fig:month_annual_returns}, both the monthly and annual returns of the models are presented, allowing for easy comparison of their performance. The results are similar to the cumulative returns described in the previous subsubsection, but the monthly returns provide a clearer understanding of when the models performed well or poorly. The model with the highest \emph{text/total\_reward} consistently outperforms the DJI index in most months, while even the model with the lowest \emph{text/total\_reward} performs better than the DJI index in the majority of months.
 
-    If we look at the draw-down graphs in~\cref{fig:cumulative_return}, we can see that our tuned model is much better than DJI index at large drawdowns, even both our models perform very well compared to the DJI index.
+    Notably, the models achieved significant outperformance during the big drawdown period, as shown in the heatmaps in subfigures \cref{subfig:montly_returns_heatmap_max} and \cref{subfig:montly_returns_heatmap_dji}. Specifically, the model with the highest \emph{text/total\_reward} performed better than the DJI index during the COVID-19 pandemic months of February, March and April 2020, due to the differing company weightings in the DJI index. This suggests that our model was able to learn which companies with specific features were better to hold during this period.
 
+    While there were some months where the DJI index performed better than our models, such as in April and October 2022, the performance difference was not significant. Therefore, we can conclude that our models performed well in the majority of months, as demonstrated by the annual graphs in subfigures \cref{subfig:annual_returns_max} and \cref{subfig:annual_returns_dji}.
 
     \begin{figure}[h!]
         \centering
         %
         \begin{subfigure}[t]{\experimentimgwidth\textwidth}
             \centering
+            \label{subfig:montly_returns_heatmap_max}
             \includegraphics[width=\linewidth]{image/figure/monthly_returns_heatmap_max}
-            \caption{The model with the highest cumulative reward}
+            \caption{The model with the highest \emph{text/total\_reward}}
         \end{subfigure}
         \hfill
         \begin{subfigure}[t]{\experimentimgwidth\textwidth}
             \centering
+            \label{subfig:annual_returns_max}
             \includegraphics[width=\linewidth]{image/figure/annual_returns_max}
-            \caption{The model with the highest cumulative reward}
+            \caption{The model with the highest \emph{text/total\_reward}}
         \end{subfigure}
-        \vspace{0.5cm}
 
         %
         \begin{subfigure}[t]{\experimentimgwidth\textwidth}
             \centering
             \includegraphics[width=\linewidth]{image/figure/monthly_returns_heatmap_min}
-            \caption{The model with the smallest cumulative reward}
+            \caption{The model with the smallest \emph{text/total\_reward}}
         \end{subfigure}
         \hfill
         \begin{subfigure}[t]{\experimentimgwidth\textwidth}
             \centering
             \includegraphics[width=\linewidth]{image/figure/annual_returns_min}
-            \caption{The model with the smallest cumulative reward}
+            \caption{The model with the smallest \emph{text/total\_reward}}
         \end{subfigure}
-        \vspace{0.5cm}
 
         %
         \begin{subfigure}[t]{\experimentimgwidth\textwidth}
             \centering
+            \label{subfig:montly_returns_heatmap_dji}
             \includegraphics[width=\linewidth]{image/figure/monthly_returns_heatmap_dji}
             \caption{The DJI index}
         \end{subfigure}
         \hfill
         \begin{subfigure}[t]{\experimentimgwidth\textwidth}
             \centering
+            \label{subfig:annual_returns_dji}
             \includegraphics[width=\linewidth]{image/figure/annual_returns_dji}
             \caption{The DJI index}
         \end{subfigure}
@@ -291,7 +309,8 @@
         \label{fig:month_annual_returns}
     \end{figure}
 
-    % TODO: tabel with best models hyperparameters and dataset name
+    \subsubsection{Overall Performance and Statistics}
+    TODO: Table performance with stats from pyfolio
 
 
     \section{Summary}\label{sec:summary}
