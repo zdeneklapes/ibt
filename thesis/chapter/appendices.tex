@@ -210,14 +210,17 @@
     \subsection{Examples of running the program}
 
     \subsubsection{Run the program to print the help message}
+    All examples assume that the current working directory is the root directory of the thesis code.
     \begin{lstlisting}[language=bash]
-PYTHONPATH=$PWD/investai python3 investai/run/portfolio_allocation/thesis/train.py \
+PYTHONPATH=$PWD/investai python3 \
+    investai/run/portfolio_allocation/thesis/train.py \
         --help
     \end{lstlisting}
 
     \subsubsection{Single Run (train/test)}
     \begin{lstlisting}[language=bash]
-PYTHONPATH=$PWD/investai python3 investai/run/portfolio_allocation/thesis/train.py \
+PYTHONPATH=$PWD/investai python3 \
+    investai/run/portfolio_allocation/thesis/train.py \
     --dataset-path out/dataset/stockfadailydataset.csv \
     --algorithms ppo \
     --wandb=1 \
@@ -234,7 +237,8 @@ PYTHONPATH=$PWD/investai python3 investai/run/portfolio_allocation/thesis/train.
 
     \subsubsection{Run 3 sweep runs through hyperparameters over 2 datasets and 5 algorithms (train/test)}
     \begin{lstlisting}[language=bash]
-PYTHONPATH=$PWD/investai python3 investai/run/portfolio_allocation/thesis/train.py \
+PYTHONPATH=$PWD/investai python3 \
+    investai/run/portfolio_allocation/thesis/train.py \
     --dataset-path \
         out/dataset/stockfadailydataset.csv \
         out/dataset/stockcombineddailydataset.csv \
