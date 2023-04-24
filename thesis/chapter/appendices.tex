@@ -196,5 +196,88 @@
 
 
     \chapter{Setting up and running the program}
-    TODO
+    The root directory of the thesis code contains a \texttt{README.md} file that provides instructions for installing the program. Following the steps outlined in this file should be sufficient for completing the installation process.
+
+    The program has been tested on both MacOS 13.2.1 (22D68) and Ubuntu 20.04.6 LTS (GNU/Linux 5.4.0-146-generic x86\_64), using Python version 3.10.11.
+
+    Quick start:
+    \begin{itemize}
+        \item Create a virtual environment with \texttt{python3 -m venv venv}
+        \item Activate the virtual environment with \texttt{source venv/bin/activate}
+        \item Install the requirements with \texttt{pip3 install -r requirements.txt}
+    \end{itemize}
+
+    \subsection{Examples of running the program}
+
+    \subsubsection{Run the program to print the help message}
+    \begin{lstlisting}[language=bash]
+PYTHONPATH=$PWD/investai python3 investai/run/portfolio_allocation/thesis/train.py \
+        --help
+    \end{lstlisting}
+
+    \subsubsection{Single Run (train/test)}
+    \begin{lstlisting}[language=bash]
+PYTHONPATH=$PWD/investai python3 investai/run/portfolio_allocation/thesis/train.py \
+    --dataset-path out/dataset/stockfadailydataset.csv \
+    --algorithms ppo \
+    --wandb=1 \
+    --project-verbose=1 \
+    --train-verbose=1 \
+    --wandb-verbose=1 \
+    --total-timesteps=1000 \
+    --train=1 \
+    --test=1 \
+    --env-id=1 \
+    --wandb-run-group="exp-run-1" \
+    --baseline-path=out/baseline/baseline.csv
+    \end{lstlisting}
+
+    \subsubsection{Run 3 sweep runs through hyperparameters over 2 datasets and 5 algorithms (train/test)}
+    \begin{lstlisting}[language=bash]
+PYTHONPATH=$PWD/investai python3 investai/run/portfolio_allocation/thesis/train.py \
+    --dataset-path \
+        out/dataset/stockfadailydataset.csv \
+        out/dataset/stockcombineddailydataset.csv \
+    --wandb=1 \
+    --wandb-sweep=1 \
+    --wandb-sweep-count=3 \
+    --algorithms \
+        ppo \
+        a2c \
+        td3 \
+        ddpg \
+        sac \
+    --project-verbose=1 \
+    --train-verbose=1 \
+    --wandb-verbose=1 \
+    --total-timesteps=1000 \
+    --train=1 \
+    --test=1 \
+    --env-id=1 \
+    --wandb-run-group="exp-sweep-1" \
+    --baseline-path=out/baseline/baseline.csv
+    \end{lstlisting}
+
+    \subsubsection{Create Datasets}
+    The scripts require a folder that contains downloaded and processed raw data. As a result, these scripts may not function properly on your computer. However, all of these datasets are accessible on W\&B at the following URL: \url{https://wandb.ai/investai/portfolio-allocation}.
+    \begin{lstlisting}[language=bash]
+PYTHONPATH=$PWD/investai python3 \
+investai/run/portfolio_allocation/thesis/dataset/stockfadailydataset.py \
+    --dataset-paths out/dataset/stockfadailydataset.csv \
+    --project-verbose=1
+
+PYTHONPATH=$PWD/investai python3 \
+investai/run/portfolio_allocation/thesis/dataset/stocktadailydataset.py \
+    --dataset-paths out/dataset/stocktadailydataset.csv \
+    --project-verbose=1
+
+PYTHONPATH=$PWD/investai python3 \
+investai/run/portfolio_allocation/thesis/dataset/stockcombinedailydataset.py \
+--project-verbose=1 \
+--dataset-paths \
+    out/dataset/stockfadailydataset.csv \
+    out/dataset/stocktadailydataset.csv \
+    out/dataset/stockcombineddailydataset.csv
+    \end{lstlisting}
+
 \end{document}
