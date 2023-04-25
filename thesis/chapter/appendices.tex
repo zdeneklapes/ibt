@@ -214,7 +214,11 @@
         \item Install the requirements with \texttt{pip3 install -r requirements.txt}
     \end{itemize}
 
-    \subsection{Download Datasets}
+
+    \section{Prepare Datasets}
+    You can download the baseline from Weights \& Biases or create it yourself, but raw data is required to create it.
+
+    \subsection{Download}
     In the root directory of the thesis code, run the following commands to download the datasets from Weights \& Biases:
     \begin{lstlisting}[language=bash]
 mkdir out/dataset
@@ -223,8 +227,51 @@ wandb artifact get investai/portfolio-allocation/dataset:v519 --root out/dataset
 wandb artifact get investai/portfolio-allocation/dataset:v517 --root out/dataset
     \end{lstlisting}
 
+    \subsection{Create}
+    The scripts require a folder that contains downloaded and processed raw data. As a result, these scripts may not function properly on your computer. However, all of these datasets are accessible on W\&B at the following URL: \url{https://wandb.ai/investai/portfolio-allocation}.
+    \begin{lstlisting}[language=bash]
+PYTHONPATH=$PWD/investai python3 \
+investai/run/portfolio_allocation/thesis/dataset/stockfadailydataset.py \
+    --dataset-paths out/dataset/stockfadailydataset.csv \
+    --project-verbose=1
 
-    \section{Examples of running the program}
+PYTHONPATH=$PWD/investai python3 \
+investai/run/portfolio_allocation/thesis/dataset/stocktadailydataset.py \
+    --dataset-paths out/dataset/stocktadailydataset.csv \
+    --project-verbose=1
+
+PYTHONPATH=$PWD/investai python3 \
+investai/run/portfolio_allocation/thesis/dataset/stockcombinedailydataset.py \
+--project-verbose=1 \
+--dataset-paths \
+    out/dataset/stockfadailydataset.csv \
+    out/dataset/stocktadailydataset.csv \
+    out/dataset/stockcombineddailydataset.csv
+    \end{lstlisting}
+
+
+    \section{Baseline}
+    You can either download the baseline from Weights \& Biases or create it yourself.
+
+    \subsection{Download}
+    In the root directory of the thesis code, run the following commands to download the baseline from Weights \& Biases:
+    \begin{lstlisting}[language=bash]
+mkdir out/baseline
+wandb artifact get investai/portfolio-allocation/baseline:latest --root out/baseline
+    \end{lstlisting}
+
+    \subsection{Create}
+    Firstly, it is necessary to create or download the dataset. In this case, we will utilize the \emph{stockfadailydataset.csv} dataset.
+    \begin{lstlisting}[language=bash]
+PYTHONPATH=$PWD/investai python3 \
+    investai/extra/math/finance/shared/baseline.py \
+    --project-verbose=1 \
+    --dataset-paths out/dataset/stockfadailydataset.csv \
+    --baseline-path=out/baseline/baseline.csv
+    \end{lstlisting}
+
+
+    \section{Examples of running Train/Test program}
     All examples assume that the current working directory is the root directory of the thesis code.
 
     \subsection{Run the program to print the help message}
@@ -276,48 +323,6 @@ PYTHONPATH=$PWD/investai python3 \
     --test=1 \
     --env-id=1 \
     --wandb-run-group="exp-sweep-1" \
-    --baseline-path=out/baseline/baseline.csv
-    \end{lstlisting}
-
-    \subsection{Create Baseline}
-    Firstly, it is necessary to create or download the dataset. In this case, we will utilize the \emph{stockfadailydataset.csv} dataset.
-    \begin{lstlisting}[language=bash]
-PYTHONPATH=$PWD/investai python3 \
-    investai/extra/math/finance/shared/baseline.py \
-    --project-verbose=1 \
-    --dataset-paths out/dataset/stockfadailydataset.csv \
-    --baseline-path=out/baseline/baseline.csv
-    \end{lstlisting}
-
-    \subsection{Create Datasets}
-    The scripts require a folder that contains downloaded and processed raw data. As a result, these scripts may not function properly on your computer. However, all of these datasets are accessible on W\&B at the following URL: \url{https://wandb.ai/investai/portfolio-allocation}.
-    \begin{lstlisting}[language=bash]
-PYTHONPATH=$PWD/investai python3 \
-investai/run/portfolio_allocation/thesis/dataset/stockfadailydataset.py \
-    --dataset-paths out/dataset/stockfadailydataset.csv \
-    --project-verbose=1
-
-PYTHONPATH=$PWD/investai python3 \
-investai/run/portfolio_allocation/thesis/dataset/stocktadailydataset.py \
-    --dataset-paths out/dataset/stocktadailydataset.csv \
-    --project-verbose=1
-
-PYTHONPATH=$PWD/investai python3 \
-investai/run/portfolio_allocation/thesis/dataset/stockcombinedailydataset.py \
---project-verbose=1 \
---dataset-paths \
-    out/dataset/stockfadailydataset.csv \
-    out/dataset/stocktadailydataset.csv \
-    out/dataset/stockcombineddailydataset.csv
-    \end{lstlisting}
-
-    \subsection{Create Baseline}
-    Firstly, it is necessary to create or download the dataset. In this case, we will utilize the \emph{stockfadailydataset.csv} dataset.
-    \begin{lstlisting}[language=bash]
-PYTHONPATH=$PWD/investai python3 \
-    investai/extra/math/finance/shared/baseline.py \
-    --project-verbose=1 \
-    --dataset-paths out/dataset/stockfadailydataset.csv \
     --baseline-path=out/baseline/baseline.csv
     \end{lstlisting}
 
