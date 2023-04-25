@@ -4,44 +4,6 @@
     \chapter{Reinforcement Learning Algorithms}
     In this appendix, we present pseudocode for various RL methods and algorithms, which are used in the field of RL research and applications.
 
-% TODO: Remove
-%    \section{Policy Iteration Algorithm in DP}
-%    \begin{algorithm}[h!]
-%        \SetKwComment{Comment}{/* }{ */}
-%        \caption{An algorithm with caption}
-%        \label{alg:two}
-%
-%        \Comment{1. Initialization}
-%        $V(s) \in \mathbb{R}$ and $\pi(s) \in A(s)$ arbitrarily for all $s \in S$; $V(\text{terminal}) = 0$.
-%
-%        \Comment{2. Policy Prediction}
-%        \While{$\Delta < \theta$}{
-%            $\Delta \leftarrow 0$
-%            \ForAll{$s \in S$}{
-%                $v \leftarrow V(s)$\;
-%                $V(s) \leftarrow \sum_{s', r} p(s_0, r|s, \pi(s)) \cdot (r + \gamma V(s_0))$\;
-%                $\Delta \leftarrow \max(\Delta, |v - V(s)|)$\;
-%            }
-%        }
-%
-%        \Comment{3. Policy Improvement}
-%        \emph{policy-stable} $\leftarrow$ \emph{true}
-%        \ForAll{$s \in S$}{
-%            $\text{old-action} \leftarrow \pi(s)$\;
-%            $\pi(s) \leftarrow \arg\max_a \sum_{s', r} p(s', r|s, a) \left[ r + \gamma V(s') \right]$\;
-%            \If{$\text{old-action} \neq \pi(s)$}{
-%                \emph{policy-stable} $\leftarrow$ \emph{false}
-%            }
-%        }
-%        \eIf{$\text{policy-stable}$}
-%        {
-%            \Return $V_{\pi} \approx v_*$ and $\pi \approx \pi_*$\;
-%        }{
-%            Goto \texttt{2. Policy Prediction}
-%        }
-%    \end{algorithm}
-%
-
 
     \section{Value Iteration Algorithm in DP}
     \begin{algorithm}[H]
@@ -59,38 +21,6 @@
         \textbf{Output} a deterministic policy $\pi$, such that\\
         $\pi(s) \leftarrow \argmax_a \sum_{s', r} p(s', r|s, a)(r + \gamma V(s'))$\\
     \end{algorithm}
-
-% TODO: Remove
-%    \section{Monte Carlo Prediction}
-%    \begin{algorithm}[h!]
-%        \caption{First-visit MC prediction for estimating $V_\pi$}
-%        \label{alg:mc}
-%
-%        \SetKwInput{Input}{Input}
-%
-%        \Input{A policy $\pi$ to be evaluated}
-%
-%        \emph{Initialize:}\\
-%        $V(s) \in \mathbb{R}$, arbitrarily, for all $s \in S$\\
-%        \emph{Returns($s$)}: an empty list, for all $s \in S$
-%
-%        \emph{Loop forever (for each episode):}\\
-%        \While{true}{
-%            Generate an episode following $\pi$: $S_0, A_0, R_1, S_1, A_1, R_2, \ldots, S_{T-1}, A_{T-1}, R_T$
-%
-%            $G \leftarrow 0$
-%
-%            \emph{Loop for each step of episode, $t = T-1, T-2, \ldots, 0$:}\\
-%            \For{$t \leftarrow T-1$ \KwTo $0$}{
-%                $G \leftarrow G + R_{t+1}$
-%
-%                \uIf{$S_t$ does not appear in $S_0, S_1, \ldots, S_{t-1}$}{
-%                    Append $G$ to \emph{Returns($S_t$)}
-%                    $V(S_t) \leftarrow \text{average}(\text{Returns}(S_t))$
-%                }
-%            }
-%        }
-%    \end{algorithm}
 
 
     \section{Q-Learning Off-policy TD Control}
@@ -114,67 +44,6 @@
             }
         }
     \end{algorithm}
-
-% TODO: Remove
-%    \section{Tabular Dyna-Q}
-%    \begin{algorithm}[h!]
-%        \SetKwComment{Comment}{/* }{ */}
-%        \caption{Tabular Dyna-Q}
-%        \label{alg:dyna-q}
-%        \Comment{1. Initialization}
-%        Initialize $Q(s, a)$ and $Model(s, a)$ for all $s \in S$ and $a \in A(s)$\;
-%        $S \leftarrow$ current (non-terminal) state\;
-%
-%        \While{True}{
-%            \Comment{2. Action Selection}
-%            $A \leftarrow$ $\epsilon$-greedy($S, Q$)\;
-%
-%            \Comment{3. Take action and observe the environment}
-%            Take action $A$; observe resultant reward $R$, and new state $S_0$\;
-%
-%            \Comment{4. Q-Value Update}
-%            $Q(S, A) \leftarrow Q(S, A) + \alpha \left( R + \gamma \max_{a'} Q(S_0, a') - Q(S, A) \right)$\;
-%
-%            \Comment{5. Model Update}
-%            $Model(S, A) \leftarrow R, S_0$ (assuming deterministic environment)\;
-%
-%            \For{$i \leftarrow 1$ to $n$}{
-%                \Comment{6. Model-based Planning}
-%                $S \leftarrow$ random previously observed state\;
-%                $A \leftarrow$ random action previously taken in $S$\;
-%                $R, S_0 \leftarrow Model(S, A)$\;
-%                $Q(S, A) \leftarrow Q(S, A) + \alpha \left( R + \gamma \max_{a'} Q(S_0, a') - Q(S, A) \right)$\;
-%            }
-%
-%            $S \leftarrow S_0$\;
-%
-%        }
-%    \end{algorithm}
-
-
-%    TODO: Remove
-%    \section{Random Sample One-Step Tabular Q-Planning}
-%    \begin{algorithm}[H]
-%        \label{alg:random-sample-one-step-tabular-q-planning}
-%        \SetKwInOut{Input}{Input}
-%        \SetKwInOut{Output}{Output}
-%        \SetAlgoLined
-%        \Input{
-%            $S$: Set of states \\
-%            $A$: Set of actions \\
-%            $\alpha$: Learning rate \\
-%            $\gamma$: Discount factor \\
-%        }
-%        \While{True}{
-%            Select a state $s \in S$, action $a \in A(s)$ at random\;
-%            Send $s, a$ to a sample model, and obtain a sample next reward $r$ and a sample next state $s'$\;
-%            Apply one-step tabular Q-learning update to $s, a, r, s'$:
-%            \[
-%                Q(s, a) \leftarrow Q(s, a) + \alpha \cdot \left( r + \gamma \cdot \max_{a'} Q(s', a') - Q(s, a) \right)
-%            \]
-%        }
-%        \caption{Random-sample one-step tabular Q-planning}
-%    \end{algorithm}
 
 
     \section{REINFORCE: Monte-Carlo Policy-Gradient Control (episodic) for $\pi_*$}
@@ -208,15 +77,19 @@
 
 
     \section{Prepare Environment}
-    \begin{itemize}
-        \item Create a virtual environment with \texttt{python3 -m venv venv}
-        \item Activate the virtual environment with \texttt{source venv/bin/activate}
-        \item Install the requirements with \texttt{pip3 install -r requirements.txt}
-    \end{itemize}
+    Run this command from the root directory of the thesis code to create a virtual environment and install the required packages:
+    \begin{lstlisting}[language=bash]
+./start.sh --project-install
+    \end{lstlisting}
+
+    The virtual environment must be activated before running the program. To activate the virtual environment, run the following command from the root directory of the thesis code:
+    \begin{lstlisting}[language=bash]
+source venv/bin/activate
+    \end{lstlisting}
 
 
-    \section{Prepare Datasets}
-    You can download the baseline from Weights \& Biases or create it yourself, but raw data is required to create it.
+    \section{Datasets}
+    You can download the datasets from Weights \& Biases or create it yourself, but raw data is required to create it.
 
     \subsection{Download}
     In the root directory of the thesis code, run the following commands to download the datasets from Weights \& Biases:
@@ -273,6 +146,22 @@ PYTHONPATH=$PWD/investai python3 \
 
     \section{Examples of running Train/Test program}
     All examples assume that the current working directory is the root directory of the thesis code.
+
+    The examples expect the \emph{.env} file in the root directory of the thesis code. This file contains the following variables:
+    \begin{lstlisting}[language=bash]
+# W&B
+WANDB_API_KEY=''
+WANDB_ENTITY=''
+WANDB_PROJECT=''
+WANDB_TAGS=''
+WANDB_JOB_TYPE=''
+WANDB_RUN_GROUP=''
+WANDB_MODE=''
+WANDB_DIR=''
+
+# CUDA - for TensorRT to find CUDA libraries
+LD_LIBRARY_PATH='${LD_LIBRARY_PATH}:${HOME}/venv3.10/lib/python3.10/site-packages/nvidia/cuda_runtime/lib/:${HOME}/venv3.10/lib/python3.10/site-packages/tensorrt/'
+    \end{lstlisting}
 
     \subsection{Run the program to print the help message}
     \begin{lstlisting}[language=bash]
