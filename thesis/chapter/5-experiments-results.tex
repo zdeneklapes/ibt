@@ -16,7 +16,6 @@
         \item RAM: 2 x 32 GB RAM running at 2133MHz, using quad-channel architecture for faster memory access
         \item GPU: 4 x NVIDIA GTX 1080 (Pascal) with 8GB RAM each, providing a total of 32GB GPU memory.
     \end{itemize}
-    This configuration is well-suited for AI workloads that can benefit from both CPU and GPU parallelism, such as deep learning. The combination of two Intel Xeon CPUs provides a total of 12 cores, which can be utilized for parallel CPU processing. The 64GB of RAM, along with quad-channel architecture, provides fast access to memory, which is essential for large-scale machine learning tasks. The 4 NVIDIA GTX 1080 GPUs provide additional processing power and GPU memory, which can be leveraged by deep learning frameworks such as TensorFlow or PyTorch to accelerate model training and inference.
 
 
     \section{Weights \& Biases}\label{sec:wandb}
@@ -107,7 +106,7 @@
         \label{fig:wb-chart3}
     \end{figure}
 
-    The following table shows the hyperparameters of the 2 best and 2 worst trained models~\cref{tab:best-worst-hyperparameters}:
+    The following table shows the hyperparameters of the 2 best and 2 worst trained models:
     \begin{table}[!ht]
         \centering
         \label{tab:best-worst-hyperparameters}
@@ -148,7 +147,7 @@
     \end{table}
 
     \subsection{Datasets}\label{subsec:datasets}
-    In the previous chapter we compare models based on the \emph{test/total\_reward} of the agent, comparing training hyperparameters Now we look and compare model performance based on the dataset used. We compare the same models (2 best and 2 worst models) used in the previous section in~\cref{tab:best-worst-datasets}, and we also include the best and worst model from the \emph{Fundamental Analysis} dataset and \emph{Technical Analysis} in~\cref{TODO}. The results are shown in Table~\ref{tab:best-worst-datasets}.
+    In the previous chapter we compare models based on the \emph{test/total\_reward} of the agent, comparing training hyperparameters Now we look and compare model performance based on the dataset used. We compare the same models (2 best and 2 worst models) used in the previous section in~\cref{tab:best-worst-datasets}, and we also include the best and worst model from the \emph{Fundamental Analysis} dataset and \emph{Technical Analysis} in~\cref{subsec:datasets}. The results are shown in Table~\cref{tab:best-worst-datasets}.
     \begin{table}[!ht]
         \centering
         \label{tab:best-worst-datasets}
@@ -355,6 +354,8 @@
     Another area of improvement that we believe warrants further exploration is the reward function. While our experiments have shown that the reward function we used was effective to some extent, we acknowledge that it may not capture all the nuances of the market. Therefore, we recommend exploring alternative reward functions that can better account for the goodness or badness of actions taken by the agent.
 
     Overall, we believe that our study has demonstrated the potential of DRL in portfolio allocation, but there are still many avenues for improvement and further research. By incorporating these future works, we can enhance the performance of our model and make it more suitable for real-world applications.
+
+    % TODO: Dividends are not considered
 
 
 \end{document}

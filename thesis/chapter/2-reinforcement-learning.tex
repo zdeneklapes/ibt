@@ -4,7 +4,7 @@
 
     The motivation for this chapter comes from the influential book on reinforcement learning by Richard Sutton and Andrew Barto and Foundations of Reinforcement Learning with Application in Finance by Ashwin Rao and Tikhon Jelvis~\cite{rao2022foundations, sutton2018reinforcement}.
 
-    This chapter explores the application of Reinforcement Learning techniques in the context of portfolio allocation. In \cref{sec:markov-theory} we will provide an introduction to Markov models, first explore \emph{Markov Processes}, \emph{Markov Reward Processes} and \emph{Markov Decision Processes}, which are the fundamental building blocks of Reinforcement Learning. Afterward, we divide Reinforcement Learning into two main categories. In \cref{sec:model-based-methods}, we will discuss \emph{Model-based} Reinforcement Learning methods, and in \cref{sec:model-free-methods} we will discuss \emph{Model-free} Reinforcement Learning methods in detail with advantages and disadvantages of each approach. Let's start with an introduction to AI in general and its different types of learning:
+    This chapter discusses the application of Reinforcement Learning techniques in the context of portfolio allocation. We provide an introduction to \emph{Markov Theory} in \cref{sec:markov-theory}, first examining \emph{Markov processes}, \emph{Markov reward processes} and \emph{Markov decision processes}, which are the basic building blocks of Reinforcement Learning. We then describe \emph{Model Free Methods} in \cref{sec:value-based-learning} and \cref{sec:policy-based}. We discuss \emph{Model Free} Reinforcement Learning Methods in detail with the advantages and disadvantages of each approach. Let us start with an introduction to artificial intelligence in general and its different types of learning:
 
     \paragraph{Supervised Learning}
     In supervised learning (SL), a model is trained on a labeled dataset, where the input data is paired with corresponding output labels. The model learns to make predictions based on the labeled examples, and the goal is to minimize the error between predicted outputs and actual labels. Common applications of supervised learning include image classification, speech recognition, and sentiment analysis.
@@ -89,14 +89,14 @@
     \end{figure}
 
 
-    \section{Markov Theory}\label{sec:markov-models-for-rl}
+    \section{Markov Theory}\label{sec:markov-theory}
     This section provides an introduction to Markov theory, which is the fundamental building block of Reinforcement Learning. We begin by \emph{Markov Process}, described in~\cref{subsec:markov-process}, which is a stochastic process that satisfies the Markov property. We then move on to \emph{Markov Reward Process}, described in~\cref{subsubsec:markov-reward-process}, which is a Markov process with a reward function. Finally, we describe the most important for RL \emph{Markov Decision Process}, described in~\cref{subsec:markov-decision-process}, which is a Markov Reward process with decision-making ability.
 
     \subsection{Markov Process}\label{subsec:markov-process}
     The Markov process (MP), also known as Markov Chains, describes the states of an environment and models the dynamics of state transitions. In an MP, an agent can only observe the changing states of the environment and has no influence over them. Markov process has two key properties. Firstly, state transitions are non-deterministic. States are modeled as realizations of random variables, defined in \cref{subsubsec:probability-functions}. Secondly, the future state is only dependent on the current state, and not on previous states, simplifying causality with the Markov property~\cite{rao2022foundations, inproceedings}.
 
     \subsubsection{Probability Functions}\label{subsubsec:probability-functions}
-    The first property of an MP states that each concrete state of an environment is the realization of a discrete random variable $X$ from set $V$ with a certain probability $Pr\left[X=x\right]$, where $x \in V$ and set $V$ contains all states of an environment. A state is a realization of a random experiment that the environment assumes with a certain probability, and this can be represented as a probability function~\cite{FITMT25127}:
+    The first property of an MP states that each concrete state of an environment is the realization of a discrete random variable $X$ from set $V$ with a certain probability $\Pr\left[X=x\right]$, where $x \in V$ and set $V$ contains all states of an environment. A state is a realization of a random experiment that the environment assumes with a certain probability, and this can be represented as a probability function~\cite{FITMT25127}:
     \begin{equation}
         P(X = X(\omega)) = P(X = x)
     \end{equation}
@@ -118,11 +118,11 @@
     \subsubsection{Markov Property}\label{subsubsec:markov-property}
     The Markov property, which is defined using conditional probability, states that ``The future is independent of the past, given the present."
 
-    The stochastic process has the Markov property if and only if, for all time steps $t \in I$, where $I$ is some (totally ordered) set, the conditional probability of the next state given the current state is equal to the conditional probability of the next state given all the previous states: $Pr\left[X_{t+1}|X_t\right] = Pr\left[X_{t+1}|X_1,\ldots,X_t\right]$
+    The stochastic process has the Markov property if and only if, for all time steps $t \in I$, where $I$ is some (totally ordered) set, the conditional probability of the next state given the current state is equal to the conditional probability of the next state given all the previous states: $\Pr\left[X_{t+1}|X_t\right] = \Pr\left[X_{t+1}|X_1,\ldots,X_t\right]$
 
     This property has several advantages in practical reinforcement learning, including the uniqueness and distinctiveness of states, as well as the ability to precisely formulate the probability of state transitions, defined as:~\cite{FITMT25127}
     \begin{equation}
-        \mathcal{P}(x'|x)=Pr\left[X_{t+1}=x'|X_t=x\right]
+        \mathcal{P}(x'|x)=\Pr\left[X_{t+1}=x'|X_t=x\right]
     \end{equation}
 
     Given $n$ possible states, $s\in \mathcal{S}$, then the probability of transitioning from state $s$ to state $s'$ can be represented as a matrix $\mathcal{P}$, and because probability summation rule, the sum of transition probabilities from state $s$ to any other state $s'$ must equal to $1$.
@@ -201,7 +201,7 @@
             \item $\gamma$ is a discount factor in interval $\left<0;1\right>$
         \end{itemize}
         \begin{equation}
-            \mathcal{P}(s,r,s')=Pr\left[R_{t+1}=r,S_{t+1}=s'|S_t=s\right]\text{ for time steps }t=0,1,2,\ldots
+            \mathcal{P}(s,r,s')=\Pr\left[R_{t+1}=r,S_{t+1}=s'|S_t=s\right]\text{ for time steps }t=0,1,2,\ldots
         \end{equation}
         \begin{align*}
             \text{ for all }s\in N,r\in D,s'\in S,\text{ such that }\sum_{s'\in S}\sum_{r\in D}\mathcal{P}(s,r,s')=1\text{ for all }s\in N
@@ -252,7 +252,7 @@
     \end{equation}
     where $\bm{I_m}$ is the identity matrix of size $m\times m$, and $\gamma$ is the discount factor~\cite{rao2022foundations}.
 
-    By extending the \cref{subsubsec:state-value-function} to include actions, we arrive at the most important equation in all of the reinforcement learning: \emph{The Bellman equation}, defined in ~\cref{subsubsec:bellman-equation}. It states that to calculate the long-term expected reward from a state, an agent only needs to add together the reward of the current state and the long-term expected reward of the next state~\cite{FITMT25127}.
+    By extending the \cref{subsubsec:state-value-function} to include actions, we arrive at the most important equation in all of the reinforcement learning: \emph{The Bellman equation}, defined in ~\cref{subsubsec:bellman-optimality-equation}. It states that to calculate the long-term expected reward from a state, an agent only needs to add together the reward of the current state and the long-term expected reward of the next state~\cite{FITMT25127}.
 
     \subsection{Markov Decision Process}\label{subsec:markov-decision-process}
     The Markov Decision Process (MDP) allows an agent to actively influence changes in the state of the environment through its actions. Within the MDP, the agent has the ability to jointly determine the subsequent state to which the environment should transition. The agent's primary goal is to strategically choose actions that maximize the expected payoff. In the previous subsections, we addressed the aspect of \emph{sequential uncertainty (e.g., MRP)} using the Markov process framework and extended it to include the uncertain reward $R_t\in\mathcal{R}$ at each state transition $p(s',r,s)$, referred to as Markov reward processes. However, this framework lacks the notion of \emph{sequential decision making} and in this section, this notion is introduced in terms of MDP, a generalization of MRP that includes the notion of \emph{sequential decision making}~\cite{rao2022foundations}.
@@ -305,7 +305,7 @@
         \end{equation}
     \end{definition}
 
-    The table of action-value functions is also called Q-Table. A policy and the action-value functions of an agent can both be represented by $|\mathcal{S}|\times|\mathcal{A}|$ matrix. Implementations of RL algorithms then mostly use only the matrix of action-value functions and infer the policy from them. The goal of an agent is to maximize the return. In the above context, this means to find a policy that yields as much return as possible, therefore in \cref{subsubsec:optimal-value-function} we define the \emph{Optimal Value Funtions}~\cite{sutton2018reinforcement}.
+    The table of action-value functions is also called Q-Table. A policy and the action-value functions of an agent can both be represented by $|\mathcal{S}|\times|\mathcal{A}|$ matrix. Implementations of RL algorithms then mostly use only the matrix of action-value functions and infer the policy from them. The goal of an agent is to maximize the return. In the above context, this means to find a policy that yields as much return as possible, therefore in \cref{subsubsec:optimal-value-functions} we define the \emph{Optimal Value Funtions}~\cite{sutton2018reinforcement}.
 
     To avoid confusion, $v_\pi$ is referred to as the State-Value Function, while $q_\pi$ is referred to as the Action-Value Function. The Action-Value Function provides information about the expected returns from specific state-action pairs and is useful for making decisions about which actions to take in an MDP. The relationship between the state-value function and the action-value function can be defined as:
     \begin{equation}
@@ -541,7 +541,7 @@
         Q(S_t,A_t)\leftarrow Q(S_t,A_t)+\alpha\left[R_{t+1}+\gamma\max_a Q(S_{t+1},a)-Q(S_t,A_t)\right]
     \end{equation}
 
-    In this case, the learned action-value function, $Q$, directly approximates $q_*$, the optimal action-value function, independent of the policy being followed. This dramatically simplifies the analysis of the algorithm and enables early convergence proofs. The policy still has an effect in that it determines which state-action pairs are visited and updated. However, all that is required for correct convergence is that all pairs (transition matrix, example in \cref{fig:q-learning}) continue to be updated. This is a minimal requirement in the sense that any method guaranteed to find optimal behavior in the general case must require it. The Q-learning algorithm is show in \cref{alg:q_learning}~\cite{rl-course-david-silver, sutton2018reinforcement}.
+    In this case, the learned action-value function, $Q$, directly approximates $q_*$, the optimal action-value function, independent of the policy being followed. This dramatically simplifies the analysis of the algorithm and enables early convergence proofs. The policy still has an effect in that it determines which state-action pairs are visited and updated. However, all that is required for correct convergence is that all pairs (transition matrix) continue to be updated. This is a minimal requirement in the sense that any method guaranteed to find optimal behavior in the general case must require it. The Q-learning algorithm is show in \cref{alg:q_learning}~\cite{rl-course-david-silver, sutton2018reinforcement}.
 
 %    \begin{figure}[h!]
 %        \centering
@@ -622,7 +622,7 @@
     \subsection{Stochastic Policy Gradient Methods}\label{subsec:policy-gradient}
     All algorithms that use a parameterized policy are referred to as policy gradient methods. We can represent the policy with a parameter vector $ \bm{\theta} \in \mathbb{R}^d $, where $ d \in \mathbb{N} $. Then, extending \cref{eq:policy}, we can formulate the probability of executing action $ a $ in state $ s $ with parameters $ \bm{\theta} $ at time-step $ t $ of policy $ \pi_{\bm{\theta}} $ as:
     \begin{equation}
-        \pi(a|s,\bm{\theta})=Pr\left[A_t=a|S_t=s,\bm{\theta}_t=\bm{\theta}\right]
+        \pi(a|s,\bm{\theta})=\Pr\left[A_t=a|S_t=s,\bm{\theta}_t=\bm{\theta}\right]
     \end{equation}
 
     If a performance measure $ J(\bm{\theta}) $ is introduced on the parameter vector, then the policy gradient methods can iteratively update the parameter vector using the gradient ascent procedure as follows:
@@ -648,7 +648,7 @@
             &=\sum_{s}\sum_{k=0}^{\infty}Pr(s\rightarrow x,k,\pi_{\bm{\theta}})\sum_{a}\nabla\pi(a|s,\bm{\theta})q_{\pi_\theta}(s,a)
         \end{split}
     \end{equation}
-    where $Pr\left[s \rightarrow x, k, \pi_{\bm{\theta}}\right]$ is the probability of a state transition from $s$ to $x$ in $k$ steps under policy $\pi(a | s, \bm{\theta})$. This probability thus serves as a weighting of the gradient of the return. Moreover, this can be further written:
+    where $\Pr\left[s \rightarrow x, k, \pi_{\bm{\theta}}\right]$ is the probability of a state transition from $s$ to $x$ in $k$ steps under policy $\pi(a | s, \bm{\theta})$. This probability thus serves as a weighting of the gradient of the return. Moreover, this can be further written:
 
     \begin{equation}
         \label{eq:policy_gradient}
