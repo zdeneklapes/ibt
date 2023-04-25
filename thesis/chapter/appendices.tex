@@ -101,7 +101,7 @@ wandb artifact get investai/portfolio-allocation/dataset:v517 --root out/dataset
     \end{lstlisting}
 
     \subsection{Create}
-    The scripts require a folder that contains downloaded and processed raw data. As a result, these scripts may not function properly on your computer. However, all of these datasets are accessible on W\&B at the following URL: \url{https://wandb.ai/investai/portfolio-allocation}.
+    The scripts require a folder that contains downloaded and processed raw data. As a result, these scripts may not function properly on your computer. However, all of these datasets are accessible on W\&B at the following URL: \url{https://wandb.ai/investai/portfolio-allocation/artifacts/dataset/dataset}.
     \begin{lstlisting}[language=bash]
 PYTHONPATH=$PWD/investai python3 \
 investai/run/portfolio_allocation/thesis/dataset/stockfadailydataset.py \
@@ -147,21 +147,19 @@ PYTHONPATH=$PWD/investai python3 \
     \section{Examples of running Train/Test program}
     All examples assume that the current working directory is the root directory of the thesis code.
 
-    The examples expect the \emph{.env} file in the root directory of the thesis code. This file contains the following variables:
+    The examples expect the \emph{.env} file in the root directory of the thesis code. This file contains the following variables, please fill the \texttt{WANDB\_API\_KEY} with your API key:
     \begin{lstlisting}[language=bash]
 # W&B
 WANDB_API_KEY=''
-WANDB_ENTITY=''
-WANDB_PROJECT=''
-WANDB_TAGS=''
-WANDB_JOB_TYPE=''
-WANDB_RUN_GROUP=''
-WANDB_MODE=''
-WANDB_DIR=''
-
-# CUDA - for TensorRT to find CUDA libraries
-LD_LIBRARY_PATH='${LD_LIBRARY_PATH}:${HOME}/venv3.10/lib/python3.10/site-packages/nvidia/cuda_runtime/lib/:${HOME}/venv3.10/lib/python3.10/site-packages/tensorrt/'
+WANDB_ENTITY='investai'
+WANDB_PROJECT='portfolio-allocation'
+WANDB_TAGS='["None"]'
+WANDB_JOB_TYPE='train'
+WANDB_RUN_GROUP='exp-1'
+WANDB_MODE='online'
+WANDB_DIR='${PWD}/out/model'
     \end{lstlisting}
+    If you don't want to use Weights \& Biases, you can remove the arguments with prefix \texttt{--wandb} from the examples (sweep run will not work).
 
     \subsection{Run the program to print the help message}
     \begin{lstlisting}[language=bash]
@@ -176,15 +174,15 @@ PYTHONPATH=$PWD/investai python3 \
     investai/run/portfolio_allocation/thesis/train.py \
     --dataset-path out/dataset/stockfadailydataset.csv \
     --algorithms ppo \
-    --wandb=1 \
     --project-verbose=1 \
     --train-verbose=1 \
-    --wandb-verbose=1 \
     --total-timesteps=1000 \
     --train=1 \
     --test=1 \
     --env-id=1 \
+    --wandb=1 \
     --wandb-run-group="exp-run-1" \
+    --wandb-verbose=1 \
     --baseline-path=out/baseline/baseline.csv
     \end{lstlisting}
 
@@ -195,9 +193,6 @@ PYTHONPATH=$PWD/investai python3 \
     --dataset-path \
         out/dataset/stockfadailydataset.csv \
         out/dataset/stockcombineddailydataset.csv \
-    --wandb=1 \
-    --wandb-sweep=1 \
-    --wandb-sweep-count=3 \
     --algorithms \
         ppo \
         a2c \
@@ -206,11 +201,14 @@ PYTHONPATH=$PWD/investai python3 \
         sac \
     --project-verbose=1 \
     --train-verbose=1 \
-    --wandb-verbose=1 \
     --total-timesteps=1000 \
     --train=1 \
     --test=1 \
     --env-id=1 \
+    --wandb=1 \
+    --wandb-sweep=1 \
+    --wandb-sweep-count=3 \
+    --wandb-verbose=1 \
     --wandb-run-group="exp-sweep-1" \
     --baseline-path=out/baseline/baseline.csv
     \end{lstlisting}
