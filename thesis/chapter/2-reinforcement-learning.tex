@@ -22,11 +22,8 @@
     Reinforcement learning (RL) is an exciting field at the intersection of artificial intelligence (AI) and machine learning (ML) that deals with training agents to make optimal decisions in dynamic environments. RL is inspired by the way humans learn from experience, like \texttt{trial-and-error}, and an agent interacts with an environment the same way and receives feedback in the form of \emph{rewards} (typically positive number, e.g.: $1$) or \emph{penalties} (typically negative number, e.g.: $-1$), and uses this feedback to learn and improve its decision-making abilities.
 
     At the heart of RL lies the concept of an agent, which takes actions in an environment to achieve specific goals. The environment is typically modeled as a Markov decision process (MDP), later defined in \cref{subsec:markov-decision-process}, which is a mathematical framework that describes how an agent interacts with an environment in discrete time steps.
-%    An MDP is defined by a tuple $(S, A, P, R)$, where $S$ is the state space, $A$ is the action space, $P$ is the transition probability function, and $R\in\mathbb{R}$ is the reward.
 
     The goal of an RL agent is to learn a policy, denoted by $\pi$, which is a mapping from states to actions that maximize the cumulative reward $G_t$ over time $T$. The agent uses this policy to select actions at each time step, and the environment responds with a new state and a reward. The agent then updates its policy based on the observed rewards and states, aiming to improve its decision-making abilities and achieve higher rewards in the long run. This is the RL advantage because, unlike supervised learning, RL does not require labeled data~\cite{rl-course-david-silver}.
-
-%    RL algorithms can be broadly categorized into two main types: model-free and model-based. Model-free algorithms are then further divided into value-based and policy-based methods, such as Q-learning (value-based) and policy gradient methods (policy-based), which learn directly from the interactions with the environment without explicitly modeling the transition probabilities and rewards. Model-based algorithms, on the other hand, learn a model of the environment and use it to make decisions. These algorithms have their strengths and weaknesses, and the choice between them depends on the specific problem and requirements.
 
     The sequence of states, actions, and rewards that the agent experiences is called a trajectory, and it looks like this:
     \begin{equation}
@@ -79,8 +76,6 @@
 
     As we can see in \cref{fig:model-value-policy-introduction}, the main difference is that the agent/algorithm learns the decision process based on \emph{Value-based methods}, \emph{Policy-based methods}, \emph{Model-based models} or some other combination of these classes. In this section, we explain the concepts of \emph{Value-based methods} in \cref{sec:value-based-learning} and \emph{Policy-based methods} in \cref{sec:policy-based}, and leave untouched \emph{Model-based methods} as this work does not use them in the implementation.
 
-%    \emph{Model-based} algorithms are closely related to \emph{Planning algorithms} which are trying to create a model of the environment and use it to make decisions, they have knowledge of the transition probabilities and rewards from the beginning, we will discuss them in \cref{sec:model-based-methods}. \emph{Value-based} algorithms can implicitly infer a policy, but do not explicitly compute it, we will discuss them in \cref{sec:value-based-methods}, and \emph{Policy-based} algorithms compute a policy function by themselves, and are discussed in \cref{sec:policy-based-methods}. Another agent like \emph{Actor-critic methods} compute a policy function and a state-value function at the same time~\cite{rl-course-david-silver, sutton2018reinforcement}.
-
     \begin{figure}[h]
         \includegraphics[width=0.5\linewidth]{image/model-value-policy}
         \centering
@@ -117,7 +112,7 @@
 
     \subsubsection{Markov Property}\label{subsubsec:markov-property}
     The Markov property, which is defined using conditional probability, states that ``The future is independent of the past, given the present."
-
+    \textsl{}
     The stochastic process has the Markov property if and only if, for all time steps $t \in I$, where $I$ is some (totally ordered) set, the conditional probability of the next state given the current state is equal to the conditional probability of the next state given all the previous states: $\Pr\left[X_{t+1}|X_t\right] = \Pr\left[X_{t+1}|X_1,\ldots,X_t\right]$
 
     This property has several advantages in practical reinforcement learning, including the uniqueness and distinctiveness of states, as well as the ability to precisely formulate the probability of state transitions, defined as:~\cite{FITMT25127}
@@ -134,15 +129,6 @@
             \item $\mathcal{P}$ is an $n\times n$ transition probability matrix which sums to 1 for each row, so each value $p_{ij}$ is the probability of transitioning from state $s_i$ to state $s_j$ in interval $\left< 0;1 \right>$
         \end{itemize}
     \end{definition}
-
-%    \begin{align*}
-%        \mathcal{P}=\begin{bmatrix}
-%                        p_{11} & p_{12} & p_{13} & \dots  & p_{1n} \\
-%                        p_{21} & p_{22} & p_{23} & \dots  & p_{2n} \\
-%                        \vdots & \vdots & \vdots & \ddots & \vdots \\
-%                        p_{n1} & p_{n2} & p_{n3} & \dots  & p_{nn}
-%        \end{bmatrix}
-%    \end{align*}
 
     \subsubsection{Starting States}
     The probability distribution of start states is denoted as $\mu : N \rightarrow [0,1]$ in order to perform simulations and compute the probability distribution of states at specific future time steps. A Markov Process is fully specified by the transition probability function $\mathcal{P}$, which governs the complete dynamics of the process.
@@ -187,10 +173,6 @@
     Markov Reward Process (MRP) is a Markov Process with rewards. These rewards are random, and all we need to do is to specify the probability distributions of these rewards as we make state transitions. The main purpose of Markov Reward Processes is to calculate how much reward we would accumulate (in expectation, from each of the non-terminal states) if we let the process run indefinitely, bearing in mind that future rewards need to be discounted appropriately $\gamma$ (otherwise, the sum of rewards could blow up to $\infty$). In order to solve the problem of calculating expected accumulative rewards, defined in \cref{par:expected-reward}, from each non-terminal state, we will first set up some formalism for Markov Reward Processes and develop some theory on calculating rewards accumulation~\cite{rao2022foundations}.
 
     The main objective of an RL agent is to maximize the sum of rewards from each time step. The agent can observe different episodes in the Markov process but lacks the means to determine the actual quality of an episode. By calculating the reward, we can precisely measure the goodness of an episode or even a single state using the \emph{state-value function}, defined in \cref{subsubsec:state-value-function}. This allows the agent to actively transition to favorable states and maximize the reward~\cite{rao2022foundations}.
-
-%    \begin{definition}
-%        A Markov Reward Process is a Markov Process with a time-indexed sequence of Reward random variables $R_t \in D$ (a countable subset of $R$) for time steps $t = 1, 2, \cdot$, satisfying the Markov Property (including Rewards): $P[(Rt+1, St+1)|St, St−1, ..., S0] = P[(Rt+1, St+1)|St]$ for all $t ≥ 0$.
-%    \end{definition}
 
     \begin{definition}
         \textbf{Markov Reward Process} is a Markov Process, along with a time-indexed sequence of Reward random variables $R_t \in D$ (a countable subset of $\mathbb{R}$) for time steps $t = 1, 2, \ldots$, satisfying the Markov Property (including Rewards): $\mathcal{P}(R_{t+1},S_{t+1})|S_t,S_{t-1}, \ldots, S_0] = P[(R_{t+1}, S_{t+1})|S_t]$ for all $t \geq 0$. MRP is a tuple $(\mathcal{S},\mathcal{P},\mathcal{R},\gamma)$ for which holds:\cite{rao2022foundations}
