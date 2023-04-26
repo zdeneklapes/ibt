@@ -112,7 +112,6 @@
 
     \subsubsection{Markov Property}\label{subsubsec:markov-property}
     The Markov property, which is defined using conditional probability, states that ``The future is independent of the past, given the present."
-    \textsl{}
     The stochastic process has the Markov property if and only if, for all time steps $t \in I$, where $I$ is some (totally ordered) set, the conditional probability of the next state given the current state is equal to the conditional probability of the next state given all the previous states: $\Pr\left[X_{t+1}|X_t\right] = \Pr\left[X_{t+1}|X_1,\ldots,X_t\right]$
 
     This property has several advantages in practical reinforcement learning, including the uniqueness and distinctiveness of states, as well as the ability to precisely formulate the probability of state transitions, defined as:~\cite{FITMT25127}

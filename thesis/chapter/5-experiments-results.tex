@@ -18,6 +18,20 @@
     \end{itemize}
 
 
+    \section{Focus of the experiments}\label{sec:focus-of-the-experiments}
+    In chapter~\cref{ch:stock-portfolio-allocation}, we delve into the implementation of the \emph{Stock Portfolio Allocation Environment}, and in this chapter, we focus on conducting experiments to empirically evaluate the trained models. The primary goal of these experiments is to determine the best parameters for training and the best datasets for both training and testing. To achieve this, we begin by sweeping through the hyperparameters for each algorithm and dataset. We then compare each configuration of the hyperparameters in terms of the model's performance, which is determined by the total reward calculated as the cumulative product of the portfolio value.
+
+    Through our experiments, we identify which datasets the agent can be trained on effectively and which datasets are not suitable for training. We present the results of the best and worst performing models and compare them with other models and common indexes as baseline. Our findings indicate that the agent can be trained sufficiently well with appropriate hyperparameters and datasets to outperform common indexes and other publicly available models for Portfolio Allocation using Reinforcement Learning.
+
+    Therefore, the overall goal of this chapter is to evaluate the performance of the trained models through a rigorous experimentation process, and to identify the best parameters and datasets for optimal performance. Additionally, we aim to demonstrate that our trained models can outperform commonly used indexes and other publicly available models, making them valuable tools for portfolio allocation in financial markets.
+
+
+    Therefore, the primary goal of this chapter is to evaluate the trained models' performance through a rigorous experimentation process and identify the best parameters and datasets for optimal performance. Additionally, we aim to demonstrate that our trained models can outperform commonly used indexes and other publicly available models, making them valuable tools for portfolio allocation in financial markets.
+
+    \subsection{Reproduce Results}
+    Furthermore, not only do we provide the results of our work in this thesis, but we also make all datasets and training runs with a history of hyperparameters for each algorithm publicly available on the W\&B website. \textbf{By visiting the following URL: \url{https://wandb.ai/investai/portfolio-allocation}}, anyone can access the results of each run, including the stored models and datasets, and reproduce our findings while comparing them with their own experiments.
+
+
     \section{Weights \& Biases}\label{sec:wandb}
     Weights \& Biases (W\&B) is a powerful machine learning experiment tracking and visualization tool that helps data scientists and machine learning practitioners manage their experiments. With W\&B, users can log experiment metrics in real-time, track hyperparameters, and compare and reproduce experiments easily. W\&B offers various visualization tools like interactive plots, histograms, and confusion matrices, which help users analyze and understand experiment results.
 
@@ -29,7 +43,7 @@
         \item Collaboration: W\&B enables team collaboration by allowing users to share experiment results, visualizations, and artifacts with team members, facilitating communication and collaboration among team members.
     \end{itemize}
 
-    In this paper, for example, training and test runs are publicly recorded on the W\&B website. The results of each run, including the stored models and datasets, can be found at the following URL: \url{https://wandb.ai/investai/portfolio-allocation}. W\&B provides a rich API that offers many additional features not mentioned in this description. For more information, please refer to the W\&B documentation at \url{https://docs.wandb.ai/} for a detailed description of all features and APIs.
+    Since the W\&B API offers a number of features, we decided to focus on experiments and not describe them all. However, we recommend to consult the W\&B documentation available at \url{https://docs.wandb.ai/} for an explanation of all APIs and features, and to see the results of our experiments with all artifacts at \url{https://wandb.ai/investai/portfolio-allocation}.
 
 
     \section{Experiments}\label{sec:experiments}
