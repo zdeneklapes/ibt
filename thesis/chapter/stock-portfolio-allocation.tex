@@ -1,10 +1,34 @@
 \documentclass[../xlapes02]{subfiles}
 \begin{document}
     \chapter{Stock Portfolio Allocation}\label{ch:stock-portfolio-allocation}
-    The goal of this chapter is to describe the stock portfolio allocation problem in \cref{sec:portfolio-management-task}, and the environment, defined in \cref{sec:environment} that we have created to solve it. We will also describe the datasets that we have used to train and test our agent, in \cref{sec:data-engineering}.
+    The goal of this chapter is to outline our methodology for addressing the Reinforcement Learning problem, with a particular emphasis on the Portfolio Allocation task. We will explain the solution pipeline, environment setup, and data engineering, and then move on to discussing the experiments and outcomes in the subsequent chapter.
 
 
-    \section{Portfolio Management Task}\label{sec:portfolio-management-task}
+    \section{Pipeline}
+    We present a proposed approach for solving reinforcement learning (RL) tasks in the stock market, which is based on a pipeline suggested by~\cite{liu2022finrlmeta}.
+
+%    \begin{figure}[ht!]
+%        \centering
+%        \includegraphics[width=0.8\textwidth]{./image/pipeline}
+%        \caption{The pipeline for solving the RL problem in the stock market~\cite{liu2022finrlmeta}}
+%        \label{fig:pipeline}
+%    \end{figure}
+
+    The pipeline includes the following steps:
+    \begin{enumerate}
+        \label{item:pipeline}
+        \item \textbf{Data Engineering}: In this step, the data is prepared for use in reinforcement learning. This involves collecting raw data from the sources listed in item~\cref{item:data-sources}, transforming the data into features suitable for reinforcement learning, and splitting the dataset into training and testing sets~\cref{sec:data-engineering}.
+        \item \textbf{Environment Modelling}: This step involves configuring the environment in which the RL model will operate, including setting up the state and action spaces and defining the reward function, this is described in~\cref{sec:environment-modeling}.
+        \item \textbf{Model}: The model itself is developed in this step, which includes training the model on the training set, evaluating the model's performance on the testing set, fine-tuning the model's hyperparameters to optimize its performance, and conducting robustness testing on unseen data multiple times to ensure that the model can generalize well, this is discussed in~\cref{ch:experiments-and-results}.
+    \end{enumerate}
+
+    This chapter covers the initial two stages of the pipeline, which are discussed in detail in Sections \textbf{Data Engineering}~\cref{sec:data-engineering} and \textbf{Environment Modelling}~\cref{sec:environment-modeling}. The following~\cref{ch:experiments-and-results} outlines the model training and evaluation process.
+
+
+    \section{Environment Modeling}\label{sec:environment-modeling}
+    In this section, we describe our approach to environment modeling by first defining the action space \cref{subsec:action-space}, state and observation space~\cref{subsec:state-space}, and reward function~\cref{subsec:reward-function}. The theory behind this was already described in~\cref{ch:reinforcement-learning}, so now we will focus on the practical implementation of the environment.
+
+    \subsection{Portfolio Management Task}\label{sec:portfolio-management-task}
     Let's consider a portfolio consisting of $N$ risky assets traded over $T$ time slots. The objective of portfolio management is to maximize profits while minimizing risks. We denote the closing prices of all assets at time slot $t$ as $\mathbf{p}(t) \in \mathbb{R}^N$. The price relative vector $\mathbf{y}(t) \in \mathbb{R}^N$ is defined as the element-wise division of $\mathbf{p}(t)$ by $\mathbf{p}(t-1)$, representing the relative change in prices from one-time slot to the next~\cite{finrl-portfolio-allocation-2020}:
 
     \begin{equation}
@@ -42,10 +66,6 @@
         \sum_{i=1}^{N}w_i(t)=1,\quad w_i(t)\in[0,1],\quad t=1,\ldots,T
     \end{equation}
 
-
-    \section{Environment}\label{sec:environment}
-    In this section, we describe our approach to environment modeling by first defining the action space \cref{subsec:action-space}, state and observation space~\cref{subsec:state-space}, and reward function~\cref{subsec:reward-function}. The theory behind this was already described in~\cref{ch:reinforcement-learning}, so now we will focus on the practical implementation of the environment.
-
     \subsection{State and Observation Space}\label{subsec:state-space}
     In portfolio Management, \emph{State space} and \emph{Observation space} is the same. It is defined as the matrix $N\times F$, where $N$ is the number of risky assets (companies) and $F$ is the number of features. The features are the financial fundamental or technical indicators. The state space is the matrix of the elements of the risky assets at time $t$. The observation space is the matrix of the features of the risky assets at time $t+1$, more about Data Engineering in~\cref{sec:data-engineering}.
 
@@ -73,6 +93,7 @@
     \subsection{Data Collection}\label{subsec:data-collection}
     Raw data was gathered from these sources:
     \begin{itemize}
+        \label{item:data-sources}
         \item Yahoo Finance: \url{https://finance.yahoo.com/}
         \item Financial Modeling Prep: \url{https://financialmodelingprep.com/}
         \item TraidingView: \url{https://www.tradingview.com/}
@@ -84,7 +105,7 @@
     \subsection{Data Cleaning}\label{subsubsec:data-cleaning}
     We use the following company data in our datasets: prices, financial statements and technical indicators. Prices are used to calculate earnings, financial statements are used to calculate fundamentals. Fundamental indicators and technical analysis indicators are used for feature engineering. Data cleaning is done by removing rows with missing values. Missing values are replaced by the average of the column. If data is completely missing on a date, all rows up to that next date are removed for the other companies. This can happen mostly for companies that are not listed in any time period. Data cleaning is performed for all data sets.
 
-    \subsection{Feature Selection}\label{sec:feature-selection}
+    \subsection{Feature Engineering}\label{subsec:feature-engineering}
     In this subsection, we describe our approach to feature engineering which we divide into three parts: \emph{Fundamental Analysis}, described in~\cref{subsubsec:fundamental-analysis}, \emph{Technical Analysis}, described in~\cref{subsubsec:technical-analysis}, and \emph{Combined Fundamental and Technical Analysis} is described in~\cref{subsubsec:combined-fundamental-and-technical-analysis}. The datasets comprises of additional attributes such as candlestick patterns (price) and volumes, which are not discussed in this subsection.
 
     \subsubsection{Fundamental Analysis}\label{subsubsec:fundamental-analysis}
@@ -235,17 +256,17 @@
     \subsubsection{Combined Fundamental and Technical Analysis}\label{subsubsec:combined-fundamental-and-technical-analysis}
     Combining datasets is a process in which two or more datasets are merged or joined together to create a new dataset that contains information from both. In this case, the combined fundamental and technical analysis involves combining features from both fundamental analysis~\cref{subsubsec:fundamental-analysis} and technical analysis, described in~\cref{subsubsec:technical-analysis}.
 
-    By combining fundamental and technical analysis, we can create a more comprehensive and accurate picture of the market. For example, fundamental analysis can help identify undervalued or overvalued assets, while technical analysis can help identify trends and potential buying or selling opportunities. The specific features used in the combined analysis can depend on the specific dataset and the machine learning task being performed. However, we leave all features from both analysis.
+    By combining fundamental and technical analysis, we can create a more comprehensive and accurate picture of the market. For example, fundamental analysis can help identify undervalued or overvalued assets, while technical analysis can help identify trends and potential buying or selling opportunities. The specific features used in the combined analysis can depend on the specific dataset and the reinforcement learning task being performed. However, we leave all features from both analysis.
 
     \subsection{Dataset Splitting}\label{subsec:dataset-splitting}
-    Dataset splitting refers to the process of dividing a dataset into two or more subsets to be used for training and testing machine learning models. In this particular case, the dataset is a time series data, which means that the order of the data points is important, and the dataset must be split in a way that preserves the temporal ordering.
+    Dataset splitting refers to the process of dividing a dataset into two or more subsets to be used for training and testing reinforcement learning models. In this particular case, the dataset is a time series data, which means that the order of the data points is important, and the dataset must be split in a way that preserves the temporal ordering.
 
-    The division coefficient of $0.6$ means that $60\%$ of the dataset will be used for training, and $40\%$ will be used for testing. This is a common split ratio, but the exact ratio can vary depending on the size and complexity of the dataset, as well as the specific machine learning task being performed.
+    The division coefficient of $0.6$ means that $60\%$ of the dataset will be used for training, and $40\%$ will be used for testing. This is a common split ratio, but the exact ratio can vary depending on the size and complexity of the dataset, as well as the specific reinforcement learning task being performed.
 
     In this case, since the dataset consists of daily data and spans a period from 2008-03-20 to 2022-12-16, we can split it based on time. The first $60\%$ of the data, starting from the beginning of the dataset on 2008-03-20, will be used for training, and the remaining $40\%$ of the data will be used for testing. This ensures that the model is trained on past data and tested on future data, which is a more realistic scenario.
 
-    The training set will be used to train the machine learning model, while the testing set will be used to evaluate its performance. By splitting the dataset, we can avoid overfitting, which is when the model memorizes the training data and performs poorly on new, unseen data. The testing set provides a way to measure the model's generalization performance on unseen data, which is an important metric for evaluating the model's effectiveness.
+    The training set will be used to train the reinforcement learning model, while the testing set will be used to evaluate its performance. By splitting the dataset, we can avoid overfitting, which is when the model memorizes the training data and performs poorly on new, unseen data. The testing set provides a way to measure the model's generalization performance on unseen data, which is an important metric for evaluating the model's effectiveness.
 
-    Dataset splitting is an important step in machine learning that helps ensure that the model is trained and tested on different subsets of data. In this case, the dataset is split into training and testing sets based on time, with $60\%$ of the data used for training and $40\%$ used for testing. This split ensures that the model is evaluated on unseen data and can generalize well to new data.
+    Dataset splitting is an important step in reinforcement learning that helps ensure that the model is trained and tested on different subsets of data. In this case, the dataset is split into training and testing sets based on time, with $60\%$ of the data used for training and $40\%$ used for testing. This split ensures that the model is evaluated on unseen data and can generalize well to new data.
 
 \end{document}
