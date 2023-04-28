@@ -63,98 +63,108 @@
     \begin{figure}[h!]
         \centering
         \includegraphics[width=\linewidth]{image/figure/returns}
-        \caption{Cumulative returns of the best(zfjr0ks0) and worst(p3irnh80) performing models, indexes (DJI, GSPC, IXIC, RUT), and strategies (minimum variance and maximum Sharpe ratio), during the testing period (2017-2022).}
         \label{fig:cumulative_return}
+        \caption{Cumulative returns of the best(zfjr0ks0) and worst(p3irnh80) performing models, indexes (DJI, GSPC, IXIC, RUT), and strategies (minimum variance and maximum Sharpe ratio), during the testing period (2017-2022).}
     \end{figure}
 
     \subsubsection{Drawdowns}
     Now we look how our models performing in drawdowns\footnote{In the stock market, drawdown refers to the percentage decline in an investment's value from its peak to its subsequent low point. Essentially, it represents the loss experienced by an investor in a particular investment over a certain period of time.} Based on the drawdown graphs in~\cref{fig:drawdown}, we observe that the best model, trained on appropriate datasets and hyperparameters, outperforms the DJI index for larger drawdowns (around $6\%$). Since our dataset comprises companies included in the DJI index we decide for our analysis compare the drawdowns of the model with the \emph{highest and lowest test/total\_reward}, as well as \emph{two indexes} (\emph{IXIC} and \emph{DJI}). The \emph{IXIC} (Nasdaq 100 Index) has been chosen as baseline for performance in drawdown, since it outperformed our model during the period between 2020 and 2022.
 
     \begin{figure}[h!]
+                %
         \begin{subfigure}[t]{\experimentimgwidth\textwidth}
             \centering
             \includegraphics[width=\linewidth]{image/figure/drawdown_underwater_max}
-            \caption{The model with the highest \emph{text/total\_reward}}
             \label{fig:drawdown_underwater_max}
+            \caption{The model with the highest \emph{text/total\_reward}}
         \end{subfigure}
         \hfill
         \begin{subfigure}[t]{\experimentimgwidth\textwidth}
             \centering
             \includegraphics[width=\linewidth]{image/figure/drawdown_underwater_dji}
-            \caption{The DJI index}
             \label{fig:drawdown_underwater_dji}
+            \caption{The Dow Jones Industrial Average (DJI)}
+        \end{subfigure}
+
+        %
+        \vspace{0.5cm}
+
+        %
+        \begin{subfigure}[t]{\experimentimgwidth\textwidth}
+            \centering
+            \includegraphics[width=\linewidth]{image/figure/drawdown_underwater_min}
+            \label{fig:drawdown_underwater_min}
+            \caption{The model with the lowest \emph{text/total\_reward}}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}[t]{\experimentimgwidth\textwidth}
+            \centering
+            \includegraphics[width=\linewidth]{image/figure/drawdown_underwater_ixic}
+            \label{fig:drawdown_underwater_ixic}
+            \caption{The Nasdaq 100 Index (IXIC)}
+        \end{subfigure}
+
+        %
+        \caption{Drawdown.}
+        \label{fig:drawdown}
+    \end{figure}
+
+    \subsubsection{Monthly and Annual Returns}
+    In~\cref{fig:month_annual_returns}, we compared our models against baseline indexes and strategies based on their \emph{monthly} and \emph{annual} returns. We presented the results in a graph, where the model with the highest return was compared to the \emph{DJI} and \emph{IXIC} indexes. Our model consistently outperformed the DJI index in most months and years, but was outperformed by the IXIC index in 2019, 2020, and 2021. However, in 2022, when the IXIC index lost over $-30\%$ of its value, our model was able to keep the majority of its value and only lost around $-8\%$.
+
+    It's worth noting that our models achieved significant outperformance during the big drawdown period caused by the COVID-19 pandemic. The model with the highest return performed better than the DJI index during February, March, and April of 2020, indicating that our model was able to learn which companies with specific features were better to hold during this period.
+
+    Although there were some months where the DJI index performed better than our models, the performance difference was not significant. Overall, we concluded that our models performed well in the majority of months, as demonstrated by the \emph{annual graphs}.
+
+    It's important to note that our model was trained on companies from the DJI index, which may have influenced the comparison with the IXIC index. Therefore, the comparison may not be entirely fair. Nonetheless, the results suggest that our model is able to learn the better companies to hold during certain time periods and can outperform baseline indexes.
+
+    \begin{figure}
+        \centering
+
+        \begin{subfigure}[t]{\experimentimgwidth\textwidth}
+            \centering
+            \includegraphics[width=\linewidth]{image/figure/monthly_returns_heatmap_max}
+            \label{subfig:montly_returns_heatmap_max}
+            \caption{The model with the highest \emph{text/total\_reward}}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}[t]{\experimentimgwidth\textwidth}
+            \centering
+            \includegraphics[width=\linewidth]{image/figure/annual_returns_max}
+            \label{subfig:annual_returns_max}
+            \caption{The model with the highest \emph{text/total\_reward}}
         \end{subfigure}
 
         \vspace{0.5cm}
 
         \begin{subfigure}[t]{\experimentimgwidth\textwidth}
             \centering
-            \includegraphics[width=\linewidth]{image/figure/drawdown_underwater_min}
-            \caption{The model with the lowest \emph{text/total\_reward}}
-            \label{fig:drawdown_underwater_min}
-        \end{subfigure}
-        \hfill
-        \begin{subfigure}[t]{\experimentimgwidth\textwidth}
-            \centering
-            \includegraphics[width=\linewidth]{image/figure/drawdown_underwater_ixic}
-            \caption{The IXIC index (Nasdaq 100 Index)}
-            \label{fig:drawdown_underwater_ixic}
-        \end{subfigure}
-
-        \caption{Drawdown.}
-        \label{fig:drawdown}
-    \end{figure}
-
-    \subsubsection{Monthly and Annual Returns}
-    In figure \cref{fig:month_annual_returns}, both the monthly and annual returns of the models are presented, allowing for easy comparison of their performance. The results are similar to the cumulative returns described in the previous subsubsection, but the monthly returns provide a clearer understanding of when the models performed well or poorly. The model with the highest \emph{text/total\_reward} consistently outperforms the DJI index in most months, while even the model with the lowest \emph{text/total\_reward} performs better than the DJI index in the majority of months.
-
-    Notably, the models achieved significant outperformance during the big drawdown period, as shown in the heatmaps in subfigures \cref{subfig:montly_returns_heatmap_max} and \cref{subfig:montly_returns_heatmap_dji}. Specifically, the model with the highest \emph{text/total\_reward} performed better than the DJI index during the COVID-19 pandemic months of February, March and April 2020, due to the differing company weightings in the DJI index. This suggests that our model was able to learn which companies with specific features were better to hold during this period.
-
-    While there were some months where the DJI index performed better than our models, such as in April and October 2022, the performance difference was not significant. Therefore, we can conclude that our models performed well in the majority of months, as demonstrated by the annual graphs in subfigures \cref{subfig:annual_returns_max} and \cref{subfig:annual_returns_dji}.
-
-    \begin{figure}[h!]
-        \centering
-        %
-        \begin{subfigure}[t]{\experimentimgwidth\textwidth}
-            \centering
-            \label{subfig:montly_returns_heatmap_max}
-            \includegraphics[width=\linewidth]{image/figure/monthly_returns_heatmap_max}
-            \caption{The model with the highest \emph{text/total\_reward}}
-        \end{subfigure}
-        \hfill
-        \begin{subfigure}[t]{\experimentimgwidth\textwidth}
-            \centering
-            \label{subfig:annual_returns_max}
-            \includegraphics[width=\linewidth]{image/figure/annual_returns_max}
-            \caption{The model with the highest \emph{text/total\_reward}}
-        \end{subfigure}
-
-        %
-        \begin{subfigure}[t]{\experimentimgwidth\textwidth}
-            \centering
-            \includegraphics[width=\linewidth]{image/figure/monthly_returns_heatmap_min}
-            \caption{The model with the smallest \emph{text/total\_reward}}
-        \end{subfigure}
-        \hfill
-        \begin{subfigure}[t]{\experimentimgwidth\textwidth}
-            \centering
-            \includegraphics[width=\linewidth]{image/figure/annual_returns_min}
-            \caption{The model with the smallest \emph{text/total\_reward}}
-        \end{subfigure}
-
-        %
-        \begin{subfigure}[t]{\experimentimgwidth\textwidth}
-            \centering
-            \label{subfig:montly_returns_heatmap_dji}
             \includegraphics[width=\linewidth]{image/figure/monthly_returns_heatmap_dji}
-            \caption{The DJI index}
+            \label{subfig:montly_returns_heatmap_dji}
+            \caption{The Down Jones Industrial Average Index (DJI)}
         \end{subfigure}
         \hfill
         \begin{subfigure}[t]{\experimentimgwidth\textwidth}
             \centering
-            \label{subfig:annual_returns_dji}
             \includegraphics[width=\linewidth]{image/figure/annual_returns_dji}
-            \caption{The DJI index}
+            \label{subfig:annual_returns_dji}
+            \caption{The Down Jones Industrial Average Index (DJI)}
+        \end{subfigure}
+
+        \vspace{0.5cm}
+
+        \begin{subfigure}[t]{\experimentimgwidth\textwidth}
+            \centering
+            \includegraphics[width=\linewidth]{image/figure/monthly_returns_heatmap_ixic}
+            \label{subfig:montly_returns_heatmap_ixic}
+            \caption{The Nasdaq 100 Index (IXIC)}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}[t]{\experimentimgwidth\textwidth}
+            \centering
+            \includegraphics[width=\linewidth]{image/figure/annual_returns_ixic}
+            \label{subfig:annual_returns_ixic}
+            \caption{The Nasdaq 100 Index (IXIC)}
         \end{subfigure}
 
         %
@@ -162,120 +172,151 @@
         \label{fig:month_annual_returns}
     \end{figure}
 
-    \subsection{Hyperparameters}\label{subsec:hyperparameters}
-    The hyperparameters include various parameters related to the learning algorithm and the environment, such as learning rate, batch size, number of steps, and the coefficients for the value function and entropy.
+    \subsection{Hyperparameter Tuning}\label{subsec:hyperparameters_tuning}
+    Since the configuration of hyperparameters is crucial for the performance of a any machine learning model. We performed a hyperparameter sweep to find the best hyperparameters for our models through bunch of parameters showed in~\cref{tab:hyperparameters}. In this case, the hyperparameter sweep was performed on 27 hyperparameters using the Weights \& Biases Sweep, this helps us to track and visualize the training process and store bunch of hyperparameter configurations. The range or value of each hyperparameter was chosen based on prior knowledge.
 
-    \subsubsection{Hyperparameter tuning}
-    Hyperparameter tuning is the process of finding the best set of hyperparameters that maximize the performance of a machine learning model. In this case, the hyperparameter sweep was performed on 27 hyperparameters using the wandb (Weights and Biases) sweep, which helps to track and visualize the training process. The hyperparameters were chosen based on their potential impact on the performance of the model and to minimize \emph{train/loss}, and the range of values for each hyperparameter was determined based on prior knowledge and experimentation.
+    \subsubsection{Time Steps}\label{subsubsec:time_steps}
+    We kept only one hyperparameter constant, which is the \emph{Time Steps} parameter. We conducted experiments by varying its value from $20000$ to $100000$ and found that values up to 50,000 were still improve the model's performance. However, values above $50000$ did not provide any significant improvement in the model's performance, and the training time increased considerably. As a result, we decided to use \textbf{50000 time steps} for all the models that we experimented with in this chapter. In the next subsubsection, we will discuss another hyperparameters and explain how we selected the range of values for them.
 
-    The sweep was performed with 5 different reinforcement learning algorithms, including A2C, PPO, SAC, DDPG, and TD3, and each algorithm was trained on 3 different datasets. The hyperparameters for each algorithm and dataset were chosen randomly from the given range or values:
-    \begin{center}
-        \begin{tabular}{|l|c|}
-            \hline
-            \textbf{Parameter}        & \textbf{Values/range}                           \\ \hline
-            learning\_rate            & <0.0001, 0.01>                                  \\ \hline
-            n\_steps                  & [32, 64, 128, 256, 512, 1024, 2048]             \\ \hline
-            gamma                     & <0.9, 0.999>                                    \\ \hline
-            gae\_lambda               & <0.8, 0.999>                                    \\ \hline
-            ent\_coef                 & <0.0001, 0.01>                                  \\ \hline
-            vf\_coef                  & <0.0001, 0.01>                                  \\ \hline
-            max\_grad\_norm           & <0.5, 0.99>                                     \\ \hline
-            rms\_prop\_eps            & <0.0001, 0.01>                                  \\ \hline
-            sde\_sample\_freq         & <4, 32>                                         \\ \hline
-            batch\_size               & [32, 64, 128, 256, 512, 1024, 2048, 4096, 8192] \\ \hline
-            n\_epochs                 & <1, 10>                                         \\ \hline
-            clip\_range               & <0.1, 0.3>                                      \\ \hline
-            clip\_range\_vf           & [None, 0.05, 0.1, 0.15, 0.2]                    \\ \hline
-            target\_kl                & <0.01, 0.05>                                    \\ \hline
-            buffer\_size              & [1000, 2000, 3000, 4000, 5000]                  \\ \hline
-            learning\_starts          & <100, 1000>                                     \\ \hline
-            tau                       & <0.001, 0.01>                                   \\ \hline
-            train\_freq               & <1, 4>                                          \\ \hline
-            gradient\_steps           & <1, 4>                                          \\ \hline
-            target\_update\_interval  & <1, 4>                                          \\ \hline
-            target\_entropy           & <0.1, 0.2>                                      \\ \hline
-            policy\_delay             & <1, 4>                                          \\ \hline
-            target\_policy\_noise     & <0.1, 0.2>                                      \\ \hline
-            target\_noise\_clip       & <0.1, 0.2>                                      \\ \hline
-            exploration\_fraction     & <0.1, 0.2>                                      \\ \hline
-            exploration\_initial\_eps & <0.1, 0.2>                                      \\ \hline
-            exploration\_final\_eps   & <0.1, 0.2>                                      \\ \hline
-        \end{tabular}
-    \end{center}
+    \subsubsection{Selection of hyperparameters}\label{subsubsec:selection_of_hyperparameters}
+    Once the range or values of each hyperparameter was set, the process of finding the best configuration of hyperparameters was a kind of brute force, except that we at least restrict the exploration space in which the W\&B Sweep is trying to find optimal hyperparameter through randomly selecting each hyperparameter for the given run.
 
-    The training was repeated 10 times for each combination of 5 algorithms, 3 datasets and 10 repetitions (of random hyperparameters) for each combination. The average training and testing time was 1 hour per run, the total training time was 150 hours. The results of the hyperparameter testing are shown in the graphs where we choose several the worst models and several the best models to compare and analyze the performance of the agent, given the hyperparameters~\crefrange{fig:wb-chart1}{fig:wb-chart3}.
+    The Sweep involved 5 distinct reinforcement learning algorithms - namely A2C, PPO, SAC, DDPG, and TD3 - and each of these algorithms was trained on 3 unique datasets, which were introduced in the preceding chapter and referred to as Fundamental, Technical, and Combined. In total, this resulted in 15 different combinations of algorithms and datasets. Furthermore, each combination was subjected to 10 rounds of training, culminating in a total of 150 train/test runs. These runs are readily accessible on W\&B at the following URL: \url{https://wandb.ai/investai/portfolio-allocation}.
 
-    \subsubsection{Best and worst hyperparameters}\label{subsubsec:best-and-worst-hyperparameters}
-    The performance is being evaluated based on the \emph{test/total\_reward} attribute. The value of this attribute is being used to distinguish individual training runs, and the color of the curve represents the value of this attribute. The higher the value of \emph{test/total\_reward}, the curve is colored in \textcolor[RGB]{255,128,0}{orange} indicating better performance. On the other hand, the lower the value of \emph{test/total\_reward}, the curve is colored in \textcolor[RGB]{100,0,200}{purple} for poor performance. By examining the graphs presented in~\crefrange{fig:wb-chart1}{fig:wb-chart3}, we can identify the optimal parameters for the agent to achieve peak performance.
+    It is worth emphasizing that when performing a hyperparameter sweep, certain hyperparameters may be selected even though the algorithm does not require them. In such cases, we simply discard those hyperparameters and only include the necessary ones in the algorithm.
 
-    \paragraph{Performance Metric}
-    The initial value of \emph{test/total\_reward} is set to $1$, and its value is calculated as the cumulative product of the rewards obtained by the agent during the testing phase, as per equation~\ref{eq:portfolio-value}.
+    In~\cref{tab:hyperparameters}, the hyperparameters that underwent tuning during the hyperparameter sweep are displayed. The values enclosed in <> indicate the range from which W\&B Sweep can randomly select a value for a particular run, while those enclosed in [] represent the list of values from which W\&B Sweep can randomly choose a value for a particular run. The performance of the agent with respect to the hyperparameters is presented in the graphs, which compare and analyze the performance of several of the best and worst models. These graphs can be found in~\crefrange{fig:wb-chart1}{fig:wb-chart3}.
 
-    For instance, if the agent receives rewards of $0.9$ and $1$ in the first step, then the value of \emph{test/total\_reward} would be $0.9 \times 1 = 0.9$ in the second step. If in the second step the agent receives rewards of $1.1$, then the value of \emph{test/total\_reward} would be $0.9 \times 1.1 = 0.99$ in the third step, and so on. Thus, if the final value of \emph{test/total\_reward} is $1.9$, it indicates that the agent received a total reward of $0.9$ over all the steps, which is equivalent to a portfolio return of $90\%$ over the testing period.
-
-    \newpage
-    \begin{figure}[h!]
-        \centering
-        \includegraphics[width=\linewidth, height=0.2\paperheight]{image/wandb/wb1}
-        \caption{W\&B Chart of parameters and their performance}
-        \label{fig:wb-chart1}
-    \end{figure}
-    \begin{figure}[h!]
-        \centering
-        \includegraphics[width=\linewidth, height=0.2\paperheight]{image/wandb/wb1}
-        \caption{W\&B Chart of parameters and their performance}
-        \label{fig:wb-chart2}
-    \end{figure}
-    \begin{figure}[h!]
-        \centering
-        \includegraphics[width=\linewidth, height=0.2\paperheight]{image/wandb/wb1}
-        \caption{W\&B Chart of parameters and their performance}
-        \label{fig:wb-chart3}
-    \end{figure}
-
-    The following table shows the hyperparameters of the 2 best and 2 worst trained models:
     \begin{table}[!ht]
         \centering
-        \label{tab:best-worst-hyperparameters}
-        \begin{tabular}{|l||l|l||l|l|}
-            \hline
-            \textbf{Run ID}                    & p3irnh80                                     & 8tml2ozg                                     & zfjr0ks0                                     & pky1wslb                                     \\ \hline
-            \textbf{algo}                      & DDPG                                         & A2C                                          & A2C                                          & PPO                                          \\ \hline
-            \textbf{learning\_rate}            & 0.00685                                      & 0.00671                                      & 0.00698                                      & 0.00471                                      \\ \hline
-            \textbf{n\_steps}                  & 256                                          & 128                                          & 128                                          & 32                                           \\ \hline
-            \textbf{gamma}                     & 0.9294                                       & 0.94108                                      & 0.93858                                      & 0.9289                                       \\ \hline
-            \textbf{gae\_lambda}               & 0.99624                                      & 0.90203                                      & 0.9383                                       & 0.85115                                      \\ \hline
-            \textbf{ent\_coef}                 & 0.00203                                      & 0.0013                                       & 0.00525                                      & 0.00173                                      \\ \hline
-            \textbf{vf\_coef}                  & 0.0082                                       & 0.00683                                      & 0.00125                                      & 0.00527                                      \\ \hline
-            \textbf{max\_grad\_norm}           & 0.71475                                      & 0.56558                                      & 0.94281                                      & 0.77201                                      \\ \hline
-            \textbf{rms\_prop\_eps}            & 0.00024                                      & 0.00435                                      & 0.0075                                       & 0.0067                                       \\ \hline
-            \textbf{sde\_sample\_freq}         & 30                                           & 26                                           & 23                                           & 15                                           \\ \hline
-            \textbf{batch\_size}               & 128                                          & 64                                           & 8192                                         & 64                                           \\ \hline
-            \textbf{n\_epochs}                 & 5                                            & 8                                            & 7                                            & 8                                            \\ \hline
-            \textbf{clip\_range}               & 0.18938                                      & 0.19559                                      & 0.2274                                       & 0.22578                                      \\ \hline
-            \textbf{clip\_range\_vf}           & 0.05                                         & ~                                            & 0.15                                         & 0.05                                         \\ \hline
-            \textbf{target\_kl}                & 0.02394                                      & 0.04957                                      & 0.03176                                      & 0.03337                                      \\ \hline
-            \textbf{buffer\_size}              & 2000                                         & 5000                                         & 2000                                         & 2000                                         \\ \hline
-            \textbf{learning\_starts}          & 387                                          & 163                                          & 569                                          & 165                                          \\ \hline
-            \textbf{tau}                       & 0.00815                                      & 0.00461                                      & 0.00269                                      & 0.00469                                      \\ \hline
-            \textbf{train\_freq}               & 2                                            & 2                                            & 3                                            & 2                                            \\ \hline
-            \textbf{gradient\_steps}           & 1                                            & 3                                            & 1                                            & 3                                            \\ \hline
-            \textbf{target\_update\_interval}  & 3                                            & 2                                            & 4                                            & 2                                            \\ \hline
-            \textbf{target\_entropy}           & 0.19013                                      & 0.15826                                      & 0.18233                                      & 0.13979                                      \\ \hline
-            \textbf{policy\_delay}             & 2                                            & 4                                            & 2                                            & 3                                            \\ \hline
-            \textbf{target\_policy\_noise}     & 0.11459                                      & 0.15052                                      & 0.10674                                      & 0.12649                                      \\ \hline
-            \textbf{target\_noise\_clip}       & 0.18538                                      & 0.10527                                      & 0.18672                                      & 0.14197                                      \\ \hline
-            \textbf{exploration\_fraction}     & 0.12082                                      & 0.10871                                      & 0.16125                                      & 0.16269                                      \\ \hline
-            \textbf{exploration\_final\_eps}   & 0.18574                                      & 0.10366                                      & 0.10618                                      & 0.19131                                      \\ \hline
-            \textbf{exploration\_initial\_eps} & 0.16609                                      & 0.10003                                      & 0.16434                                      & 0.1039                                       \\ \hline
-            \textbf{test/total\_reward}        & \textcolor[RGB]{50,150,50}{\textbf{1.97214}} & \textcolor[RGB]{50,150,50}{\textbf{1.97061}} & \textcolor[RGB]{150,50,50}{\textbf{1.62093}} & \textcolor[RGB]{150,50,50}{\textbf{1.63348}} \\ \hline
-        \end{tabular}
+        {\footnotesize
+            \begin{tabular}{|l|c|}
+                \hline
+                \textbf{Parameter}        & \textbf{Values/range}                           \\ \hline
+                learning\_rate            & <0.0001, 0.01>                                  \\ \hline
+                n\_steps                  & [32, 64, 128, 256, 512, 1024, 2048]             \\ \hline
+                gamma                     & <0.9, 0.999>                                    \\ \hline
+                gae\_lambda               & <0.8, 0.999>                                    \\ \hline
+                ent\_coef                 & <0.0001, 0.01>                                  \\ \hline
+                vf\_coef                  & <0.0001, 0.01>                                  \\ \hline
+                max\_grad\_norm           & <0.5, 0.99>                                     \\ \hline
+                rms\_prop\_eps            & <0.0001, 0.01>                                  \\ \hline
+                sde\_sample\_freq         & <4, 32>                                         \\ \hline
+                batch\_size               & [32, 64, 128, 256, 512, 1024, 2048, 4096, 8192] \\ \hline
+                n\_epochs                 & <1, 10>                                         \\ \hline
+                clip\_range               & <0.1, 0.3>                                      \\ \hline
+                clip\_range\_vf           & [None, 0.05, 0.1, 0.15, 0.2]                    \\ \hline
+                target\_kl                & <0.01, 0.05>                                    \\ \hline
+                buffer\_size              & [1000, 2000, 3000, 4000, 5000]                  \\ \hline
+                learning\_starts          & <100, 1000>                                     \\ \hline
+                tau                       & <0.001, 0.01>                                   \\ \hline
+                train\_freq               & <1, 4>                                          \\ \hline
+                gradient\_steps           & <1, 4>                                          \\ \hline
+                target\_update\_interval  & <1, 4>                                          \\ \hline
+                target\_entropy           & <0.1, 0.2>                                      \\ \hline
+                policy\_delay             & <1, 4>                                          \\ \hline
+                target\_policy\_noise     & <0.1, 0.2>                                      \\ \hline
+                target\_noise\_clip       & <0.1, 0.2>                                      \\ \hline
+                exploration\_fraction     & <0.1, 0.2>                                      \\ \hline
+                exploration\_initial\_eps & <0.1, 0.2>                                      \\ \hline
+                exploration\_final\_eps   & <0.1, 0.2>                                      \\ \hline
+            \end{tabular}
+        }
+        \caption{Hyperparameters range/values to select from, for the hyperparameter sweep.}
+        \label{tab:hyperparameters}
+    \end{table}
+
+    \subsubsection{Hyperparameter Sweep Results}\label{subsubsec:hyperparameter_sweep_results}
+    We evaluate the performance based on \emph{test/total\_reward} attribute. It distinguishes individual training runs, and the color of the curve corresponds to its value, a higher value of \emph{test/total\_reward} is represented by an \textcolor[RGB]{255,128,0}{orange curve, indicating better performance}, conversely, a lower value is represented by a \textcolor[RGB]{100,0,200}{purple curve, indicating poor performance}, in graphs~\crefrange{fig:wb-chart1}{fig:wb-chart3}. These graphs have two columns: the first column represents the \emph{algorithm}, and the last column represents the \emph{test/total\_reward}. The hyperparameters, which were tuned during the hyperparameter sweep, are located between these two columns. Including three graphs instead of one makes the results more readable and easier to analyze.
+
+    The table~\cref{tab:best-worst-hyperparameters} presents the configurations of the top 2 and bottom 2 models, including their hyperparameters and the corresponding \emph{test/total\_reward} values. In the subsequent section, namely~\cref{subsec:robustness-testings}, we will examine whether this setup is robust or not by conducting multiple tests on the models and training them with the same hyperparameters.
+
+    \subsubsection{How we calculate agent performance}\label{subsubsec:how_we_calculate_agent_performance}
+    As previously mentioned, the agent's performance is assessed using the \emph{test/total\_reward} attribute. To compute the value of \emph{test/total\_reward}, we initialize its value to 1 at time $t=0$ and calculate it as the cumulative product of the rewards obtained by the agent during the testing phase, as shown in Equation~\cref{eq:portfolio-value}.
+
+    For example, if the agent receives a reward of $-0.1$, which implies that the portfolio is worth $0.9$ or $90\%$ of its previous value, the value of \emph{test/total\_reward} would be $(CurrentReturn+1)\times CurrentPortfolioValue = (-0.1+1)\times 1 = 0.9$ in the second step. If in the second step the agent receives a reward of $0.1$, the value of \emph{test/total\_reward} would be $(0.1+1) \times 0.9 = 0.99$ in the third step, and so on. Therefore, if the final value of \emph{test/total\_reward} is $1.9$, it indicates that the agent obtained a total reward of $0.9$ throughout all the steps, which is equivalent to a portfolio return of $90\%$ over the testing period.
+
+    % TODO: Describe why is one hyperparametre better then other
+
+    \begin{figure}
+        \begin{subfigure}[t]{\textwidth}
+            \centering
+            \includegraphics[width=\linewidth]{image/wandb/wb1}
+            \caption{W\&B Chart of parameters and their performance}
+            \label{fig:wb-chart1}
+        \end{subfigure}
+
+        \vspace{0.5cm}
+
+        \begin{subfigure}[t]{\textwidth}
+            \centering
+            \includegraphics[width=\linewidth]{image/wandb/wb2}
+            \caption{W\&B Chart of parameters and their performance}
+            \label{fig:wb-chart2}
+        \end{subfigure}
+
+        \vspace{0.5cm}
+
+        \begin{subfigure}[t]{\textwidth}
+            \centering
+            \includegraphics[width=\linewidth]{image/wandb/wb3}
+            \caption{W\&B Chart of parameters and their performance}
+            \label{fig:wb-chart3}
+        \end{subfigure}
+
+        \caption{The W\&B charts of the hyperparameter sweep.}
+        \label{fig:wb-charts}
+    \end{figure}
+
+    \begin{table}[!ht]
+        \centering
+        {\footnotesize
+            \begin{tabular}{|l||l|l||l|l|}
+                \hline
+                \textbf{Run ID}                    & p3irnh80                                     & 8tml2ozg                                     & zfjr0ks0                                     & pky1wslb                                     \\ \hline
+                \textbf{algo}                      & DDPG                                         & A2C                                          & A2C                                          & PPO                                          \\ \hline
+                \textbf{learning\_rate}            & 0.00685                                      & 0.00671                                      & 0.00698                                      & 0.00471                                      \\ \hline
+                \textbf{n\_steps}                  & 256                                          & 128                                          & 128                                          & 32                                           \\ \hline
+                \textbf{gamma}                     & 0.9294                                       & 0.94108                                      & 0.93858                                      & 0.9289                                       \\ \hline
+                \textbf{gae\_lambda}               & 0.99624                                      & 0.90203                                      & 0.9383                                       & 0.85115                                      \\ \hline
+                \textbf{ent\_coef}                 & 0.00203                                      & 0.0013                                       & 0.00525                                      & 0.00173                                      \\ \hline
+                \textbf{vf\_coef}                  & 0.0082                                       & 0.00683                                      & 0.00125                                      & 0.00527                                      \\ \hline
+                \textbf{max\_grad\_norm}           & 0.71475                                      & 0.56558                                      & 0.94281                                      & 0.77201                                      \\ \hline
+                \textbf{rms\_prop\_eps}            & 0.00024                                      & 0.00435                                      & 0.0075                                       & 0.0067                                       \\ \hline
+                \textbf{sde\_sample\_freq}         & 30                                           & 26                                           & 23                                           & 15                                           \\ \hline
+                \textbf{batch\_size}               & 128                                          & 64                                           & 8192                                         & 64                                           \\ \hline
+                \textbf{n\_epochs}                 & 5                                            & 8                                            & 7                                            & 8                                            \\ \hline
+                \textbf{clip\_range}               & 0.18938                                      & 0.19559                                      & 0.2274                                       & 0.22578                                      \\ \hline
+                \textbf{clip\_range\_vf}           & 0.05                                         & ~                                            & 0.15                                         & 0.05                                         \\ \hline
+                \textbf{target\_kl}                & 0.02394                                      & 0.04957                                      & 0.03176                                      & 0.03337                                      \\ \hline
+                \textbf{buffer\_size}              & 2000                                         & 5000                                         & 2000                                         & 2000                                         \\ \hline
+                \textbf{learning\_starts}          & 387                                          & 163                                          & 569                                          & 165                                          \\ \hline
+                \textbf{tau}                       & 0.00815                                      & 0.00461                                      & 0.00269                                      & 0.00469                                      \\ \hline
+                \textbf{train\_freq}               & 2                                            & 2                                            & 3                                            & 2                                            \\ \hline
+                \textbf{gradient\_steps}           & 1                                            & 3                                            & 1                                            & 3                                            \\ \hline
+                \textbf{target\_update\_interval}  & 3                                            & 2                                            & 4                                            & 2                                            \\ \hline
+                \textbf{target\_entropy}           & 0.19013                                      & 0.15826                                      & 0.18233                                      & 0.13979                                      \\ \hline
+                \textbf{policy\_delay}             & 2                                            & 4                                            & 2                                            & 3                                            \\ \hline
+                \textbf{target\_policy\_noise}     & 0.11459                                      & 0.15052                                      & 0.10674                                      & 0.12649                                      \\ \hline
+                \textbf{target\_noise\_clip}       & 0.18538                                      & 0.10527                                      & 0.18672                                      & 0.14197                                      \\ \hline
+                \textbf{exploration\_fraction}     & 0.12082                                      & 0.10871                                      & 0.16125                                      & 0.16269                                      \\ \hline
+                \textbf{exploration\_final\_eps}   & 0.18574                                      & 0.10366                                      & 0.10618                                      & 0.19131                                      \\ \hline
+                \textbf{exploration\_initial\_eps} & 0.16609                                      & 0.10003                                      & 0.16434                                      & 0.1039                                       \\ \hline
+                \textbf{test/total\_reward}        & \textcolor[RGB]{50,150,50}{\textbf{1.97214}} & \textcolor[RGB]{50,150,50}{\textbf{1.97061}} & \textcolor[RGB]{150,50,50}{\textbf{1.62093}} & \textcolor[RGB]{150,50,50}{\textbf{1.63348}} \\ \hline
+            \end{tabular}
+        }
         \caption{Best and worst model and their training hyperparameters. All hyperparameters are also available online URL: \url{https://wandb.ai/investai/portfolio-allocation} with much more details and experiments.}
+        \label{tab:best-worst-hyperparameters}
     \end{table}
 
     \subsection{Datasets}\label{subsec:datasets}
-    In the previous chapter we compare models based on the \emph{test/total\_reward} of the agent, comparing training hyperparameters Now we look and compare model performance based on the dataset used. We compare the same models (2 best and 2 worst models) used in the previous section in~\cref{tab:best-worst-datasets}, and we also include the best and worst model from the \emph{Fundamental Analysis} dataset and \emph{Technical Analysis} in~\cref{subsec:datasets}. The results are shown in Table~\cref{tab:best-worst-datasets}.
-    \begin{table}[!ht]
+    In the previous sections, we compared our models based on \emph{baseline} vs. \emph{portfolio return} and optimal \emph{hyperparameter configurations} for training the agent. Now, we will compare the performance of the models based on the \emph{datasets} used. We will compare the same models that were evaluated in the previous section, including the \emph{2 best} and \emph{2 worst} models, as well as several \emph{best and worst} models from the datasets of \emph{Fundamental Analysis}, \emph{Technical Analysis}, and \emph{Combined Analysis}. The results of this comparison are shown in Table~\cref{tab:best-worst-datasets}.
+
+    Here we present 3 tables comparing the agent performance based on datasets. Although the results in Table~\cref{tab:best-worst-datasets} may vary depending on the hyperparameters, we can still observe that the \emph{Technical Dataset} is the worst, while the \emph{Combined Dataset} is the best, and the \emph{Fundamental Dataset} is good enough for training the agent.
+
+    Our assumption that the \emph{Fundamental Dataset} would be sufficient for training a profitable agent has been confirmed, although the \emph{Combined Dataset} can yield better results despite being more complex and difficult to train. As expected, the \emph{Technical Dataset} performed the worst, as technical indicators are not as reliable as fundamental indicators for assessing the health and future growth of a company.
+
+    \begin{table}
         \centering
         \label{tab:best-worst-datasets}
         \begin{tabular}{|l|l|l|}
@@ -286,10 +327,10 @@
             zfjr0ks0        & Fundamental Analysis  & \textcolor[RGB]{150,50,50}{\textbf{1.620}} \\ \hline
             pky1wslb        & Combined              & \textcolor[RGB]{150,50,50}{\textbf{1.633}} \\ \hline
         \end{tabular}
-        \caption{Permormance of the datasets used for training the two best and two worst models used in the previous section for comparing hyperparameters as well.}
+        \caption{Best and worst models based on the dataset used (the models was also compared in~\cref{tab:best-worst-hyperparameters}).}
     \end{table}
 
-    \begin{table}[!ht]
+    \begin{table}
         \centering
         \label{tab:worst-datasets}
         \begin{tabular}{|l|l|l|}
@@ -302,10 +343,10 @@
             2161deh4        & Technical Analysis    & \textcolor[RGB]{150,50,50}{\textbf{1.642}} \\ \hline
             2161deh4        & Technical Analysis    & \textcolor[RGB]{150,50,50}{\textbf{1.642}} \\ \hline
         \end{tabular}
-        \caption{The datasets with the poorest performing models.}
+        \caption{Examples of worst models based on the dataset used.}
     \end{table}
 
-    \begin{table}[!ht]
+    \begin{table}
         \centering
         \label{tab:best-datasets}
         \begin{tabular}{|l|l|l|}
@@ -318,30 +359,22 @@
             y3zz2sv3        & Combined              & \textcolor[RGB]{50,150,50}{\textbf{1.955}} \\ \hline
             4qr3nk43        & Fundamental Analysis  & \textcolor[RGB]{50,150,50}{\textbf{1.945}} \\ \hline
         \end{tabular}
-        \caption{The datasets with the best performing models.}
+        \caption{Examples of best models based on the dataset used.}
     \end{table}
 
-    Based on the~\crefrange{tab:best-worst-datasets}{tab:best-datasets} it appears that the performance of the models is highly dependent on the choice of hyperparameters, making it difficult to determine the worst dataset. However, it seems clear that when the hyperparameters are well-tuned, the \emph{Combined Dataset} performs the best, while the \emph{Fundamental Dataset} also performs well.
+    \subsection{Robustness Testings}\label{subsec:robustness-testings}
+    TODO
 
-    All the information, including hyperparameters, datasets, and other details, are available online at the following URL: \url{https://wandb.ai/investai/portfolio-allocation}. The website contains extensive information about the experiments and includes many more details.
-
-    \subsection{Robustness Testings}
-
-    \newpage
-
-    \subsubsection{Overall Performance and Statistics}
+    \subsection{Overall Performance and Statistics}\label{subsec:overall-performance-and-statistics}
 %    TODO: Table performance with stats from pyfolio
-    In the~\cref{tab:stats} we can see overall performance and statistics of the models. The \textbf{bold} values are the best results for each metric. As we can se our model outperform almost all other models/strategies in almost all metrics.
+    In the~\cref{tab:stats} we can see overall performance and statistics of the models. The \textcolor[HTML]{00F000}{\textbf{bold values}} are the best results for each metric, but the best values for portfolio can varied depend on what is our desired outcome. As we can se our model outperform almost all other models/strategies in almost all metrics.
 
     TODO describe this table in details
 
     \subsection{Against the Indexes, Strategies}
 
-%    \begin{landscape}
-    \begin{table}[ht!]
+    \begin{table}
         \centering
-        \caption{Performance metrics of the models, indexes and strategies}
-        \label{tab:stats}
         {\footnotesize
             \begin{tabular}{*{10}{|m{0.075\linewidth}|}}
                 \toprule
@@ -365,13 +398,11 @@
                 \bottomrule
             \end{tabular}
         }
+        \caption{Performance metrics of the models, indexes and strategies}
+        \label{tab:stats}
     \end{table}
-    %    \end{landscape}
 
     \subsection{Against the Other Publicly Available RL Agents}\label{subsec:against-the-other-publicly-available-rl-agents}
-
-
-    \newpage
 
 
     \section{Summary}\label{sec:summary}
