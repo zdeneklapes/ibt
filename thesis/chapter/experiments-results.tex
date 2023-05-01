@@ -109,6 +109,8 @@
         \label{fig:drawdown}
     \end{figure}
 
+    TODO table with drawdowns
+
     \subsubsection{Monthly and Annual Returns}
     In~\cref{fig:month_annual_returns}, we compared our models against baseline indexes and strategies based on their \emph{monthly} and \emph{annual} returns. We presented the results in a graph, where the model with the highest return was compared to the \emph{DJI} and \emph{IXIC} indexes. Our model consistently outperformed the DJI index in most months and years, but was outperformed by the IXIC index in 2019, 2020, and 2021. However, in 2022, when the IXIC index lost over $-30\%$ of its value, our model was able to keep the majority of its value and only lost around $-8\%$.
 
@@ -362,54 +364,101 @@
         \caption{Examples of best models based on the dataset used.}
     \end{table}
 
-    \subsection{Robustness Testings}\label{subsec:robustness-testings}
-    TODO
+    \subsection{Testing of Robustness}\label{subsec:testing-of-robustness}
+    In this subsection, we report the results of our robustness test for the trained models. We trained 11 models using the same hyperparameters but different seeds, and tested them on the same dataset. The results are summarized in Table~\cref{tab:robust}, which shows the \emph{test/total\_reward} for each of the 11 models. The mean \emph{test/total\_reward} across the models is \textbf{1.824}, indicating that the models perform well on the test dataset. Although there is some variation in performance between the models, with a spread of \textbf{0.249} between the highest and lowest cumulative reward values (\emph{test/total\_reward}), the distinction is significant since it has the potential to greatly impact the long-term returns. Overall, these results suggest that the models are robust enough to be used in real-life scenarios. It is worth noting that the variation in performance between the models may be due to differences in the random seeds used during training, which can affect the initial conditions of the learning process.
+
+    \begin{table}[ht!]
+        \centering
+        \caption{Robust Test: Trained models using hyperparameters from the best model trained using sweep. The mean is 1.824 and the spead between the highest and the lowest is reward is 0.249.}
+        \label{tab:robust}
+        {\footnotesize\begin{tabular}{*{2}{|m{0.20\linewidth}|}}
+                          \toprule
+                          \bfseries id       & \bfseries test/total\_reward \\[0cm]
+                          \midrule
+                          \bfseries r92of0f3 & 1.887 \\[0cm]
+                          \bfseries e5pzquaz & 1.882 \\[0cm]
+                          \bfseries l75jybwn & 1.769 \\[0cm]
+                          \bfseries kyr89ols & 1.723 \\[0cm]
+                          \bfseries mliee6kz & 1.864 \\[0cm]
+                          \bfseries 3hiqutvc & 1.785 \\[0cm]
+                          \bfseries 4y7nkqyj & 1.807 \\[0cm]
+                          \bfseries axq1epdr & 1.776 \\[0cm]
+                          \bfseries w1xo3vul & 1.806 \\[0cm]
+                          \bfseries sey6enti & 1.799 \\[0cm]
+                          \bfseries p3irnh80 & 1.972 \\[0cm]
+                          \bottomrule
+        \end{tabular}}
+    \end{table}
 
     \subsection{Overall Performance and Statistics}\label{subsec:overall-performance-and-statistics}
-%    TODO: Table performance with stats from pyfolio
-    In the~\cref{tab:stats} we can see overall performance and statistics of the models. The \textcolor[HTML]{00F000}{\textbf{bold values}} are the best results for each metric, but the best values for portfolio can varied depend on what is our desired outcome. As we can se our model outperform almost all other models/strategies in almost all metrics.
+    This subsection presents the overall performance of the models developed in this thesis, compared to various indexes, common strategies, and a model from AI4Finance~\cite{finrl-portfolio-allocation-2020}.
 
-    TODO describe this table in details
+    \subsubsection{Comparison with Indexes and Strategies}\label{subsubsec:indexes-and-strategies}
+    The~\cref{tab:stats} shows the comparison of our models with the S\&P 500 (\^GSPC), NASDAQ Composite (\^IXIC), Dow Jones Industrial Average (\^DJI), Russell 2000 (\^RUT), Maximum Sharpe Ratio strategy, and Minimum Variance strategy. The comparison is based on the testing period from \emph{2017-01-25} to \emph{2022-12-16}. The performance metrics were calculated using Pyfolio~\cite{Pyfolio}.
 
-    \subsection{Against the Indexes, Strategies}
+    As seen in Table~\cref{tab:stats}, our models outperform most of the other models/strategies in almost all performance metrics. The \textcolor[HTML]{00F000}{\textbf{green bold values}} indicate the best results for each metric. However, the best values for a portfolio can vary depending on the desired outcome and other factors.
+
+    \begin{table}
+        \centering
+        {\footnotesize\begin{tabular}{*{9}{|m{0.075\linewidth}|}}
+                          \toprule
+                          & \bfseries zfjr0ks0 & \bfseries p3irnh80                   & \bfseries \^DJI                       & \bfseries \^GSPC & \bfseries \^IXIC & \bfseries \^RUT & \bfseries Max Sharpe Ratio Portfolio & \bfseries Min Variance Portfolio \\[0.5cm]
+                          \midrule
+                          \bfseries Annual return       & 0.085              & \color[HTML]{00F000} \bfseries 0.122 & 0.089                                 & 0.094            & 0.116 & 0.043 & 0.093 & 0.092 \\[0.5cm]
+                          \bfseries Cum. returns        & 0.621              & \color[HTML]{00F000} \bfseries 0.972 & 0.654                                 & 0.695            & 0.911 & 0.284 & 0.686 & 0.683 \\[0.5cm]
+                          \bfseries Annual volatility   & 0.181              & 0.188                                & 0.202                                 & 0.203            & 0.239            & \color[HTML]{00F000} \bfseries 0.253 & 0.158 & 0.159 \\[0.5cm]
+                          \bfseries Sharpe ratio        & 0.543              & \color[HTML]{00F000} \bfseries 0.706 & 0.525                                 & 0.544            & 0.581 & 0.295 & 0.641 & 0.640 \\[0.5cm]
+                          \bfseries Calmar ratio        & 0.288              & \color[HTML]{00F000} \bfseries 0.391 & 0.241                                 & 0.276            & 0.325 & 0.101 & 0.350 & 0.349 \\[0.5cm]
+                          \bfseries Stability           & 0.855              & \color[HTML]{00F000} \bfseries 0.913 & 0.798                                 & 0.845            & 0.820 & 0.461 & 0.905 & 0.906 \\[0.5cm]
+                          \bfseries Max drawdown        & -0.297             & -0.312                               & -0.371                                & -0.339           & -0.357           & -0.431                               & -0.265                               & \color[HTML]{00F000} \bfseries -0.264 \\[0.5cm]
+                          \bfseries Omega ratio         & 1.118              & \color[HTML]{00F000} \bfseries 1.158 & 1.114                                 & 1.115            & 1.116 & 1.057 & 1.136 & 1.135 \\[0.5cm]
+                          \bfseries Sortino ratio       & 0.763              & \color[HTML]{00F000} \bfseries 0.994 & 0.723                                 & 0.751            & 0.802 & 0.404 & 0.907 & 0.904 \\[0.5cm]
+                          \bfseries Skew                & -0.249             & -0.312                               & -0.593                                & -0.549           & -0.465           & -0.782                               & -0.246                               & \color[HTML]{00F000} \bfseries -0.240 \\[0.5cm]
+                          \bfseries Kurtosis            & 16.819             & 19.569                               & \color[HTML]{00F000} \bfseries 19.640 & 14.205           & 7.418 & 10.450 & 14.315 & 14.286 \\[0.5cm]
+                          \bfseries Tail ratio          & 0.883              & 0.884                                & 0.891                                 & 0.859            & 0.862            & \color[HTML]{00F000} \bfseries 0.984 & 0.937 & 0.930 \\[0.5cm]
+                          \bfseries Daily value at risk & -0.022             & -0.023                               & -0.025                                & -0.024           & -0.030           & -0.032                               & -0.019                               & \color[HTML]{00F000} \bfseries -0.018 \\[0.5cm]
+                          \bfseries Beta                & 0.879              & 0.921                                & 1.000                                 & 0.966            & 1.007            & \color[HTML]{00F000} \bfseries 1.083 & 0.636 & 0.637 \\[0.5cm]
+                          \bfseries Alpha               & 0.005              & \color[HTML]{00F000} \bfseries 0.036 & 0.000                                 & 0.008            & 0.032            & -0.039 & 0.034 & 0.035 \\[0.5cm]
+                          \bottomrule
+        \end{tabular}}
+        \caption{Performance metrics of the models vs. indexes and strategies, during the testing period of 2017-01-25 to 2022-12-15.}
+        \label{tab:stats}
+    \end{table}
+
+    \subsubsection{Comparison with AI4Finance Model}\label{subsec:AI4finance-model}
+    The~\cref{tab:stats2} compares our models with the model from AI4Finance~\cite{finrl-portfolio-allocation-2020}. Due to the lack of data, we used the results from the published paper. The comparison was made for the period from \emph{2020-07-01} to \emph{2021-10-29}.
+
+    As shown in the~\cref{tab:stats2}, our models are not the best compared to the AI4Finance model. The AI4Finance model outperforms our models in almost all performance metrics, but our models are still better than the indexes and common strategies. Our models were outperformed by approximately $3.1\%$ annually, which is quite significant. This could be due to various reasons, such as using different hyperparameters or training the models on different datasets. Our models were trained on a combined dataset of technical and fundamental analysis, while the AI4Finance model was trained only on technical analysis but included the covariance matrix between stocks, which we did not consider in our datasets. Of course it would be interesting to compare our models with the AI4Finance model in a longer period, but unfortunately we do not have the data for that.
+
 
     \begin{table}
         \centering
         {\footnotesize
-            \begin{tabular}{*{10}{|m{0.075\linewidth}|}}
+            \begin{tabular}{*{4}{|m{0.20\linewidth}|}}
                 \toprule
-                & \bfseries The lowest Total Reward & \bfseries The highest Total Reward   & \bfseries \^DJI & \bfseries \^GSPC & \bfseries \^IXIC & \bfseries \^RUT & \bfseries Max Sharpe ratio & \bfseries Min Variance \\[0.5cm]
+                & \bfseries zfjr0ks0                   & \bfseries p3irnh80                    & \bfseries AI4Finance \\[0.5cm]
                 \midrule
-                \bfseries Annual return       & 0.085                             & \color[HTML]{00F000} \bfseries 0.122 & 0.089                                 & 0.094            & 0.116 & 0.043 & 0.093 & 0.092 \\[0.5cm]
-                \bfseries Cum. returns        & 0.621                             & \color[HTML]{00F000} \bfseries 0.972 & 0.654                                 & 0.695            & 0.911 & 0.284 & 0.686 & 0.683 \\[0.5cm]
-                \bfseries Annual volatility   & 0.181                             & 0.188                                & 0.202                                 & 0.203            & 0.239            & \color[HTML]{00F000} \bfseries 0.253 & 0.158 & 0.158 \\[0.5cm]
-                \bfseries Sharpe ratio        & 0.543                             & \color[HTML]{00F000} \bfseries 0.706 & 0.525                                 & 0.544            & 0.581 & 0.295 & 0.641 & 0.640 \\[0.5cm]
-                \bfseries Calmar ratio        & 0.288                             & \color[HTML]{00F000} \bfseries 0.391 & 0.241                                 & 0.276            & 0.325 & 0.101 & 0.350 & 0.349 \\[0.5cm]
-                \bfseries Stability           & 0.855                             & \color[HTML]{00F000} \bfseries 0.913 & 0.798                                 & 0.845            & 0.820 & 0.461 & 0.905 & 0.905 \\[0.5cm]
-                \bfseries Max drawdown        & -0.297                            & -0.312                               & -0.371                                & -0.339           & -0.357           & -0.431                               & \color[HTML]{00F000} \bfseries -0.265 & \color[HTML]{00F000} \bfseries -0.265 \\[0.5cm]
-                \bfseries Omega ratio         & 1.118                             & \color[HTML]{00F000} \bfseries 1.158 & 1.114                                 & 1.115            & 1.115 & 1.057 & 1.136 & 1.135 \\[0.5cm]
-                \bfseries Sortino ratio       & 0.763                             & \color[HTML]{00F000} \bfseries 0.994 & 0.723                                 & 0.751            & 0.802 & 0.404 & 0.907 & 0.904 \\[0.5cm]
-                \bfseries Skew                & -0.249                            & -0.312                               & -0.593                                & -0.549           & -0.465           & -0.782                               & -0.246                                & \color[HTML]{00F000} \bfseries -0.240 \\[0.5cm]
-                \bfseries Kurtosis            & 16.819                            & 19.569                               & \color[HTML]{00F000} \bfseries 19.640 & 14.205           & 7.418 & 10.450 & 14.315 & 14.286 \\[0.5cm]
-                \bfseries Tail ratio          & 0.883                             & 0.883                                & 0.891                                 & 0.859            & 0.862            & \color[HTML]{00F000} \bfseries 0.984 & 0.937 & 0.930 \\[0.5cm]
-                \bfseries Daily value at risk & -0.022                            & -0.023                               & -0.025                                & -0.025           & -0.030           & -0.032                               & \color[HTML]{00F000} \bfseries -0.019 & \color[HTML]{00F000} \bfseries -0.019 \\[0.5cm]
-                \bfseries Beta                & 0.879                             & 0.921                                & 1.000                                 & 0.966            & 1.007            & \color[HTML]{00F000} \bfseries 1.083 & 0.636 & 0.636 \\[0.5cm]
-                \bfseries Alpha               & 0.005                             & \color[HTML]{00F000} \bfseries 0.036 & 0.000                                 & 0.008            & 0.032            & -0.039 & 0.034 & 0.034 \\[0.5cm]
+                \bfseries Annual return       & 0.213                                & 0.265                                 & \color[HTML]{00F000} \bfseries 0.296 \\[0.5cm]
+                \bfseries Cum. returns        & 0.295                                & 0.369                                 & \color[HTML]{00F000} \bfseries 0.415 \\[0.5cm]
+                \bfseries Annual volatility   & 0.128                                & 0.130                                 & \color[HTML]{00F000} \bfseries 0.140 \\[0.5cm]
+                \bfseries Sharpe ratio        & 1.573                                & 1.866                                 & \color[HTML]{00F000} \bfseries 1.930 \\[0.5cm]
+                \bfseries Calmar ratio        & 2.323                                & 2.911                                 & \color[HTML]{00F000} \bfseries 3.350 \\[0.5cm]
+                \bfseries Stability           & 0.893                                & \color[HTML]{00F000} \bfseries 0.931  & 0.920 \\[0.5cm]
+                \bfseries Max drawdown        & -0.092                               & -0.091                                & \color[HTML]{00F000} \bfseries -0.088 \\[0.5cm]
+                \bfseries Omega ratio         & 1.299                                & 1.367                                 & \color[HTML]{00F000} \bfseries 1.380 \\[0.5cm]
+                \bfseries Sortino ratio       & 2.349                                & 2.792                                 & \color[HTML]{00F000} \bfseries 2.940 \\[0.5cm]
+                \bfseries Skew                & -0.127                               & -0.228                                & \color[HTML]{00F000} \bfseries -0.110 \\[0.5cm]
+                \bfseries Kurtosis            & 1.574                                & \color[HTML]{00F000} \bfseries 1.580  & 1.450 \\[0.5cm]
+                \bfseries Tail ratio          & \color[HTML]{00F000} \bfseries 1.110 & 1.028                                 & 1.100 \\[0.5cm]
+                \bfseries Daily value at risk & -0.015                               & \color[HTML]{00F000} \bfseries -0.014 & -0.017 \\[0.5cm]
+                \bfseries Beta                & 0.888                                & 0.920                                 & \color[HTML]{00F000} \bfseries 0.980 \\[0.5cm]
+                \bfseries Alpha               & -0.025                               & 0.009                                 & \color[HTML]{00F000} \bfseries 0.020 \\[0.5cm]
                 \bottomrule
             \end{tabular}
         }
-        \caption{Performance metrics of the models, indexes and strategies}
-        \label{tab:stats}
+        \caption{Performance metrics of the models vs. AI4Finance model, during the testing period of 2020-07-01 to 2021-10-29.}
+        \label{tab:stats2}
     \end{table}
-
-    \subsection{Against the Other Publicly Available RL Agents}\label{subsec:against-the-other-publicly-available-rl-agents}
-    TODO
-
-    \subsubsection{Train Multiple Agents with Same Hyperparameters}\label{subsubsec:train-multiple-agents-with-same-hyperparameters}
-    TODO
-
-    \subsubsection{Test Best Agent Multiple Times}\label{subsubsec:test-best-agent-multiple-times}
-    TODO
 
 
     \section{Summary}\label{sec:summary}
