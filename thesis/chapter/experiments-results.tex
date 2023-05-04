@@ -258,7 +258,7 @@
     In~\cref{fig:cumulative_return}, we demonstrate that an agent can achieve successful outcomes when trained with appropriate hyperparameters and dataset (model id: \emph{zfjr0ks0}), while unsuitable hyperparameters and dataset can result in unsatisfactory outcomes (model id: \emph{p3irnh80}). The \emph{zfjr0ks0} model surpassed standard indexes such as \emph{DJI}, \emph{GSPC}, \emph{IXIC}, and \emph{RUT}, although not consistently throughout the testing period. It is evident that the \emph{zfjr0ks0} model outperformed almost all baseline indexes and strategies, with the exception of \emph{IXIC (NASDAQ Composite)} during a specific period from 2020 until the end of the testing period in 2022, when our model began to outperform even \emph{IXIC}. Later, we will also compare \emph{models developed by us} with the \emph{State-of-the-Art AI4Finance}, but we currently lack the data to perform a full comparison over our entire testing period.
 
     There could be various reasons why our agent was outperformed by the Nasdaq 100 during the testing period. However, we believe that the primary reason is that our \emph{agent} is designed to operate with only \textbf{30 stocks}, while the \emph{NASDAQ Comosite} comprises \textbf{100 stocks}. This limited scope of stocks may have resulted in fewer investment opportunities for our agent, which could have led to lower returns compared to the Nasdaq 100. Nonetheless, it is worth noting that our model did eventually outperform the Nasdaq 100 Index by the end of 2023.
-    \begin{figure}[h!]
+    \begin{figure}
         \centering
         \includegraphics[width=\linewidth]{image/figure/returns}
         \label{fig:cumulative_return}
@@ -268,7 +268,7 @@
     \subsubsection{Drawdowns}
     Now we look how our models performing in drawdowns\footnote{In the stock market, drawdown refers to the percentage decline in an investment's value from its peak to its subsequent low point. Essentially, it represents the loss experienced by an investor in a particular investment over a certain period of time.} Based on the drawdown graphs in~\cref{fig:drawdown}, we observe that the best model, trained on appropriate datasets and hyperparameters, outperforms the DJI index for larger drawdowns (around $6\%$). Since our dataset comprises companies included in the DJI index we decide for our analysis compare the drawdowns of the model with the \emph{highest and lowest test/total\_reward}, as well as \emph{two indexes} (\emph{IXIC} and \emph{DJI}). The \emph{IXIC} (Nasdaq 100 Index) has been chosen as baseline for performance in drawdown, since it outperformed our model during the period between 2020 and 2022.
 
-    \begin{figure}[h!]
+    \begin{figure}
                 %
         \begin{subfigure}[t]{\experimentimgwidth\textwidth}
             \centering
