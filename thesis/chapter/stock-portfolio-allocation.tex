@@ -269,7 +269,7 @@
     %
 
     \subsubsection{Reward Function}\label{subsubsec:reward-function}
-    The reward function represents the change in the value of the portfolio from one time step to the next. First we need to define \emph{price relative vector} $\bm{y}(t) \in \mathbb{R}^N$:
+    The reward function represents the change in the value of the portfolio from one time step to the next. First we need to define \emph{Price Relative Vector} $\bm{y}(t) \in \mathbb{R}^N$:
     \begin{equation}
         \label{eq:price-relative-vector}
         \begin{split}
@@ -278,16 +278,16 @@
     \end{equation}
     where the $p_i(t)$ is the price of risky asset (stock) at time step $t$, and $\frac{p_i(t)}{p_i(t-1)}$ represents the relative change in price from one-time slot to the next of stock $i$, we incorporate into the vector also the change of cash, which is constant value $1$ (we assume that cash value do not change its value).
 
-    Now we can define our \emph{Reward function} as rate of portfolio return:
+    Now we can define our \textbf{Reward function} as rate of portfolio return:
     \begin{equation}
         \label{eq:rate-of-portfolio-return}
         \rho(t)=\bm{w}(t-1)^\top\bm{y}(t)-1\text{ , for }t=1,\ldots,T
     \end{equation}
-    and it represents the change in the value of the portfolio from one time step to the next. For simplicity we do not consider transactions cost of each operation in reward function, because it can depent on the broker.
+    The reward function measures the change in the portfolio's value between consecutive time steps. We assume that there are no transaction costs associated with each operation, as these can vary depending on the broker. Additionally, we don't factor in any dividends. Instead, the reward is solely based on the change in the value of each stock.
 
     Lastly we defined the \emph{portfolio value} $v(t) \in \mathbb{R}$ at time step $t$. First let the $v(0)$ be an initial capital, then for $t=1,\ldots,T$ is portfolio value defined as follows:
     \begin{equation}
-        \label{eq:relative-portfolio-value}
+        \label{eq:portfolio-value}
         \begin{split}
             v(t) &=v(0)\prod_{\tau=1}^{t}\left[\rho(\tau)+1\right]\\
             &=v(t-1)(\rho(t)+1)
