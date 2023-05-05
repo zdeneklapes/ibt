@@ -39,7 +39,7 @@
         \caption{The agent interacts with the environment and learns to maximize the cumulative reward over time $T$.}
     \end{figure}
 
-    Because RL algorithms are categorized by the way it learns, there are many different types of RL algorithms.\ Based on the different approaches we can categorize RL algorithms into these clasess:
+    Because RL algorithms are categorized by the way it learns, there are many different types of RL algorithms.\ Based on the different approaches we can categorize RL algorithms into these classes:
     \begin{multicols}{2}
         \begin{itemize}
             \item \textbf{Value-based}
@@ -78,7 +78,7 @@
     \begin{figure}[h]
         \includegraphics[width=0.5\linewidth]{image/model-value-policy}
         \centering
-        \caption{The relationship between model, value function and policy. Source~\cite{FITMT25127}:}
+        \caption{The relationship between model, value function, and policy. Source~\cite{FITMT25127}:}
         \label{fig:model-value-policy-introduction}
     \end{figure}
 
@@ -99,7 +99,7 @@
     The repeated successive execution of a random experiment can be represented as a stochastic process, which is a sequence of random variables, e.g., $X_t(\omega), X_{t+1}(\omega), \ldots X_n(\omega)$, where a single term can be shortened to $X_t$ and it represents the state of the environment at time $t$, $t\in\mathbb{N}$, $\omega$ is an elementary outcome of all possible outcomes $\Omega$~\cite{inproceedings, rao2022foundations}.
 
     \subsubsection{Stochastic Process (Random Process)}\label{subsubsec:stochastic-process}
-    A stochastic process is defined as a collection of random variables defined on a common probability space $(\Omega, \mathcal{F}, P)$, where $\Omega$ is a sample space, $\mathcal{F}$ is a $\sigma$-algebra, and $P$ is a probability measure, and the random variables, indexed by some set $T$, all take values in the same mathematical space $S$, which must be measurable with respect to some $\sigma$-algebra $\Sigma$.\ In other words, stochastic process is a collection of random variables $X_t$, indexed by time $t$, so definition is~\cite{enwiki:1148510872}:
+    A stochastic process is defined as a collection of random variables defined on a common probability space $(\Omega, \mathcal{F}, P)$, where $\Omega$ is a sample space, $\mathcal{F}$ is a $\sigma$-algebra, and $P$ is a probability measure, and the random variables, indexed by some set $T$, all take values in the same mathematical space $S$, which must be measurable with respect to some $\sigma$-algebra $\Sigma$.\ In other words, a stochastic process is a collection of random variables $X_t$, indexed by time $t$, so the definition is~\cite{enwiki:1148510872}:
     \begin{equation}
         \label{eq:stochastic-process}
         X_0, X_1, X_2,\cdots \text{ for discrete-time}
@@ -243,13 +243,13 @@
     By extending the~\cref{subsubsec:state-value-function} to include actions, we arrive at the most important equation in all of the reinforcement learning: \emph{The Bellman equation}, defined in~\cref{subsubsec:bellman-optimality-equation}.\ It states that to calculate the long-term expected reward from a state, an agent only needs to add together the reward of the current state and the long-term expected reward of the next state~\cite{FITMT25127}.
 
     \subsection{Markov Decision Process}\label{subsec:markov-decision-process}
-    The Markov Decision Process (MDP) allows an agent to actively influence changes in the state of the environment through its actions.\ Within the MDP, the agent has the ability to jointly determine the subsequent state to which the environment should transition.\ The agent's primary goal is to strategically choose actions that maximize the expected payoff.\ In the previous subsections, we addressed the aspect of \emph{sequential uncertainty (e.g., MRP)} using the Markov process framework and extended it to include the uncertain reward $R_t\in\mathcal{R}$ at each state transition $p(s',r,s)$, referred to as Markov reward processes.\ However, this framework lacks the notion of \emph{sequential decision making} and in this section, this notion is introduced in terms of MDP, a generalization of MRP that includes the notion of \emph{sequential decision making}~\cite{rao2022foundations}.
+    The Markov Decision Process (MDP) allows an agent to actively influence changes in the state of the environment through its actions.\ Within the MDP, the agent has the ability to jointly determine the subsequent state to which the environment should transition.\ The agent's primary goal is to strategically choose actions that maximize the expected payoff.\ In the previous subsections, we addressed the aspect of \emph{sequential uncertainty (e.g., MRP)} using the Markov process framework and extended it to include the uncertain reward $R_t\in\mathcal{R}$ at each state transition $p(s',r,s)$, referred to as Markov reward processes.\ However, this framework lacks the notion of \emph{sequential decision making}, and in this section, this notion is introduced in terms of MDP, a generalization of MRP that includes the notion of \emph{sequential decision making}~\cite{rao2022foundations}.
 %
     \begin{definition}
         \emph{Markov decision process} is the Markov reward process with actions.\ It is an tuple $(S,A,\mathcal{P},\mathcal{R},\gamma)$, where:
         \begin{itemize}
-            \item $\mathcal{S}$ is finite set of states, known as the State Space
-            \item $\mathcal{A}$ is finite set of actions, known as the Action Space
+            \item $\mathcal{S}$ is a finite set of states, known as the State Space
+            \item $\mathcal{A}$ is a finite set of actions, known as the Action Space
             \item $\mathcal{P}$ is a transition probability function $p(s',r,s,a)$, which is a function that maps a state $s$, an action $a$, a next state $s'$ and a reward $r$ to a probability $p(s',r,s,a)$
             \item $\mathcal{R}$ is a reward function $r(s,a)$, which is a function that maps a state $s$ and an action $a$ to a reward $r(s,a)$
             \item $\gamma\in[0,1]$ is the discount factor
@@ -360,12 +360,10 @@
 
 
     \section{Value-based learning}\label{sec:value-based-learning}
-    This section presents value-based algorithms that iteratively compute state-value or action-value functions of states and actions.\ These functions are then used to derive continuously improving policies.\ Therefore, these algorithms are referred to as value-based algorithms.\ In~\cref{subsec:dynamic-programming} we addresses Planing alogirhtm, that requires the prior knowledge of transition probabilities and rewards.\ In~\cref{subsec:monte-carlo-methods} we addresses Monte Carlo methods, that do not require the prior knowledge of transition probabilities and rewards.\ In~\cref{subsec:temporal-difference-methods} we addresses Temporal Difference methods, finally in~\cref{subsec:function-approximation} we addresses Function Approximation methods, that deals with the large state/action spaces.
-
-%    First, some terms should be mentioned: \emph{Prediction} is in most cases interchangeable with \emph{Evaluation}, and the same applies to \emph{Improvement}, which can be changed to \emph{Control}, these two terms will be used later in this section. However, we will try to stick to the \emph{Prediction} and \emph{Evaluation}, as it is more common in the literature and makes a bit more sense based on the context of the topic.
+    This section presents value-based algorithms that iteratively compute state-value or action-value functions of states and actions.\ These functions are then used to derive continuously improving policies.\ Therefore, these algorithms are referred to as value-based algorithms.\ In~\cref{subsec:dynamic-programming} we address Planning algorithm, which requires prior knowledge of transition probabilities and rewards.\ In~\cref{subsec:monte-carlo-methods} we address Monte Carlo methods, that do not require prior knowledge of transition probabilities and rewards.\ In~\cref{subsec:temporal-difference-methods} we address Temporal Difference methods, finally in~\cref{subsec:function-approximation} we address Function Approximation methods, that deals with the large state/action spaces.
 
     \subsection{Dynamic Programming}\label{subsec:dynamic-programming}
-    The term dynamic programming (DP) refers to a collection of algorithms that can be used to compute optimal policies in Markov decision processes (MDPs) when a perfect model of the environment is available.\ Classical DP algorithms are limited in reinforcement learning due to their assumptions of a perfect model and computational expense.\ DP uses value functions to organize the search for good policies, and the Bellman optimality equations define optimal value functions (\emph{State-value function} and \emph{Action-value function}). DP algorithms are effective for problems with the finite states, action, and reward sets.\ However, for continuous problems, exact solutions are limited.\ One approach is to approximate solutions by discretizing the state and action spaces and applying finite-state DP methods.\ The second approach is to use function approximation to approximate the value functions.\ DP planning algorithms consist of the evaluation of a given policy, called policy prediction, defined in~\cref{par:policy-prediction} and the subsequent improvement of the policy, called policy improvement, defined in~\cref{par:policy-improvement}.\ The goal of these two steps is to infer $v_*(s)$ or $q_*(s,a)$ for all the states and actions in a procedure called Generalized Policy Iteration, defined in~\cref{subsubsec:generalized-policy-iteration}~\cite{sutton2018reinforcement, FITMT25127}.
+    The term dynamic programming (DP) refers to a collection of algorithms that can be used to compute optimal policies in Markov decision processes (MDPs) when a perfect model of the environment is available.\ Classical DP algorithms are limited in reinforcement learning due to their assumptions of a perfect model and computational expense.\ DP uses value functions to organize the search for good policies, and the Bellman optimality equations define optimal value functions (\emph{State-value function} and \emph{Action-value function}). DP algorithms are effective for problems with finite states, action, and reward sets.\ However, for continuous problems, exact solutions are limited.\ One approach is to approximate solutions by discretizing the state and action spaces and applying finite-state DP methods.\ The second approach is to use function approximation to approximate the value functions.\ DP planning algorithms consist of the evaluation of a given policy, called policy prediction, defined in~\cref{par:policy-prediction} and the subsequent improvement of the policy, called policy improvement, defined in~\cref{par:policy-improvement}.\ The goal of these two steps is to infer $v_*(s)$ or $q_*(s,a)$ for all the states and actions in a procedure called Generalized Policy Iteration, defined in~\cref{subsubsec:generalized-policy-iteration}~\cite{sutton2018reinforcement, FITMT25127}.
 
     \subsubsection{Policy Iteration}\label{subsubsec:policy-iteration}
     Policy iteration consists of 2 steps: \emph{policy evaluation} and \emph{policy improvement}.\ The policy prediction step, defined in~\cref{par:policy-prediction}, is used to estimate the value function $v_{\pi}$ for a given policy $\pi$.\ The policy improvement step, defined in~\cref{par:policy-improvement} is used to improve the policy $\pi$ by selecting the action that maximizes the value function $v_{\pi}$~\cite{sutton2018reinforcement}.
@@ -406,7 +404,7 @@
     \end{definition}
 
     \subsubsection{Generalized Policy Iteration}\label{subsubsec:generalized-policy-iteration}
-    If Policy Evaluation and Policy Improvement steps are executed enough times and no more improvement of the old policy over the new policy is found, then optimal $q_*$ and $\pi_*$ are found.\ Well-known algorithms in DP which implement this Generalized Policy Iteration are the Policy Iteration algorithm and its special case the Value Iteration algorithm,defined above in~\cref{subsubsec:value-iteration}.\ They use the equations Bellman's equations for $v_*(s)$ and $q_*(s,a)$ and a variant of the Generalized Policy Iteration method, where $v_{\pi}(s)$ does not have to be determined.\ The iteration in the Policy Evaluation step is immediately followed by the Policy Improvement step~\cite{sutton2018reinforcement, 7110602}.
+    If Policy Evaluation and Policy Improvement steps are executed enough times and no more improvement of the old policy over the new policy is found, then optimal $q_*$ and $\pi_*$ are found.\ Well-known algorithms in DP which implement this Generalized Policy Iteration are the Policy Iteration algorithm and its special case the Value Iteration algorithm, defined above in~\cref{subsubsec:value-iteration}.\ They use the equations Bellman's equations for $v_*(s)$ and $q_*(s,a)$ and a variant of the Generalized Policy Iteration method, where $v_{\pi}(s)$ does not have to be determined.\ The iteration in the Policy Evaluation step is immediately followed by the Policy Improvement step~\cite{sutton2018reinforcement, 7110602}.
 
     \begin{figure}[H]
         \centering
@@ -428,12 +426,6 @@
 
 
     MC methods allow an agent to infer the optimal policy $\pi_*$ from the optimal action-value function $q_*(s,a)$ estimated through experience.\ MC methods use the iterative procedure Generalized Policy Iteration to incrementally infer $\pi_*$.\ First, a finite trajectory $(S_0,A_0,R_1,S_1,A_1,\cdots,R_n,S_n)$ is generated, where actions are selected according to a stochastic policy $\pi(a|s)$ and states and rewards come from the unknown environmental dynamics.\ From this episode, the return $G_t$ is computed for all state-action pairs reached.\ Then, the policy evaluation step is performed using the update equation~\cite{sutton2018reinforcement, FITMT25127, rao2022foundations}:
-
-%    \begin{wrapfigure}[H]
-%        \includegraphics[width=\textwidth]
-%        \caption{Monte Carlo convergence.}
-%        \label{fig:mc}
-%    \end{wrapfigure}
 
     \begin{equation}
         \label{eq:mc-update}
@@ -509,18 +501,7 @@
     \end{equation}
     and represents the error in the current estimate of the value function, and the TD target represents the updated estimate of the value function for the current state.\ By using the TD error and TD target in the update rule, TD methods can learn from raw experience and update the value function at each time step, making them well-suited for online learning tasks~\cite{sutton2018reinforcement}.
 
-%    The TD error at each time is the error in the estimate made at that time, depending on the next state and next reward. It is available at time $t + 1$, i.e., (t is the error in $V(S_t)$. If $V(s_t)$ does not change during the episode, then the Monte Carlo error can be written as a sum of \emph{TD errors}:
-%    \begin{equation}
-%        \begin{split}
-%            G_t-V(S_t)&=R_{t+1}+\gamma G_{t+1}-V(S_t)+\gamma V(S_{t+1})-\gamma V(S_{t+1})\\
-%            &=\delta_t+\gamma\delta_{t+1}+\gamma^2\delta_{t+2}+\ldots+\gamma^{T-t-1}\delta_{T-1}+\gamma^{T-t}\delta_T-V(S_T)\\
-%            &=\delta_t+\gamma\delta_{t+1}+\gamma^2\delta_{t+2}+\ldots+\gamma^{T-t-1}\delta_{T-1}+\gamma^{T-t}(R_T+\gamma V(S_T)-V(S_T))\\
-%            &=\sum_{k=t}^{T-1}\gamma^{k-t}\delta_k
-%        \end{split}
-%    \end{equation}
-
-
-    In addition to TD(0), there are also other variations of TD methods such as TD($\lambda$), which is a family of methods that use eligibility traces to combine TD(0) updates with Monte Carlo-like updates.\ TD($\lambda$) methods have a parameter $\lambda$ that controls the trade-off between the bias and variance of the updates.\ When $\lambda$ is set to 0, TD($\lambda$) reduces to TD(0), and when $\lambda$ is set to 1, TD($\lambda$) reduces to Monte Carlo updates.\ TD($\lambda$) methods update the value function for not only the current state but also for all the states visited in the episode, weighted by their eligibility traces.\ The eligibility traces keeps track of the recent history of state visits and decays over time with a decay factor $\lambda$, which determines the credit assignment to different states~\cite{sutton2018reinforcement}.
+    In addition to TD(0), there are also other variations of TD methods such as TD($\lambda$), which is a family of methods that use eligibility traces to combine TD(0) updates with Monte Carlo-like updates.\ TD($\lambda$) methods have a parameter $\lambda$ that controls the trade-off between the bias and variance of the updates.\ When $\lambda$ is set to 0, TD($\lambda$) reduces to TD(0), and when $\lambda$ is set to 1, TD($\lambda$) reduces to Monte Carlo updates.\ TD($\lambda$) methods update the value function for not only the current state but also for all the states visited in the episode, weighted by their eligibility traces.\ The eligibility traces keeps track of the recent history of state visits and decay over time with a decay factor $\lambda$, which determines the credit assignment to different states~\cite{sutton2018reinforcement}.
 
     TD methods do not have to wait until the end of the episode to update the value function.\ Instead, they can make updates at each time step, using the observed reward and the estimate of the value function for the next state.\ This makes TD methods more computationally efficient and allows for online learning in environments where episodes are long or never-ending.\ Like DP and Monte Carlo methods, TD methods also use the iterative Generalized Policy Iteration (GPI) procedure to determine the optimal policy.\ The policy evaluation step in TD methods differs from Monte Carlo methods in that it uses the TD error, which is the difference between the TD target and the current estimate of the value function, as the update rule~\cite{sutton2018reinforcement}.
 
@@ -595,7 +576,7 @@
         \end{split}
     \end{equation}
 
-    On the other hand the Gradient-descent update for action-value prediction is:
+    On the other hand, the Gradient-descent update for action-value prediction is:
     \begin{equation}
         \label{eq:sgd-action-value}
         \bm{w}_{t+1}=\bm{w}_t+\alpha \left[U_t-\hat{q}(S_t,A_t,\bm{w}_t)\right]\nabla \hat{q}(S_t,A_t,\bm{w}_t)
@@ -630,7 +611,7 @@
     In this section, we explore a new approach that involves learning a parameterized policy without relying on action-value estimates.\ The policy's parameter vector is denoted as $\bm{\theta}$, and the probability of selecting actions is represented as $\pi(a|s, \bm{\theta})$.\ We focus on methods that update the policy parameter based on the gradient of a scalar performance measure $J(\bm{\theta})$, aiming to maximize performance without necessarily using a value function for action selection.\ But later, in~\cref{subsec:actor-critic-policy-gradient-methods} we will describe \emph{Actor-Critic} methods that combine the policy gradient methods with the value-based methods~\cite{sutton2018reinforcement}.
 
     \subsection{Stochastic Policy Gradient Methods}\label{subsec:policy-gradient}
-    All algorithms that use a parameterized policy are referred to as policy gradient methods.\ We can represent the policy with a parameter vector $ \bm{\theta} \in \mathbb{R}^d $, where $ d \in \mathbb{N} $.\ Then, extending~\cref{eq:policy}, we can formulate the probability of executing action $ a $ in state $ s $ with parameters $ \bm{\theta} $ at time-step $ t $ of policy $ \pi_{\bm{\theta}} $ as:
+    All algorithms that use a parameterized policy are referred to as policy gradient methods.\ We can represent the policy with a parameter vector $ \bm{\theta} \in \mathbb{R}^d $, where $ d \in \mathbb{N} $.\ Then, extending~\cref{eq:policy}, we can formulate the probability of executing action $ a $ in the state $ s $ with parameters $ \bm{\theta} $ at time-step $ t $ of policy $ \pi_{\bm{\theta}} $ as:
     \begin{equation}
         \label{eq:policy-parameterized}
         \pi(a|s,\bm{\theta})=\Pr\left[A_t=a|S_t=s,\bm{\theta}_t=\bm{\theta}\right]
@@ -700,7 +681,7 @@
     \subsection{REINFORCE: Monte Carlo Policy Gradient}\label{subsec:monte-carlo-policy-gradient-methods}
     The REINFORCE algorithm is a purely policy-based approach that utilizes the return of complete finite episodes for parameter updates, that is the reason of \emph{Monte Carlo} in the name of this method.\ Similar to classical TD methods, it adjusts the return gradually with each time step, unlike MC methods where the return is updated at the end of each episode~\cite{rl-course-david-silver, sutton2018reinforcement}.
 
-    Firts we extend the introduction of $A_t$ in REINFORCE similar to how we introduced $S_t$ in~\cref{eq:policy_gradient}, by replacing a sum with an expectation under the policy $\pi$, and then sampling from it.\ We add the necessary weighting by multiplying and dividing the summed terms by $\pi(a|S_t, \bm{\theta})$ without changing the equality.\ Continuing from~\cref{eq:policy_gradient}, we have~\cite{sutton2018reinforcement, rl-course-david-silver}:
+    First, we extend the introduction of $A_t$ in REINFORCE similar to how we introduced $S_t$ in~\cref{eq:policy_gradient}, by replacing a sum with an expectation under the policy $\pi$, and then sampling from it.\ We add the necessary weighting by multiplying and dividing the summed terms by $\pi(a|S_t, \bm{\theta})$ without changing the equality.\ Continuing from~\cref{eq:policy_gradient}, we have~\cite{sutton2018reinforcement, rl-course-david-silver}:
 
     \begin{equation}
         \label{eq:policy_gradient_2}
@@ -720,7 +701,7 @@
             \bm{\theta}_{t+1}&\doteq\bm{\theta}_{t}+\alpha G_t \nabla\ln\pi(a|s,\bm{\theta}_t)
         \end{split}
     \end{equation}
-    and the final equation used in the algorithm looks like this (including discount factor):
+    and the final equation used in the algorithm looks like this (including the discount factor):
     \begin{equation}
         \label{eq:REINFORCE-final}
         \begin{split}
@@ -728,7 +709,7 @@
         \end{split}
     \end{equation}
 
-    The algorithm employs stochastic gradient ascent for optimization, as the weights are updated at each time step.\ Depending on whether the action space of the environment is discrete or continuous, the policy parametrizations described in the previous subsection can be used for the gradient $\nabla\ln\pi(a|s,\bm{\theta}_t)$.\ One drawback of this algorithm is the high variability in returns between time steps and the associated ``slownes'' of the learning process.\ This variance arises from the non-adaptive and loose formulation of the scaling factor.\ See~\cref{alg:REINFORCE} for the pseudocode of the REINFORCE algorithm.
+    The algorithm employs stochastic gradient ascent for optimization, as the weights are updated at each time step.\ Depending on whether the action space of the environment is discrete or continuous, the policy parametrizations described in the previous subsection can be used for the gradient $\nabla\ln\pi(a|s,\bm{\theta}_t)$.\ One drawback of this algorithm is the high variability in returns between time steps and the associated ``slowness'' of the learning process.\ This variance arises from the non-adaptive and loose formulation of the scaling factor.\ See~\cref{alg:REINFORCE} for the pseudocode of the REINFORCE algorithm.
 
     The improvement of the REINFORCE algorithm is the REINFORCE with Baseline $b(s)$.
 

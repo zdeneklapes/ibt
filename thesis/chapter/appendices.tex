@@ -92,17 +92,7 @@ source venv/bin/activate
 
 
     \section{Datasets}\label{sec:datasets2}
-%    Here we have 3 options how to get neccesary datasets for the program:
-%    \begin{enumerate}
-%        \item Download the datasets from Weights \& Biases manually.
-%        \item Download the datasets from Weights \& Biases using the \texttt{wandb} command (\texttt{wandb login} is required).
-%        \item Create the datasets (raw data is required, which you don't have most probably).
-%    \end{enumerate}
-%    You can download the datasets from Weights \& Biases or create it yourself, but raw data is required to create it.
-%    Before run any of the follwing command which calls \texttt{wandb}, you would need to login to your W\&B account by running the following command: \texttt{wandb login}, if you don't wan to do that
-
-%    \subsection{Download from Weights \& Biases (Suggested)}
-    Datasets are available at following links:
+    Datasets are available at the following links:
     \begin{enumerate}
         \item \url{https://wandb.ai/investai/portfolio-allocation/artifacts/dataset/stockcombineddailydataset/v0/files}
         \item \url{https://wandb.ai/investai/portfolio-allocation/artifacts/dataset/stockfadailydataset/v2/files}
@@ -110,65 +100,12 @@ source venv/bin/activate
     \end{enumerate}
     Please download them and place them in the \texttt{out/dataset} folder.
 
-%    \subsection{Download from Weights \& Biases using \texttt{wandb} command}
-%    In the root directory of the thesis code, run the following commands to download the datasets from Weights \& Biases:
-%    \begin{lstlisting}[language=bash]
-%mkdir out/dataset
-%wandb login
-%wandb artifact get investai/portfolio-allocation/dataset:v520 --root out/dataset
-%wandb artifact get investai/portfolio-allocation/dataset:v519 --root out/dataset
-%wandb artifact get investai/portfolio-allocation/dataset:v517 --root out/dataset
-%    \end{lstlisting}
-%
-%    \subsection{Create}
-%    The scripts require a folder that contains downloaded and processed raw data. As a result, these scripts may not function properly on your computer.
-%    \begin{lstlisting}[language=bash]
-%PYTHONPATH=$PWD/investai python3 \
-%investai/run/portfolio_allocation/thesis/dataset/stockfadailydataset.py \
-%    --dataset-paths out/dataset/stockfadailydataset.csv \
-%    --project-verbose='i'
-%
-%PYTHONPATH=$PWD/investai python3 \
-%investai/run/portfolio_allocation/thesis/dataset/stocktadailydataset.py \
-%    --dataset-paths out/dataset/stocktadailydataset.csv \
-%    --project-verbose='i'
-%
-%PYTHONPATH=$PWD/investai python3 \
-%investai/run/portfolio_allocation/thesis/dataset/stockcombinedailydataset.py \
-%--project-verbose='i' \
-%--dataset-paths \
-%    out/dataset/stockfadailydataset.csv \
-%    out/dataset/stocktadailydataset.csv \
-%    out/dataset/stockcombineddailydataset.csv
-%    \end{lstlisting}
-
-
     \section{Baseline}\label{sec:baseline}
-    Baseline is available at following link:
+    The baseline is available at the following link:
     \begin{enumerate}
         \item \url{https://wandb.ai/investai/portfolio-allocation/artifacts/baseline/baseline/v1/files}
     \end{enumerate}
     Please download it and place it in the \texttt{out/baseline} folder.
-
-%    \subsection{Download from Weights \& Biases using \texttt{wandb} command}
-%    In the root directory of the thesis code, run the following commands to download the baseline from Weights \& Biases:
-%    \begin{lstlisting}[language=bash]
-%mkdir out/baseline
-%wandb login
-%wandb artifact get investai/portfolio-allocation/baseline:latest --root out/baseline
-%    \end{lstlisting}
-%
-%    \subsection{Create}
-%    Firstly, it is necessary to create or download the dataset. In this case, we will utilize the \emph{stockfadailydataset.csv} dataset.
-%    \begin{lstlisting}[language=bash]
-%PYTHONPATH=$PWD/investai python3 \
-%    investai/extra/math/finance/shared/baseline.py \
-%    --project-verbose='i' \
-%    --dataset-paths out/dataset/stockfadailydataset.csv \
-%    --baseline-path=out/baseline/baseline.csv
-%    \end{lstlisting}
-%
-
 
     \section{Examples of running Train/Test program}\label{sec:examples-of-running-train/test-program}
     All examples assume that the current working directory is the root directory of the thesis code.
@@ -186,7 +123,7 @@ WANDB_RUN_GROUP='exp-1'
 WANDB_MODE='online'
 WANDB_DIR='${PWD}/out/model'
     \end{lstlisting}
-    If you don't want to use Weights \& Biases, you can remove the arguments with prefix \texttt{--wandb} from the examples (sweep run will not work), if you want to use it, it will be neccesary to run the following command before running any of the following command:
+    If you don't want to use Weights \& Biases, you can remove the arguments with prefix \texttt{--wandb} from the examples (sweep run will not work), if you want to use it, it will be necessary to run the following command before running any of the following commands:
     \begin{lstlisting}[language=bash,label={lst:wandb-login}]
 wandb login # to login to your W&B account
     \end{lstlisting}
