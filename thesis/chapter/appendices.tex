@@ -1,11 +1,11 @@
 \documentclass[../xlapes02]{subfiles}
 \begin{document}
 
-    \chapter{Reinforcement Learning Algorithms}
+    \chapter{Reinforcement Learning Algorithms}\label{ch:reinforcement-learning-algorithms}
     In this appendix, we present pseudocode for various RL methods and algorithms, which are used in the field of RL research and applications.
 
 
-    \section{Value Iteration Algorithm in DP}
+    \section{Value Iteration Algorithm in DP}\label{sec:value-iteration-algorithm-in-dp}
     \begin{algorithm}[H]
         \label{alg:value-iteration}
         \SetAlgoLined
@@ -23,7 +23,7 @@
     \end{algorithm}
 
 
-    \section{Q-Learning Off-policy TD Control}
+    \section{Q-Learning Off-policy TD Control}\label{sec:q-learning-off-policy-td-control}
     \begin{algorithm}[h!]
         \caption{Q-learning (Off-policy TD Control)}
         \label{alg:q_learning}
@@ -46,7 +46,7 @@
     \end{algorithm}
 
 
-    \section{REINFORCE: Monte-Carlo Policy-Gradient Control}
+    \section{REINFORCE: Monte-Carlo Policy-Gradient Control}\label{sec:reinforce:-monte-carlo-policy-gradient-control}
     \begin{algorithm}[h!]
         \SetKwComment{Comment}{/* }{ */}
         \caption{REINFORCE Algorithm}
@@ -70,25 +70,28 @@
     \end{algorithm}
 
 
-    \chapter{Setting up and running the program}
-    The root directory of the thesis code contains a \texttt{README.md} file that provides instructions for installing the program. Following the steps outlined in this file should be sufficient for completing the installation process.
+    %! suppress = TooLargeSection
+
+
+    \chapter{Setting up and running the program}\label{ch:setting-up-and-running-the-program}
+    The root directory of the thesis code contains a \texttt{README.md} file that provides instructions for installing the program.\ Following the steps outlined in this file should be sufficient for completing the installation process.
 
     The program has been tested on both MacOS 13.2.1 and Ubuntu 20.04.6 LTS (GNU/Linux 5.4.0-146-generic x86\_64), using Python version 3.10.11.
 
 
-    \section{Prepare Environment}
-    Run this command from the root directory of the thesis code. It will create a virtual environment and install the required packages:
-    \begin{lstlisting}[language=bash]
+    \section{Prepare Environment}\label{sec:prepare-environment}
+    Run this command from the root directory of the thesis code.\ It will create a virtual environment and install the required packages:
+    \begin{lstlisting}[language=bash,label={lst:prepare-environment}]
 ./start.sh --project-install
     \end{lstlisting}
 
-    The virtual environment must be activated before running the program. To activate the virtual environment, run the following command from the root directory of the thesis code:
-    \begin{lstlisting}[language=bash]
+    The virtual environment must be activated before running the program.\ To activate the virtual environment, run the following command from the root directory of the thesis code:
+    \begin{lstlisting}[language=bash,label={lst:activate-venv}]
 source venv/bin/activate
     \end{lstlisting}
 
 
-    \section{Datasets}
+    \section{Datasets}\label{sec:datasets2}
 %    Here we have 3 options how to get neccesary datasets for the program:
 %    \begin{enumerate}
 %        \item Download the datasets from Weights \& Biases manually.
@@ -140,7 +143,7 @@ source venv/bin/activate
 %    \end{lstlisting}
 
 
-    \section{Baseline}
+    \section{Baseline}\label{sec:baseline}
     Baseline is available at following link:
     \begin{enumerate}
         \item \url{https://wandb.ai/investai/portfolio-allocation/artifacts/baseline/baseline/v1/files}
@@ -167,12 +170,12 @@ source venv/bin/activate
 %
 
 
-    \section{Examples of running Train/Test program}
+    \section{Examples of running Train/Test program}\label{sec:examples-of-running-train/test-program}
     All examples assume that the current working directory is the root directory of the thesis code.
 
-    \subsection{\texttt{.env} file}
-    The scripts expect the \emph{.env} file in the root directory of the thesis code. This file contains the following variables, please fill the \texttt{WANDB\_API\_KEY} with your API key:
-    \begin{lstlisting}[language=bash]
+    \subsection{\texttt{.env} file}\label{subsec:texttt{.env}-file}
+    The scripts expect the \emph{.env} file in the root directory of the thesis code.\ This file contains the following variables, please fill the \texttt{WANDB\_API\_KEY} with your API key:
+    \begin{lstlisting}[language=bash,label={lst:env-file}]
 # W&B
 WANDB_API_KEY=''
 WANDB_ENTITY='investai'
@@ -184,19 +187,19 @@ WANDB_MODE='online'
 WANDB_DIR='${PWD}/out/model'
     \end{lstlisting}
     If you don't want to use Weights \& Biases, you can remove the arguments with prefix \texttt{--wandb} from the examples (sweep run will not work), if you want to use it, it will be neccesary to run the following command before running any of the following command:
-    \begin{lstlisting}[language=bash]
+    \begin{lstlisting}[language=bash,label={lst:wandb-login}]
 wandb login # to login to your W&B account
     \end{lstlisting}
 
-    \subsection{Run the program to print the help message}
-    \begin{lstlisting}[language=bash]
+    \subsection{Run the program to print the help message}\label{subsec:run-the-program-to-print-the-help-message}
+    \begin{lstlisting}[language=bash,label={lst:help}]
 PYTHONPATH=$PWD/investai python3 \
     investai/run/portfolio_allocation/thesis/train.py \
         --help
     \end{lstlisting}
 
-    \subsection{Single Run (train/test)}
-    \begin{lstlisting}[language=bash]
+    \subsection{Single Run (train/test)}\label{subsec:single-run-(train/test)}
+    \begin{lstlisting}[language=bash,label={lst:run-train}]
 PYTHONPATH=$PWD/investai python3 \
     investai/run/portfolio_allocation/thesis/train.py \
     --dataset-paths out/dataset/stockfadailydataset.csv \
@@ -213,8 +216,8 @@ PYTHONPATH=$PWD/investai python3 \
     --baseline-path=out/baseline/baseline.csv
     \end{lstlisting}
 
-    \subsection{Sweep Run: 3 runs with random hyperparameters over 2 datasets and 5 algorithms (train/test)}
-    \begin{lstlisting}[language=bash]
+    \subsection{Sweep Run: 3 runs with random hyperparameters over 2 datasets and 5 algorithms (train/test)}\label{subsec:sweep-run:-3-runs-with-random-hyperparameters-over-2-datasets-and-5-algorithms-(train/test)}
+    \begin{lstlisting}[language=bash,label={lst:sweep-train}]
 PYTHONPATH=$PWD/investai python3 \
     investai/run/portfolio_allocation/thesis/train.py \
     --dataset-paths \
@@ -239,5 +242,40 @@ PYTHONPATH=$PWD/investai python3 \
     --wandb-run-group="exp-sweep-1" \
     --baseline-path=out/baseline/baseline.csv
     \end{lstlisting}
+
+
+    \chapter{Graphs}\label{ch:graphs}
+
+
+    \section{Hyperparameters Tuning Results}\label{sec:hyperparameters-tuning-results}
+    \begin{figure}
+        \begin{subfigure}[t]{\textwidth}
+            \centering
+            \includegraphics[width=\linewidth]{image/wandb/wb1}
+            \caption{W\&B Chart of parameters and their performance}
+            \label{fig:wb-chart1}
+        \end{subfigure}
+
+        \vspace{0.5cm}
+
+        \begin{subfigure}[t]{\textwidth}
+            \centering
+            \includegraphics[width=\linewidth]{image/wandb/wb2}
+            \caption{W\&B Chart of parameters and their performance}
+            \label{fig:wb-chart2}
+        \end{subfigure}
+
+        \vspace{0.5cm}
+
+        \begin{subfigure}[t]{\textwidth}
+            \centering
+            \includegraphics[width=\linewidth]{image/wandb/wb3}
+            \caption{W\&B Chart of parameters and their performance}
+            \label{fig:wb-chart3}
+        \end{subfigure}
+
+        \caption{The W\&B charts of the hyperparameter sweep.}
+        \label{fig:wb-charts}
+    \end{figure}
 
 \end{document}

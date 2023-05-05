@@ -1,14 +1,20 @@
 \documentclass[../xlapes02]{subfiles}
-
-
-
 \begin{document}
     \chapter{Experiments and Results}\label{ch:experiments-and-results}
-    In this chapter we present the results of all the experiments performed. We will also discuss any problems that arose during the conduct of these experiments and provide further information on how we selected certain methods and hyperparameters for more extensive testing.
+    This chapter will showcase the outcomes of all conducted experiments, along with a discussion on any issues encountered during the experimentation process.
+    Additionally, we will provide more details on the selection of specific methods and hyperparameters for further testing.
 
-    By performing a series of experiments, we show how our agent performs in a given environment. We compare the best and worst performing models and discuss the results of our experiments with the baseline models and benchmarks in~\cref{sec:experiments}. We also discuss and compare the hyperparameter settings and the advantages and disadvantages of all the datasets used in~\cref{subsec:hyperparameters_tuning}. We also provide some information on how we approached performance testing of the proposed models and what technologies were used for the MLOps concepts, such as tracking training and test runs~\cref{sec:wandb}. Finally, we discuss the results of our experiments and provide a summary of our findings~\cref{sec:summary}.
+    By performing a series of experiments, we show how our agent performs in a given environment.
+    We compare the best and worst performing models and discuss the results of our experiments with the baseline models and benchmarks, in~\cref{sec:baselines-and-backtesting}.
+    We also discuss and compare the hyperparameter settings and the advantages and disadvantages of all the datasets used in~\cref{sec:first-experiment:-hyperparameter-tuning}.
+
+    We also provide some information on how we approached performance testing of the proposed models and what technologies were used for the MLOps concepts, such as tracking training and test runs~\cref{subsec:wandb}.
+
+    Finally, we discuss the results of our experiments and provide a summary of our findings~\cref{sec:summary}.
 
     We provide the results of our work in this chapter, but to insure \emph{Reproducibility} of our work we also make all datasets, models and training runs with a history of training process and hyperparameters for each algorithm publicly available on the W\&B website. \textbf{By visiting the following URL: \url{https://wandb.ai/investai/portfolio-allocation}}, anyone can access the results of each run, and reproduce our findings while comparing them with their own experiments.
+
+    All experiments are focused on several metrics.\ The first is whether the model can outperform standard indices such as the S\&P 500 Index, DJI Index and others.\ Second, what dataset is more appropriate for training the model.\ Finally, assessing the robustness of the model.\ All experiments will be documented during our testing period, which spans from \textbf{2017-01-25} to \textbf{2022-12-16}.\ As the datasets are derived from \emph{companies in the DJI Index}, we will primarily compare the performance of our models with the DJI Index to maintain consistency in the results.\ However, we will also make comparisons with other indices.
 
 
     \section{Hardware \& Tools}\label{sec:hardware-tools}
@@ -22,50 +28,47 @@
         \item GPU: 4 x NVIDIA GTX 1080 (Pascal) with 8GB RAM each, providing a total of 32GB GPU memory.
     \end{itemize}
 
-    \subsection{Weights \& Biases}\label{sec:wandb}
-    Weights \& Biases (W\&B) is a powerful machine learning experiment tracking and visualization tool that helps data scientists and machine learning practitioners manage their experiments. With W\&B, users can log experiment metrics in real-time, track hyperparameters, and compare and reproduce experiments easily. W\&B offers various visualization tools like interactive plots, histograms, and confusion matrices, which help users analyze and understand experiment results.
+    \subsection{Weights \& Biases}\label{subsec:wandb}
+    Weights \& Biases (W\&B) is a powerful ML experiment tracking and visualization tool that helps data scientists and machine learning practitioners manage their experiments.\ With W\&B, users can log experiment metrics in real-time, track hyperparameters, and compare and reproduce experiments easily.\ W\&B offers various visualization tools like interactive plots, histograms, and confusion matrices, which help users analyze and understand experiment results.
 
     \begin{itemize}
-        \item Experiment tracking: W\&B allows users to log experiment metrics such as loss, accuracy, and other custom metrics in real-time during training. These metrics are logged to a central dashboard, making it easy to monitor and compare multiple experiments.
+        \item Experiment tracking: W\&B allows users to log experiment metrics such as loss, accuracy, and other custom metrics in real-time during training.\ These metrics are logged to a central dashboard, making it easy to monitor and compare multiple experiments.
         \item Hyperparameter tuning: W\&B supports hyperparameter sweeps, allowing users to explore different hyperparameter configurations in parallel and find optimal hyperparameter settings for their models.
-        \item Visualization: W\&B provides a variety of visualization tools, including interactive graphs, histograms, confusion matrices, and more, to help users analyze and understand experimental results. We use some of the W\&B graphs to compare hyperparameters and their values to understand their effect on the overall range of rewards~\crefrange{fig:wb-chart1}{fig:wb-chart3}.
+        \item Visualization: W\&B provides a variety of visualization tools, including interactive graphs, histograms, confusion matrices, and more, to help users analyze and understand experimental results.\ We use some of the W\&B graphs to compare hyperparameters and their values to understand their effect on the overall range of rewards~\crefrange{fig:wb-chart1}{fig:wb-chart3}.
         \item Artifact management: W\&B allows users to log and version datasets, models, and other artifacts, making it easy to track and reproduce experiments with specific data and model versions.
         \item Collaboration: W\&B enables team collaboration by allowing users to share experiment results, visualizations, and artifacts with team members, facilitating communication and collaboration among team members.
     \end{itemize}
 
-    Due to the variety of features available through the W\&B API, we have chosen not to provide a comprehensive description of each one. However, we recommend to look at the W\&B documentation available at \url{https://docs.wandb.ai/} for an explanation of all APIs and features.
+    Due to the variety of features available through the W\&B API, we have chosen not to provide a comprehensive description of each one.\ However, we recommend to look at the W\&B documentation available at \url{https://docs.wandb.ai/} for an explanation of all APIs and features.
 
 
     \section{Focus of the experiments}\label{sec:focus-of-the-experiments}
-    In~\cref{ch:stock-portfolio-allocation}, we introduce the \emph{Stock Portfolio Allocation Environment}, while in this chapter, we conduct experiments to \emph{evaluate} the trained models. Our aim is to determine the best \emph{parameters} and \emph{datasets} for training and testing. To achieve this, we use a \emph{sweeping} approach to test the hyperparameters for each algorithm and dataset. The performance of each hyperparameter configuration is assessed based on the model's output, using a metric named as \textbf{test/total\_reward}. This metric represents the cumulative product of the portfolio value, as described by the equation in~\cref{eq:portfolio-value} and then further described in~\cref{subsubsec:how_we_calculate_agent_performance}. The higher the value of \emph{test/total\_reward}, the better the performance of the model.
+    In~\cref{ch:stock-portfolio-allocation}, we introduce the \emph{Stock Portfolio Allocation Environment}, while in this chapter, we conduct experiments to \emph{evaluate} the trained models.\ Our aim is to determine the best \emph{parameters} and \emph{datasets} for training and testing.\ To achieve this, we use a \emph{sweeping} approach to test the hyperparameters for each algorithm and dataset.\ The performance of each hyperparameter configuration is assessed based on the model's output, using a metric named as \emph{test/total\_reward}.\ This metric represents the cumulative product of the portfolio value, as described by the equation in~\cref{eq:portfolio-value} and then further described in~\cref{subsec:how_we_calculate_agent_performance}.\ The higher the value of \emph{test/total\_reward}, the better the performance of the model.
 
-    We compare the best and worst performing models with other models and common indexes as baselines. Our results indicate that appropriate hyperparameters and datasets can train the agent sufficiently well to outperform common indexes and other publicly available models for Portfolio Allocation (using Reinforcement Learning). This makes them valuable tools for portfolio allocation in financial markets.
+    We compare the best and worst performing models with other models and common indexes as baselines.\ Our results indicate that appropriate hyperparameters and datasets can train the agent sufficiently well to outperform common indexes and other publicly available models for Portfolio Allocation (using Reinforcement Learning).\ This makes them valuable tools for portfolio allocation in financial markets.
 
-    Thus, the main goal of this chapter is to evaluate the trained models' performance through rigorous experimentation and identify the best \emph{parameters} and \emph{datasets} for optimal performance. We also test the model's \emph{robustness} by assessing its stability using the best hyperparameters for the datasets and the specific algorithm used to train the model. This helps us ensure that the model is reliable and can perform consistently well under different conditions. The robustness test helps us identify potential weaknesses or limitations that may need to be addressed.
+    Thus, the main goal of this chapter is to evaluate the trained models' performance through rigorous experimentation and identify the best \emph{parameters} and \emph{datasets} for optimal performance.\ We also test the model's \emph{robustness} by assessing its stability using the best hyperparameters for the datasets and the specific algorithm used to train the model.\ This helps us ensure that the model is reliable and can perform consistently well under different conditions.\ The robustness test helps us identify potential weaknesses or limitations that may need to be addressed.
 
     \subsection{How we calculate agent performance}\label{subsec:how_we_calculate_agent_performance}
-    As previously mentioned, the agent's performance is assessed using the \emph{test/total\_reward} attribute. To compute the value of \emph{test/total\_reward}, we initialize the portfolio value at time step $t=0$ to value 1, $v(0)=1$ and then further calculate it as the cumulative product of the rewards obtained by the agent during the testing phase, as shown in Equation~\cref{eq:portfolio-value}.
+    As previously mentioned, the agent's performance is assessed using the \emph{test/total\_reward} attribute.\ To compute the value of \emph{test/total\_reward}, we initialize the portfolio value at time step $t=0$ to value 1, $v(0)=1$ and then further calculate it as the cumulative product of the rewards obtained by the agent during the testing phase, as shown in~\cref{eq:portfolio-value}.
 
-    For example, if the agent receives a reward of $-0.1$, which implies that the portfolio is worth $0.9$ or $90\%$ of its previous value, the value of \emph{test/total\_reward} would be $(CurrentReturn+1)\times CurrentPortfolioValue = (-0.1+1)\times 1 = 0.9$ in the second step. If in the second step the agent receives a reward of $0.1$, the value of \emph{test/total\_reward} would be $(0.1+1) \times 0.9 = 0.99$ in the third step, and so on. Therefore, if the final value of \emph{test/total\_reward} is $1.9$, it indicates that the agent obtained a total reward of $0.9$ throughout all the steps, which is equivalent to a portfolio return of $90\%$ over the testing period.
+    For example, if the agent receives a reward of $-0.1$, which implies that the portfolio is worth $0.9$ or $90\%$ of its previous value, the value of \emph{test/total\_reward} would be $(CurrentReturn+1)\times CurrentPortfolioValue = (-0.1+1)\times 1 = 0.9$ in the second step.\ If in the second step the agent receives a reward of $0.1$, the value of \emph{test/total\_reward} would be $(0.1+1) \times 0.9 = 0.99$ in the third step, and so on.\ Therefore, if the final value of \emph{test/total\_reward} is $1.9$, it indicates that the agent obtained a total reward of $0.9$ throughout all the steps, which is equivalent to a portfolio return of $90\%$ over the testing period.
 
 
-    \section{Experiments}\label{sec:experiments}
-    All experiments are focused on several metrics. The first is whether the model can outperform standard indices such as the S\&P 500 Index, DJI Index and others. Second, what dataset is more appropriate for training the model. Finally, assessing the robustness of the model. All experiments will be documented during our testing period, which spans from \textbf{2017-01-25} to \textbf{2022-12-16}. As the datasets are derived from \emph{companies in the DJI Index}, we will primarily compare the performance of our models with the DJI Index to maintain consistency in the results. However, we will also make comparisons with other indices.
+    \section{First experiment: Hyperparameter Tuning}\label{sec:first-experiment:-hyperparameter-tuning}
+    Since the configuration of hyperparameters is crucial for the performance of a any machine learning model.\ We performed a hyperparameter sweep to find the best hyperparameters for our models through bunch of parameters showed in~\cref{tab:hyperparameters}.\ In this case, the hyperparameter sweep was performed on 27 hyperparameters using the Weights \& Biases Sweep, this helps us to track and visualize the training process and store bunch of hyperparameter configurations.\ The range or value of each hyperparameter was chosen based on prior knowledge.
 
-    \subsection{Hyperparameter Tuning}\label{subsec:hyperparameters_tuning}
-    Since the configuration of hyperparameters is crucial for the performance of a any machine learning model. We performed a hyperparameter sweep to find the best hyperparameters for our models through bunch of parameters showed in~\cref{tab:hyperparameters}. In this case, the hyperparameter sweep was performed on 27 hyperparameters using the Weights \& Biases Sweep, this helps us to track and visualize the training process and store bunch of hyperparameter configurations. The range or value of each hyperparameter was chosen based on prior knowledge.
+    \subsection{Time Steps}\label{subsec:time_steps}
+    We kept only one hyperparameter constant, which is the \emph{Time Steps} parameter.\ We conducted experiments by varying its value from $20000$ to $100000$ and found that values up to 50,000 were still improve the model's performance.\ However, values above $50000$ did not provide any significant improvement in the model's performance, and the training time increased considerably.\ As a result, we decided to use \textbf{50000 time steps} for all the models that we experimented with in this chapter.\ In the next subsection, we will discuss another hyperparameters and explain how we selected the range of values for them.
 
-    \subsubsection{Time Steps}\label{subsubsec:time_steps}
-    We kept only one hyperparameter constant, which is the \emph{Time Steps} parameter. We conducted experiments by varying its value from $20000$ to $100000$ and found that values up to 50,000 were still improve the model's performance. However, values above $50000$ did not provide any significant improvement in the model's performance, and the training time increased considerably. As a result, we decided to use \textbf{50000 time steps} for all the models that we experimented with in this chapter. In the next subsubsection, we will discuss another hyperparameters and explain how we selected the range of values for them.
-
-    \subsubsection{Selection of hyperparameters}\label{subsubsec:selection_of_hyperparameters}
+    \subsection{Selection of hyperparameters}\label{subsec:selection_of_hyperparameters}
     Once the range or values of each hyperparameter was set, the process of finding the best configuration of hyperparameters was a kind of brute force, except that we at least restrict the exploration space in which the W\&B Sweep is trying to find optimal hyperparameter through randomly selecting each hyperparameter for the given run.
 
-    The Sweep involved \textbf{5 distinct} reinforcement learning algorithms - namely \emph{A2C}, \emph{PPO}, \emph{SAC}, \emph{DDPG}, and \emph{TD3} - and each of these algorithms was trained on \textbf{3 unique datasets}, which were introduced in the preceding chapter and referred to as Fundamental, Technical, and Combined. In total, this resulted in \textbf{15 different combinations} of algorithms and datasets. Furthermore, each combination was subjected to \textbf{10 rounds} of training, culminating in a total of \textbf{150 train/test runs}. These runs are accessible on W\&B at the following URL: \url{https://wandb.ai/investai/portfolio-allocation}.
+    The Sweep involved \textbf{5 distinct} reinforcement learning algorithms - namely \emph{A2C}, \emph{PPO}, \emph{SAC}, \emph{DDPG}, and \emph{TD3} - and each of these algorithms was trained on \textbf{3 unique datasets}, which were introduced in the preceding chapter and referred to as Fundamental, Technical, and Combined.\ In total, this resulted in \textbf{15 different combinations} of algorithms and datasets.\ Furthermore, each combination was subjected to \textbf{10 rounds} of training, culminating in a total of \textbf{150 train/test runs}.\ These runs are accessible on W\&B at the following URL: \url{https://wandb.ai/investai/portfolio-allocation}.
 
-    It is worth emphasizing that when performing a hyperparameter sweep, certain hyperparameters may be selected even though the algorithm does not require them. In such cases, we simply \emph{discard} those hyperparameters and only include the necessary ones in the algorithm.
+    It is worth emphasizing that when performing a hyperparameter sweep, certain hyperparameters may be selected even though the algorithm does not require them.\ In such cases, we simply \emph{discard} those hyperparameters and only include the necessary ones in the algorithm.
 
-    In~\cref{tab:hyperparameters}, the hyperparameters that underwent tuning during the hyperparameter sweep are displayed. The values enclosed in <> indicate the range from which W\&B Sweep can randomly select a value for a particular run, while those enclosed in [] represent the list of values from which W\&B Sweep can randomly choose a value for a particular run. The performance of the agent with respect to the hyperparameters is presented in the graphs, which compare and analyze the performance of several of the best and worst models. These graphs can be found in~\crefrange{fig:wb-chart1}{fig:wb-chart3}.
+    In~\cref{tab:hyperparameters}, the hyperparameters that underwent tuning during the hyperparameter sweep are displayed.\ The values enclosed in <> indicate the range from which W\&B Sweep can randomly select a value for a particular run, while those enclosed in [] represent the list of values from which W\&B Sweep can randomly choose a value for a particular run.\ The performance of the agent with respect to the hyperparameters is presented in the graphs, which compare and analyze the performance of several of the best and worst models.\ These graphs can be found in~\crefrange{fig:wb-chart1}{fig:wb-chart3}.
 
     \begin{table}[h!]
         \centering
@@ -106,43 +109,17 @@
         \label{tab:hyperparameters}
     \end{table}
 
-    \subsubsection{Hyperparameter Sweep Results}\label{subsubsec:hyperparameter_sweep_results}
-    We evaluate the performance based on \emph{test/total\_reward} attribute. It distinguishes individual training runs, and the color of the curve corresponds to its value, a higher value of \emph{test/total\_reward} is represented by an \textcolor[RGB]{255,128,0}{orange curve, indicating better performance}, conversely, a lower value is represented by a \textcolor[RGB]{100,0,200}{purple curve, indicating poor performance}, in graphs~\crefrange{fig:wb-chart1}{fig:wb-chart3}. These graphs have two columns: the first column represents the \emph{algorithm}, and the last column represents the \emph{test/total\_reward}. The hyperparameters, which were tuned during the hyperparameter sweep, are located between these two columns. Including three graphs instead of one makes the results more readable and easier to analyze.
+    \subsection{Hyperparameter Sweep Results}\label{subsec:hyperparameter_sweep_results}
+    We evaluate the performance based on \emph{test/total\_reward} attribute.\ It distinguishes individual training runs, and the color of the curve corresponds to its value, a higher value of \emph{test/total\_reward} is represented by an \textcolor[RGB]{255,128,0}{orange curve, indicating better performance}, conversely, a lower value is represented by a \textcolor[RGB]{100,0,200}{purple curve, indicating poor performance}, in graphs~\crefrange{fig:wb-chart1}{fig:wb-chart3}.\ These graphs have two columns: the first column represents the \emph{algorithm}, and the last column represents the \emph{test/total\_reward}.\ The hyperparameters, which were tuned during the hyperparameter sweep, are located between these two columns.\ Including three graphs instead of one makes the results more readable and easier to analyze.
 
-    The table~\cref{tab:best-worst-hyperparameters} presents the configurations of the top 2 and bottom 2 models, including their hyperparameters and the corresponding \emph{test/total\_reward} values. In the subsequent section, namely~\cref{subsec:testing-of-robustness}, we will examine whether this setup is robust or not by conducting multiple tests on the models and training them with the same hyperparameters.
+    In~\cref{fig:wb-charts} is shown how the hyperparameter tuning was performed on given hyperparameters and how much each influenced the \emph{test/total\_reward}.
+
+    The table~\cref{tab:best-worst-hyperparameters} presents the configurations of the top 2 and bottom 2 models, including their hyperparameters and the corresponding \emph{test/total\_reward} values.\ In the subsequent section, namely~\cref{sec:testing-of-robustness}, we will examine whether this setup is robust or not by conducting multiple tests on the models and training them with the same hyperparameters.
 
 
     % TODO: Describe why is one hyperparametre better then other
 
-    \begin{figure}
-        \begin{subfigure}[t]{\textwidth}
-            \centering
-            \includegraphics[width=\linewidth]{image/wandb/wb1}
-            \caption{W\&B Chart of parameters and their performance}
-            \label{fig:wb-chart1}
-        \end{subfigure}
-
-        \vspace{0.5cm}
-
-        \begin{subfigure}[t]{\textwidth}
-            \centering
-            \includegraphics[width=\linewidth]{image/wandb/wb2}
-            \caption{W\&B Chart of parameters and their performance}
-            \label{fig:wb-chart2}
-        \end{subfigure}
-
-        \vspace{0.5cm}
-
-        \begin{subfigure}[t]{\textwidth}
-            \centering
-            \includegraphics[width=\linewidth]{image/wandb/wb3}
-            \caption{W\&B Chart of parameters and their performance}
-            \label{fig:wb-chart3}
-        \end{subfigure}
-
-        \caption{The W\&B charts of the hyperparameter sweep.}
-        \label{fig:wb-charts}
-    \end{figure}
+    % TODO: reference to sweep grahs
 
     \begin{table}[h!]
         \centering
@@ -185,12 +162,13 @@
         \label{tab:best-worst-hyperparameters}
     \end{table}
 
-    \subsection{Datasets}\label{subsec:datasets}
-    Previously, we compared our models by examining their performance concerning the \emph{baseline} versus \emph{portfolio return} and by determining the optimal \emph{hyperparameter configurations} for training the agent. In this section, we will assess the models based on the \emph{datasets} they were trained on. Specifically, we will evaluate the \textbf{6 best} and \textbf{6 worst models} according to our datasets: \emph{Fundamental}, \emph{Technical}, and \emph{Combined}. The outcomes of this comparison are presented in Table~\cref{tab:datasets-comparison}.
 
-    Here we present 3 tables comparing the agent performance based on datasets. Although the results in Table~\cref{tab:datasets-comparison} may vary depending on the hyperparameters, we can still observe that the \emph{Technical Dataset} is the worst, while the \emph{Combined Dataset} is the best, and the \emph{Fundamental Dataset} is good enough for training the agent.
+    \section{Datasets}\label{sec:datasets}
+    Previously, we compared our models by examining their performance concerning the \emph{baseline} versus \emph{portfolio return} and by determining the optimal \emph{hyperparameter configurations} for training the agent.\ In this section, we will assess the models based on the \emph{datasets} they were trained on.\ Specifically, we will evaluate the \textbf{6 best} and \textbf{6 worst models} according to our datasets: \emph{Fundamental}, \emph{Technical}, and \emph{Combined}.\ The outcomes of this comparison are presented in Table~\cref{tab:datasets-comparison}.
 
-    Our assumption that the \textbf{Fundamental Dataset} would be sufficient for training a profitable agent has been confirmed, although the \textbf{Combined Dataset} can yield better results despite being more complex and difficult to train. As expected, the \textbf{Technical Dataset} performed the worst, as technical indicators are not as reliable as fundamental indicators for assessing the health and future growth of a company.
+    Here we present 3 tables comparing the agent performance based on datasets.\ Although the results in Table~\cref{tab:datasets-comparison} may vary depending on the hyperparameters, we can still observe that the \emph{Technical Dataset} is the worst, while the \emph{Combined Dataset} is the best, and the \emph{Fundamental Dataset} is good enough for training the agent.
+
+    Our assumption that the \textbf{Fundamental Dataset} would be sufficient for training a profitable agent has been confirmed, although the \textbf{Combined Dataset} can yield better results despite being more complex and difficult to train.\ As expected, the \textbf{Technical Dataset} performed the worst, as technical indicators are not as reliable as fundamental indicators for assessing the health and future growth of a company.
 
     \begin{table}[h!]
         \centering
@@ -216,8 +194,9 @@
         \label{tab:datasets-comparison}
     \end{table}
 
-    \subsection{Testing of Robustness}\label{subsec:testing-of-robustness}
-    In this subsection, we report the results of our robustness test for the trained models. We trained 11 models using the same hyperparameters but different seeds, and tested them all on the \textbf{Combined Dataset}. The results are summarized in Table~\cref{tab:robust}, which shows the \emph{test/total\_reward} for each of the 11 models. The mean \emph{test/total\_reward} across the models is \textbf{1.824}, indicating that the models perform well on the test dataset. Although there is some variation in performance between the models, with a spread of \textbf{0.249} between the highest and lowest cumulative reward values (\emph{test/total\_reward}), the distinction is significant since it has the potential to greatly impact the long-term returns. Overall, these results suggest that the models are robust enough to be used in real-life scenarios. It is worth noting that the variation in performance between the models may be due to differences in the random seeds used during training, which can affect the initial conditions of the learning process.
+
+    \section{Testing of Robustness}\label{sec:testing-of-robustness}
+    In this section, we report the results of our robustness test for the trained models.\ We trained 11 models using the same hyperparameters but different seeds, and tested them all on the \textbf{Combined Dataset}.\ The results are summarized in Table~\cref{tab:robust}, which shows the \emph{test/total\_reward} for each of the 11 models.\ The mean \emph{test/total\_reward} across the models is \textbf{1.824}, indicating that the models perform well on the test dataset.\ Although there is some variation in performance between the models, with a spread of \textbf{0.249} between the highest and lowest cumulative reward values (\emph{test/total\_reward}), the distinction is significant since it has the potential to greatly impact the long-term returns.\ Overall, these results suggest that the models are robust enough to be used in real-life scenarios.\ It is worth noting that the variation in performance between the models may be due to differences in the random seeds used during training, which can affect the initial conditions of the learning process.
 
     \begin{table}[h!]
         \centering
@@ -242,46 +221,47 @@
         \end{tabular}}
     \end{table}
 
-    \subsection{Baselines and Backtesting}\label{subsec:baselines-and-backtesting}
-    In this subsection, we compare the performance of the agent to several baselines, including well-known market indexes and investment strategies. The following strategies and indexes were used as baselines:
+
+    \section{Baselines and Backtesting}\label{sec:baselines-and-backtesting}
+    In this section, we compare the performance of the agent to several baselines, including well-known market indexes and investment strategies.\ The following strategies and indexes were used as baselines:
 
     \begin{itemize}
         \item \textbf{The S\&P 500 Index (GSPC)} is a capitalization-weighted index that tracks the performance of 500 large publicly traded companies in the US. The index is maintained by S\&P Dow Jones Indices and is one of the most widely followed equity indices.
-        \item \textbf{The Dow Jones Industrial Average (DJI)} is a price-weighted index that tracks the stock performance of 30 large companies listed on US stock exchanges. It is also one of the most commonly followed equity indices.
+        \item \textbf{The Dow Jones Industrial Average (DJI)} is a price-weighted index that tracks the stock performance of 30 large companies listed on US stock exchanges.\ It is also one of the most commonly followed equity indices.
         \item \textbf{The Russell 2000 (RUT)} is a stock market index that tracks the performance of 2,000 small-cap companies in the US. It is a subset of the Russell 3000 index, which represents about 98\% of the total market capitalization of the US equity market.
-        \item \textbf{The NASDAQ Composite (IXIC)} is a stock market index that tracks the performance of all the companies listed on the NASDAQ stock exchange, which is primarily composed of technology and growth-oriented companies. It is one of the most widely-followed stock market indices in the world.
-        \item \textbf{Minimum Variance} is a portfolio allocation strategy that aims to minimize the variance of the portfolio's returns. The strategy assumes that the variance of the portfolio's returns is a measure of risk~\cite{investopedia}.
-        \item \textbf{Maximum Sharpe Ratio} is a portfolio allocation strategy that aims to maximize the Sharpe ratio of the portfolio. The strategy assumes that the Sharpe ratio is a measure of risk-adjusted return~\cite{investopedia}.
+        \item \textbf{The NASDAQ Composite (IXIC)} is a stock market index that tracks the performance of all the companies listed on the NASDAQ stock exchange, which is primarily composed of technology and growth-oriented companies.\ It is one of the most widely-followed stock market indices in the world.
+        \item \textbf{Minimum Variance} is a portfolio allocation strategy that aims to minimize the variance of the portfolio's returns.\ The strategy assumes that the variance of the portfolio's returns is a measure of risk~\cite{investopedia}.
+        \item \textbf{Maximum Sharpe Ratio} is a portfolio allocation strategy that aims to maximize the Sharpe ratio of the portfolio.\ The strategy assumes that the Sharpe ratio is a measure of risk-adjusted return~\cite{investopedia}.
     \end{itemize}
 
-    \subsubsection{Cumulative Returns}
-    In~\cref{fig:cumulative_return}, we demonstrate that an agent can achieve successful outcomes when trained with appropriate hyperparameters and dataset (model id: \emph{zfjr0ks0}), while unsuitable hyperparameters and dataset can result in unsatisfactory outcomes (model id: \emph{p3irnh80}). The \emph{zfjr0ks0} model surpassed standard indexes such as \emph{DJI}, \emph{GSPC}, \emph{IXIC}, and \emph{RUT}, although not consistently throughout the testing period. It is evident that the \emph{zfjr0ks0} model outperformed almost all baseline indexes and strategies, with the exception of \emph{IXIC (NASDAQ Composite)} during a specific period from 2020 until the end of the testing period in 2022, when our model began to outperform even \emph{IXIC}. Later, we will also compare \emph{models developed by us} with the \emph{State-of-the-Art AI4Finance}, but we currently lack the data to perform a full comparison over our entire testing period.
+    \subsection{Cumulative Returns}\label{subsec:cumulative-returns}
+    In~\cref{fig:cumulative_return}, we demonstrate that an agent can achieve successful outcomes when trained with appropriate hyperparameters and dataset (model id: \emph{zfjr0ks0}), while unsuitable hyperparameters and dataset can result in unsatisfactory outcomes (model id: \emph{p3irnh80}). The \emph{zfjr0ks0} model surpassed standard indexes such as \emph{DJI}, \emph{GSPC}, \emph{IXIC}, and \emph{RUT}, although not consistently throughout the testing period.\ It is evident that the \emph{zfjr0ks0} model outperformed almost all baseline indexes and strategies, with the exception of \emph{IXIC (NASDAQ Composite)} during a specific period from 2020 until the end of the testing period in 2022, when our model began to outperform even \emph{IXIC}.\ Later, we will also compare \emph{models developed by us} with the \emph{State-of-the-Art AI4Finance}, but we currently lack the data to perform a full comparison over our entire testing period.
 
-    There could be various reasons why our agent was outperformed by the Nasdaq 100 during the testing period. However, we believe that the primary reason is that our \emph{agent} is designed to operate with only \textbf{30 stocks}, while the \emph{NASDAQ Comosite} comprises \textbf{100 stocks}. This limited scope of stocks may have resulted in fewer investment opportunities for our agent, which could have led to lower returns compared to the Nasdaq 100. Nonetheless, it is worth noting that our model did eventually outperform the Nasdaq 100 Index by the end of 2023.
+    There could be various reasons why our agent was outperformed by the Nasdaq 100 during the testing period.\ However, we believe that the primary reason is that our \emph{agent} is designed to operate with only \textbf{30 stocks}, while the \emph{NASDAQ Comosite} comprises \textbf{100 stocks}.\ This limited scope of stocks may have resulted in fewer investment opportunities for our agent, which could have led to lower returns compared to the Nasdaq 100.\ Nonetheless, it is worth noting that our model did eventually outperform the Nasdaq 100 Index by the end of 2023.
     \begin{figure}
         \centering
         \includegraphics[width=\linewidth]{image/figure/returns}
-        \label{fig:cumulative_return}
         \caption{Cumulative returns of the best(zfjr0ks0) and worst(p3irnh80) performing models, indexes (DJI, GSPC, IXIC, RUT), and strategies (minimum variance and maximum Sharpe ratio), during the testing period (2017-2022).}
+        \label{fig:cumulative_return}
     \end{figure}
 
-    \subsubsection{Drawdowns}
-    Now we look how our models performing in drawdowns\footnote{In the stock market, drawdown refers to the percentage decline in an investment's value from its peak to its subsequent low point. Essentially, it represents the loss experienced by an investor in a particular investment over a certain period of time.} Based on the drawdown graphs in~\cref{fig:drawdown}, we observe that the best model, trained on appropriate datasets and hyperparameters, outperforms the DJI index for larger drawdowns (around $6\%$). Since our dataset comprises companies included in the DJI index we decide for our analysis compare the drawdowns of the model with the \emph{highest and lowest test/total\_reward}, as well as \emph{two indexes} (\emph{IXIC} and \emph{DJI}). The \emph{IXIC} (Nasdaq 100 Index) has been chosen as baseline for performance in drawdown, since it outperformed our model during the period between 2020 and 2022.
+    \subsection{Drawdowns}\label{subsec:drawdowns}
+    Now we look how our models performing in drawdowns\footnote{In the stock market, drawdown refers to the percentage decline in an investment's value from its peak to its subsequent low point. Essentially, it represents the loss experienced by an investor in a particular investment over a certain period of time.} Based on the drawdown graphs in~\cref{fig:drawdown}, we observe that the best model, trained on appropriate datasets and hyperparameters, outperforms the DJI index for larger drawdowns (around $6\%$). Since our dataset comprises companies included in the DJI index we decide for our analysis compare the drawdowns of the model with the \emph{highest and lowest test/total\_reward}, as well as \emph{two indexes} (\emph{IXIC} and \emph{DJI}).\ The \emph{IXIC} (Nasdaq 100 Index) has been chosen as baseline for performance in drawdown, since it outperformed our model during the period between 2020 and 2022.
 
     \begin{figure}
-                %
+            %
         \begin{subfigure}[t]{\experimentimgwidth\textwidth}
             \centering
             \includegraphics[width=\linewidth]{image/figure/drawdown_underwater_max}
-            \label{fig:drawdown_underwater_max}
-            \caption{The model with the highest \emph{text/total\_reward}}
+            \caption{The model with the highest \emph{text/total\_reward}
+            \label{fig:drawdown_underwater_max}}
         \end{subfigure}
         \hfill
         \begin{subfigure}[t]{\experimentimgwidth\textwidth}
             \centering
             \includegraphics[width=\linewidth]{image/figure/drawdown_underwater_dji}
-            \label{fig:drawdown_underwater_dji}
             \caption{The Dow Jones Industrial Average (DJI)}
+            \label{fig:drawdown_underwater_dji}
         \end{subfigure}
 
         %
@@ -291,15 +271,15 @@
         \begin{subfigure}[t]{\experimentimgwidth\textwidth}
             \centering
             \includegraphics[width=\linewidth]{image/figure/drawdown_underwater_min}
-            \label{fig:drawdown_underwater_min}
-            \caption{The model with the lowest \emph{text/total\_reward}}
+            \caption{The model with the lowest \emph{text/total\_reward}
+            \label{fig:drawdown_underwater_min}}
         \end{subfigure}
         \hfill
         \begin{subfigure}[t]{\experimentimgwidth\textwidth}
             \centering
             \includegraphics[width=\linewidth]{image/figure/drawdown_underwater_ixic}
-            \label{fig:drawdown_underwater_ixic}
             \caption{The Nasdaq 100 Index (IXIC)}
+            \label{fig:drawdown_underwater_ixic}
         \end{subfigure}
 
         %
@@ -307,14 +287,14 @@
         \label{fig:drawdown}
     \end{figure}
 
-    \subsubsection{Monthly and Annual Returns}
-    In~\cref{fig:month_annual_returns}, we compared our models against baseline indexes and strategies based on their \emph{monthly} and \emph{annual} returns. We presented the results in a graph, where the model with the highest return was compared to the \emph{DJI} and \emph{IXIC} indexes. Our model consistently outperformed the DJI index in most months and years, but was outperformed by the IXIC index in 2019, 2020, and 2021. However, in 2022, when the IXIC index lost more than \textbf{-30\%} of its value, our model was able to keep the majority of its value and only lost less than \textbf{-8\%}.
+    \subsection{Monthly and Annual Returns}\label{subsec:monthly-and-annual-returns}
+    In~\cref{fig:month_annual_returns}, we compared our models against baseline indexes and strategies based on their \emph{monthly} and \emph{annual} returns.\ We presented the results in a graph, where the model with the highest return was compared to the \emph{DJI} and \emph{IXIC} indexes.\ Our model consistently outperformed the DJI index in most months and years, but was outperformed by the IXIC index in 2019, 2020, and 2021.\ However, in 2022, when the IXIC index lost more than \textbf{-30\%} of its value, our model was able to keep the majority of its value and only lost less than \textbf{-8\%}.
 
-    It's worth noting that our models achieved significant outperformance during the big drawdown period caused by the COVID-19 pandemic. The our model performed better than the DJI index during February, March, and April of 2020, indicating that our model was able to learn which companies with specific features were better to hold during this period.
+    It's worth noting that our models achieved significant outperformance during the big drawdown period caused by the COVID-19 pandemic.\ The our model performed better than the DJI index during February, March, and April of 2020, indicating that our model was able to learn which companies with specific features were better to hold during this period.
 
-    Although there were some months where the DJI index performed better than our models, the performance difference was not significant. Overall, we concluded that our models performed well in the majority of months, as demonstrated by the \emph{annual graphs}.
+    Although there were some months where the DJI index performed better than our models, the performance difference was not significant.\ Overall, we concluded that our models performed well in the majority of months, as demonstrated by the \emph{annual graphs}.
 
-    It's important to note that our model was trained on companies from the DJI index, which may have influenced the comparison with the IXIC index. Therefore, the comparison may not be entirely fair. Nonetheless, the results suggest that our model is able to learn what companies to hold during certain time periods and can outperform baseline indexes.
+    It's important to note that our model was trained on companies from the DJI index, which may have influenced the comparison with the IXIC index.\ Therefore, the comparison may not be entirely fair.\ Nonetheless, the results suggest that our model is able to learn what companies to hold during certain time periods and can outperform baseline indexes.
 
     \begin{figure}
         \centering
@@ -322,15 +302,15 @@
         \begin{subfigure}[t]{\experimentimgwidth\textwidth}
             \centering
             \includegraphics[width=\linewidth]{image/figure/monthly_returns_heatmap_max}
-            \label{subfig:montly_returns_heatmap_max}
-            \caption{The model with the highest \emph{text/total\_reward}}
+            \caption{The model with the highest \emph{text/total\_reward}
+            \label{subfig:montly_returns_heatmap_max}}
         \end{subfigure}
         \hfill
         \begin{subfigure}[t]{\experimentimgwidth\textwidth}
             \centering
             \includegraphics[width=\linewidth]{image/figure/annual_returns_max}
-            \label{subfig:annual_returns_max}
-            \caption{The model with the highest \emph{text/total\_reward}}
+            \caption{The model with the highest \emph{text/total\_reward}
+            \label{subfig:annual_returns_max}}
         \end{subfigure}
 
         \vspace{0.5cm}
@@ -338,15 +318,15 @@
         \begin{subfigure}[t]{\experimentimgwidth\textwidth}
             \centering
             \includegraphics[width=\linewidth]{image/figure/monthly_returns_heatmap_dji}
-            \label{subfig:montly_returns_heatmap_dji}
             \caption{The Down Jones Industrial Average Index (DJI)}
+            \label{subfig:montly_returns_heatmap_dji}
         \end{subfigure}
         \hfill
         \begin{subfigure}[t]{\experimentimgwidth\textwidth}
             \centering
             \includegraphics[width=\linewidth]{image/figure/annual_returns_dji}
-            \label{subfig:annual_returns_dji}
             \caption{The Down Jones Industrial Average Index (DJI)}
+            \label{subfig:annual_returns_dji}
         \end{subfigure}
 
         \vspace{0.5cm}
@@ -354,15 +334,15 @@
         \begin{subfigure}[t]{\experimentimgwidth\textwidth}
             \centering
             \includegraphics[width=\linewidth]{image/figure/monthly_returns_heatmap_ixic}
-            \label{subfig:montly_returns_heatmap_ixic}
             \caption{The Nasdaq 100 Index (IXIC)}
+            \label{subfig:montly_returns_heatmap_ixic}
         \end{subfigure}
         \hfill
         \begin{subfigure}[t]{\experimentimgwidth\textwidth}
             \centering
             \includegraphics[width=\linewidth]{image/figure/annual_returns_ixic}
-            \label{subfig:annual_returns_ixic}
             \caption{The Nasdaq 100 Index (IXIC)}
+            \label{subfig:annual_returns_ixic}
         \end{subfigure}
 
         %
@@ -370,15 +350,16 @@
         \label{fig:month_annual_returns}
     \end{figure}
 
-    \subsection{Overall Performance and Statistics}\label{subsec:overall-performance-and-statistics}
-    This subsection presents the overall performance of the models developed in this thesis, compared to various indexes, strategies, and a model developed by AI4Finance~\cite{finrl-portfolio-allocation-2020}.
 
-    We do not provide an explanation of the metrics used to compare models because they are more related to Economic/Finance topics. However, we have referenced the Pyfolio website, where these metrics are fully described, for readers who seek additional information on the topic. The performance metrics were calculated using Pyfolio framework and readers can find more information on the metrics by referring to~\cite{Pyfolio, Pyfolio-return-analysis}.
+    \section{Overall Performance and Statistics}\label{sec:overall-performance-and-statistics}
+    This section presents the overall performance of the models developed in this thesis, compared to various indexes, strategies, and a model developed by AI4Finance~\cite{finrl-portfolio-allocation-2020}.
 
-    \subsubsection{Comparison with State of the art AI4Finance}\label{subsubsec:ai4finance-model}
-    The~\cref{tab:stats2} compares our models with the model from AI4Finance~\cite{finrl-portfolio-allocation-2020}. Due to the lack of data, we used the results from the published paper and comparison was made only for the period from \textbf{2020-07-01} to \textbf{2021-10-29}.
+    We do not provide an explanation of the metrics used to compare models because they are more related to Economic/Finance topics.\ However, we have referenced the Pyfolio website, where these metrics are fully described, for readers who seek additional information on the topic.\ The performance metrics were calculated using Pyfolio framework and readers can find more information on the metrics by referring to~\cite{Pyfolio, Pyfolio-return-analysis}.
 
-    As shown in the~\cref{tab:stats2}, our models are not the best compared to the AI4Finance model. The AI4Finance model outperforms our models in almost all performance metrics, but our models are still better than the indexes and common strategies. Our models were outperformed by approximately $3.1\%$ annually, which is quite significant. This could be due to various reasons, such as using different hyperparameters or training the models on different datasets. Our models were trained on a combined dataset of technical and fundamental analysis, while the AI4Finance model was trained only on technical analysis but included the covariance matrix between stocks, which we did not consider in our datasets. Of course it would be interesting to compare our models with the AI4Finance model in a longer period, but unfortunately we do not have the data for that.
+    \subsection{Comparison with State of the art AI4Finance}\label{subsec:ai4finance-model}
+    The~\cref{tab:stats2} compares our models with the model from AI4Finance~\cite{finrl-portfolio-allocation-2020}.\ Due to the lack of data, we used the results from the published paper and comparison was made only for the period from \textbf{2020-07-01} to \textbf{2021-10-29}.
+
+    As shown in the~\cref{tab:stats2}, our models are not the best compared to the AI4Finance model.\ The AI4Finance model outperforms our models in almost all performance metrics, but our models are still better than the indexes and common strategies.\ Our models were outperformed by approximately $3.1\%$ annually, which is quite significant.\ This could be due to various reasons, such as using different hyperparameters or training the models on different datasets.\ Our models were trained on a combined dataset of technical and fundamental analysis, while the AI4Finance model was trained only on technical analysis but included the covariance matrix between stocks, which we did not consider in our datasets.\ Of course it would be interesting to compare our models with the AI4Finance model in a longer period, but unfortunately we do not have the data for that.
 
 
     \begin{table}[h!]
@@ -389,7 +370,7 @@
                 & \bfseries zfjr0ks0                   & \bfseries p3irnh80                    & \bfseries AI4Finance \\[0.5cm]
                 \midrule
                 \bfseries Annual return       & 0.213                                & 0.265                                 & \color[HTML]{00F000} \bfseries 0.296 \\[0.5cm]
-                \bfseries Cum. returns        & 0.295                                & 0.369                                 & \color[HTML]{00F000} \bfseries 0.415 \\[0.5cm]
+                \bfseries Cum.\ returns       & 0.295                                & 0.369                                 & \color[HTML]{00F000} \bfseries 0.415 \\[0.5cm]
                 \bfseries Annual volatility   & 0.128                                & 0.130                                 & \color[HTML]{00F000} \bfseries 0.140 \\[0.5cm]
                 \bfseries Sharpe ratio        & 1.573                                & 1.866                                 & \color[HTML]{00F000} \bfseries 1.930 \\[0.5cm]
                 \bfseries Calmar ratio        & 2.323                                & 2.911                                 & \color[HTML]{00F000} \bfseries 3.350 \\[0.5cm]
@@ -410,32 +391,32 @@
         \label{tab:stats2}
     \end{table}
 
-    \subsubsection{Comparison with Indexes and Strategies}\label{subsubsec:indexes-and-strategies}
-    The~\cref{tab:stats} shows the comparison of our models with the S\&P 500 (\^GSPC), NASDAQ Composite (\^IXIC), Dow Jones Industrial Average (\^DJI), Russell 2000 (\^RUT), Maximum Sharpe Ratio strategy, and Minimum Variance strategy. The comparison is based on the testing period from \textbf{2017-01-25} to \textbf{2022-12-16}.
+    \subsection{Comparison with Indexes and Strategies}\label{subsec:indexes-and-strategies}
+    The~\cref{tab:stats} shows the comparison of our models with the S\&P 500 (ĜSPC), NASDAQ Composite (ÎXIC), Dow Jones Industrial Average (D̂JI), Russell 2000 (R̂UT), Maximum Sharpe Ratio strategy, and Minimum Variance strategy.\ The comparison is based on the testing period from \textbf{2017-01-25} to \textbf{2022-12-16}.
 
-    As seen in Table~\cref{tab:stats}, our models outperform most of the other models/strategies in almost all performance metrics. The \textcolor[HTML]{00F000}{\textbf{green bold values}} indicate the best results for each metric. However, the best values for a portfolio can vary depending on the desired outcome and other factors.
+    As seen in Table~\cref{tab:stats}, our models outperform most of the other models/strategies in almost all performance metrics.\ The \textcolor[HTML]{00F000}{\textbf{green bold values}} indicate the best results for each metric.\ However, the best values for a portfolio can vary depending on the desired outcome and other factors.
 
     \begin{table}[h!]
         \centering
         {\footnotesize\begin{tabular}{*{9}{|m{0.075\linewidth}|}}
                           \toprule
-                          & \bfseries zfjr0ks0 & \bfseries p3irnh80                   & \bfseries \^DJI                       & \bfseries \^GSPC & \bfseries \^IXIC & \bfseries \^RUT & \bfseries Max Sharpe Ratio Portfolio & \bfseries Min Variance Portfolio \\[0.5cm]
+                          & \bfseries zfjr0ks0 & \bfseries p3irnh80                   & \bfseries D̂JI                        & \bfseries ĜSPC & \bfseries ÎXIC & \bfseries R̂UT & \bfseries Max Sharpe Ratio Portfolio & \bfseries Min Variance Portfolio \\[0.5cm]
                           \midrule
-                          \bfseries Annual return       & 0.085              & \color[HTML]{00F000} \bfseries 0.122 & 0.089                                 & 0.094            & 0.116 & 0.043 & 0.093 & 0.092 \\[0.5cm]
-                          \bfseries Cum. returns        & 0.621              & \color[HTML]{00F000} \bfseries 0.972 & 0.654                                 & 0.695            & 0.911 & 0.284 & 0.686 & 0.683 \\[0.5cm]
-                          \bfseries Annual volatility   & 0.181              & 0.188                                & 0.202                                 & 0.203            & 0.239            & \color[HTML]{00F000} \bfseries 0.253 & 0.158 & 0.159 \\[0.5cm]
-                          \bfseries Sharpe ratio        & 0.543              & \color[HTML]{00F000} \bfseries 0.706 & 0.525                                 & 0.544            & 0.581 & 0.295 & 0.641 & 0.640 \\[0.5cm]
-                          \bfseries Calmar ratio        & 0.288              & \color[HTML]{00F000} \bfseries 0.391 & 0.241                                 & 0.276            & 0.325 & 0.101 & 0.350 & 0.349 \\[0.5cm]
-                          \bfseries Stability           & 0.855              & \color[HTML]{00F000} \bfseries 0.913 & 0.798                                 & 0.845            & 0.820 & 0.461 & 0.905 & 0.906 \\[0.5cm]
-                          \bfseries Max drawdown        & -0.297             & -0.312                               & -0.371                                & -0.339           & -0.357           & -0.431                               & -0.265                               & \color[HTML]{00F000} \bfseries -0.264 \\[0.5cm]
-                          \bfseries Omega ratio         & 1.118              & \color[HTML]{00F000} \bfseries 1.158 & 1.114                                 & 1.115            & 1.116 & 1.057 & 1.136 & 1.135 \\[0.5cm]
-                          \bfseries Sortino ratio       & 0.763              & \color[HTML]{00F000} \bfseries 0.994 & 0.723                                 & 0.751            & 0.802 & 0.404 & 0.907 & 0.904 \\[0.5cm]
-                          \bfseries Skew                & -0.249             & -0.312                               & -0.593                                & -0.549           & -0.465           & -0.782                               & -0.246                               & \color[HTML]{00F000} \bfseries -0.240 \\[0.5cm]
-                          \bfseries Kurtosis            & 16.819             & 19.569                               & \color[HTML]{00F000} \bfseries 19.640 & 14.205           & 7.418 & 10.450 & 14.315 & 14.286 \\[0.5cm]
-                          \bfseries Tail ratio          & 0.883              & 0.884                                & 0.891                                 & 0.859            & 0.862            & \color[HTML]{00F000} \bfseries 0.984 & 0.937 & 0.930 \\[0.5cm]
-                          \bfseries Daily value at risk & -0.022             & -0.023                               & -0.025                                & -0.024           & -0.030           & -0.032                               & -0.019                               & \color[HTML]{00F000} \bfseries -0.018 \\[0.5cm]
-                          \bfseries Beta                & 0.879              & 0.921                                & 1.000                                 & 0.966            & 1.007            & \color[HTML]{00F000} \bfseries 1.083 & 0.636 & 0.637 \\[0.5cm]
-                          \bfseries Alpha               & 0.005              & \color[HTML]{00F000} \bfseries 0.036 & 0.000                                 & 0.008            & 0.032            & -0.039 & 0.034 & 0.035 \\[0.5cm]
+                          \bfseries Annual return       & 0.085              & \color[HTML]{00F000} \bfseries 0.122 & 0.089                                 & 0.094          & 0.116 & 0.043 & 0.093 & 0.092 \\[0.5cm]
+                          \bfseries Cum.\ returns       & 0.621              & \color[HTML]{00F000} \bfseries 0.972 & 0.654                                 & 0.695          & 0.911 & 0.284 & 0.686 & 0.683 \\[0.5cm]
+                          \bfseries Annual volatility   & 0.181              & 0.188                                & 0.202                                 & 0.203          & 0.239          & \color[HTML]{00F000} \bfseries 0.253 & 0.158 & 0.159 \\[0.5cm]
+                          \bfseries Sharpe ratio        & 0.543              & \color[HTML]{00F000} \bfseries 0.706 & 0.525                                 & 0.544          & 0.581 & 0.295 & 0.641 & 0.640 \\[0.5cm]
+                          \bfseries Calmar ratio        & 0.288              & \color[HTML]{00F000} \bfseries 0.391 & 0.241                                 & 0.276          & 0.325 & 0.101 & 0.350 & 0.349 \\[0.5cm]
+                          \bfseries Stability           & 0.855              & \color[HTML]{00F000} \bfseries 0.913 & 0.798                                 & 0.845          & 0.820 & 0.461 & 0.905 & 0.906 \\[0.5cm]
+                          \bfseries Max drawdown        & -0.297             & -0.312                               & -0.371                                & -0.339         & -0.357         & -0.431                               & -0.265                               & \color[HTML]{00F000} \bfseries -0.264 \\[0.5cm]
+                          \bfseries Omega ratio         & 1.118              & \color[HTML]{00F000} \bfseries 1.158 & 1.114                                 & 1.115          & 1.116 & 1.057 & 1.136 & 1.135 \\[0.5cm]
+                          \bfseries Sortino ratio       & 0.763              & \color[HTML]{00F000} \bfseries 0.994 & 0.723                                 & 0.751          & 0.802 & 0.404 & 0.907 & 0.904 \\[0.5cm]
+                          \bfseries Skew                & -0.249             & -0.312                               & -0.593                                & -0.549         & -0.465         & -0.782                               & -0.246                               & \color[HTML]{00F000} \bfseries -0.240 \\[0.5cm]
+                          \bfseries Kurtosis            & 16.819             & 19.569                               & \color[HTML]{00F000} \bfseries 19.640 & 14.205         & 7.418 & 10.450 & 14.315 & 14.286 \\[0.5cm]
+                          \bfseries Tail ratio          & 0.883              & 0.884                                & 0.891                                 & 0.859          & 0.862          & \color[HTML]{00F000} \bfseries 0.984 & 0.937 & 0.930 \\[0.5cm]
+                          \bfseries Daily value at risk & -0.022             & -0.023                               & -0.025                                & -0.024         & -0.030         & -0.032                               & -0.019                               & \color[HTML]{00F000} \bfseries -0.018 \\[0.5cm]
+                          \bfseries Beta                & 0.879              & 0.921                                & 1.000                                 & 0.966          & 1.007          & \color[HTML]{00F000} \bfseries 1.083 & 0.636 & 0.637 \\[0.5cm]
+                          \bfseries Alpha               & 0.005              & \color[HTML]{00F000} \bfseries 0.036 & 0.000                                 & 0.008          & 0.032          & -0.039 & 0.034 & 0.035 \\[0.5cm]
                           \bottomrule
         \end{tabular}}
         \caption{Performance metrics of the models vs. indexes and strategies, during the testing period of 2017-01-25 to 2022-12-15.}
@@ -444,15 +425,15 @@
 
 
     \section{Summary}\label{sec:summary}
-    In this chapter, we conducted empirical experiments to evaluate how well a Deep Reinforcement Learning (DRL) agent can perform in the portfolio management task. Our results show that DRL has a huge potential in portfolio allocation as it can outperform common strategies and indexes. We used DRL algorithms to explore the relationship between the reward (i.e., portfolio return) and the input (i.e., features) and measured the prediction power using portfolio metrics. We found that the Fundamental Features or a combination of Fundamental and Technical Analysis features can effectively describe the environment and be used to train DRL agents.
+    In this chapter, we conducted empirical experiments to evaluate how well a Deep Reinforcement Learning (DRL) agent can perform in the portfolio management task.\ Our results show that DRL has a huge potential in portfolio allocation as it can outperform common strategies and indexes.\ We used DRL algorithms to explore the relationship between the reward (i.e., portfolio return) and the input (i.e., features) and measured the prediction power using portfolio metrics.\ We found that the Fundamental Features or a combination of Fundamental and Technical Analysis features can effectively describe the environment and be used to train DRL agents.
 
-    Portfolio management is a challenging task that requires a lot of data, which is often expensive and difficult to obtain. Our Stock Portfolio Allocation Environment, modeled using MDP, aims to identify how stocks are valued and which State Space features affect price movements. We assume that the Financial Market operates like any other market where the price of a stock or asset increases when people buy it and decreases when people sell it. Therefore, our model attempts to predict how much each feature affects future price movements (people's interest to buy/sell). Since the Stock Market is predominantly controlled by "Big Money" players such as banks and hedge funds, we believe that our research is crucial for portfolio managers to improve their decision-making capabilities.
+    Portfolio management is a challenging task that requires a lot of data, which is often expensive and difficult to obtain.\ Our Stock Portfolio Allocation Environment, modeled using MDP, aims to identify how stocks are valued and which State Space features affect price movements.\ We assume that the Financial Market operates like any other market where the price of a stock or asset increases when people buy it and decreases when people sell it.\ Therefore, our model attempts to predict how much each feature affects future price movements (people's interest to buy/sell).\ Since the Stock Market is predominantly controlled by ``Big Money'' players such as banks and hedge funds, we believe that our research is crucial for portfolio managers to improve their decision-making capabilities.
 
-    In addition to the future work mentioned earlier, we see a great opportunity to extend our model by incorporating a system that automatically places orders to the broker based on the weight predicted by our model. This would streamline the entire process of portfolio management and eliminate the need for manual intervention.
+    In addition to the future work mentioned earlier, we see a great opportunity to extend our model by incorporating a system that automatically places orders to the broker based on the weight predicted by our model.\ This would streamline the entire process of portfolio management and eliminate the need for manual intervention.
 
-    Furthermore, we believe that our model can benefit from the inclusion of additional features such as sentiment analysis, macroeconomic factors, and industry-specific factors. The inclusion of these features can help our model to better capture the market's behavior and improve its performance.
+    Furthermore, we believe that our model can benefit from the inclusion of additional features such as sentiment analysis, macroeconomic factors, and industry-specific factors.\ The inclusion of these features can help our model to better capture the market's behavior and improve its performance.
 
-    Another area of improvement that we believe warrants further exploration is the reward function. While our experiments have shown that the reward function we used was effective to some extent, we acknowledge that it may not capture all the nuances of the market. Therefore, we recommend exploring alternative reward functions that can better account for the goodness or badness of actions taken by the agent.
+    Another area of improvement that we believe warrants further exploration is the reward function.\ While our experiments have shown that the reward function we used was effective to some extent, we acknowledge that it may not capture all the nuances of the market.\ Therefore, we recommend exploring alternative reward functions that can better account for the goodness or badness of actions taken by the agent.
 
-    Overall, we believe that our study has demonstrated the potential of DRL in portfolio allocation, but there are still many avenues for improvement and further research. By incorporating these future works, we can enhance the performance of our model and make it more suitable for real-world applications.
+    Overall, we believe that our study has demonstrated the potential of DRL in portfolio allocation, but there are still many avenues for improvement and further research.\ By incorporating these future works, we can enhance the performance of our model and make it more suitable for real-world applications.
 \end{document}
