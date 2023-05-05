@@ -1,7 +1,7 @@
 \documentclass[../xlapes02]{subfiles}
 \begin{document}
     \chapter{Stock Portfolio Allocation}\label{ch:stock-portfolio-allocation}
-    In this chapter, our primary objective is to present the methodology we used to tackle the Reinforcement Learning problem, with a specific focus on the Portfolio Allocation task.\ We will provide a detailed explanation of the entire pipeline~\cref{fig:pipeline}, starting from the \emph{Data Engineering Step}.\ In this step, the data is prepared for use in reinforcement learning.\ This involves collecting raw data from the various sources, transforming the data into features suitable for reinforcement learning, and splitting the dataset into training and testing sets~\cref{sec:data-engineering}.\ Then go on the \emph{Environment Modeling Step}.\ This step involves configuring the environment in which the RL model will operate, including setting up the state and action spaces and defining the reward function, this is described in~\cref{sec:environment-modeling}.\ In the next chapter we also explain the \emph{Agent Layer}, where the model itself is developed here.\ It includes training the model on the training set, evaluating the model's performance on the testing set, fine-tuning the model's hyperparameters to optimize its performance, and conducting robustness testing on unseen data multiple times to ensure that the model can generalize well, this is discussed in~\cref{ch:experiments-and-results}.
+    In this chapter, our primary objective is to present the methodology we used to tackle the Reinforcement Learning problem, with a main focus on the Portfolio Allocation task.\ We will provide a detailed explanation of the entire pipeline~\cref{fig:pipeline}, starting from the \emph{Data Engineering Step}.\ In this step, the data is prepared for use in reinforcement learning.\ This involves collecting raw data from the various sources, transforming the data into features suitable for reinforcement learning, and splitting the dataset into training and testing sets~\cref{sec:data-engineering}.\ Then go on the \emph{Environment Modeling Step}.\ This step involves configuring the environment in which the RL model will operate, including setting up the state and action spaces and defining the reward function, this is described in~\cref{sec:environment-modeling}.\ In the next chapter we also explain the \emph{Agent Layer}, where the model itself is developed here.\ It includes training the model on the training set, evaluating the model's performance on the testing set, fine-tuning the model's hyperparameters to optimize its performance, and conducting robustness testing on unseen data multiple times to ensure that the model can generalize well, this is discussed in~\cref{ch:experiments-and-results}.
 
     \begin{figure}[ht!]
         \centering
@@ -20,11 +20,11 @@
         \label{item:data-sources}
         \item Yahoo Finance: \url{https://finance.yahoo.com/}
         \item Financial Modeling Prep: \url{https://financialmodelingprep.com/}
-        \item TraidingView: \url{https://www.tradingview.com/}
+        \item TradingView: \url{https://www.tradingview.com/}
     \end{itemize}
-    these sources provide financial data for 60000+ tickers, with a history of over 30 years.
+    these sources provide financial data for 65000+ tickers, with a history of over 30 years.
 
-    We focus on tickers (companies) from Dow Jones Industrial Average (DJIA), which includes 30 companies.\ More about which companies included in DJIA, you can see~\cite{enwiki:1141766585}.
+    We focus on tickers (companies) from \emph{Dow Jones Industrial Average (DJIA)}, which includes \textbf{30 companies}.\ More about which companies are included in DJIA, you can read in~\cite{enwiki:1141766585}.
 
     \subsection{Data Cleaning}\label{subsec:data-cleaning}
     We use the following company data in our datasets: prices, financial statements and technical indicators.\ Prices are used to calculate earnings, financial statements are used to calculate fundamentals.\ Fundamental indicators and technical analysis indicators are used for feature engineering.\ Data cleaning is done by removing rows with missing values.\ Missing values are replaced by the average of the column.\ If data is completely missing on a date, all rows up to that next date are removed for the other companies.\ This can happen mostly for companies that are not listed in any time period.\ Data cleaning is performed for all data sets.
@@ -193,7 +193,7 @@
     \end{figure}
 
     \subsubsection{Combined Fundamental and Technical Analysis}\label{subsubsec:combined-fundamental-and-technical-analysis}
-    Combining datasets is a process in which two or more datasets are merged or joined together to create a new dataset that contains information from both.\ In this case, the combined fundamental and technical analysis involves combining features from both fundamental analysis~\cref{subsubsec:fundamental-analysis} and technical analysis, described in~\cref{subsubsec:technical-analysis}.
+    Combining datasets is a process in which two or more datasets are merged or joined together to create a new dataset that contains information from both.\ In this case, the combined fundamental and technical analysis involves combining features from both fundamental analysis and technical analysis, both described in~\cref{subsec:feature-engineering}.
 
     By combining fundamental and technical analysis, we can create a more comprehensive and accurate picture of the market.\ For example, fundamental analysis can help identify undervalued or overvalued assets, while technical analysis can help identify trends and potential buying or selling opportunities.\ The specific features used in the combined analysis can depend on the specific dataset and the reinforcement learning task being performed.\ However, we leave all features from both analysis.
 
@@ -202,7 +202,7 @@
 
     The division coefficient of $0.6$ means that $60\%$ of the dataset will be used for training, and $40\%$ will be used for testing.\ This is a common split ratio, but the exact ratio can vary depending on the size and complexity of the dataset, as well as the specific reinforcement learning task being performed.
 
-    In this case, since the dataset consists of daily data and spans a period from 2008-03-20 to 2022-12-16, we can split it based on time.\ The first $60\%$ of the data, starting from the beginning of the dataset on 2008-03-20, will be used for training, and the remaining $40\%$ of the data will be used for testing.\ This ensures that the model is trained on past data and tested on future data, which is a more realistic scenario.
+    In this case, since the dataset consists of \textbf{daily data} and spans a period from \textbf{2008-03-20 to 2022-12-16}, we can split it based on time.\ The first $60\%$ of the data, starting from the beginning of the dataset on 2008-03-20, will be used for training, and the remaining $40\%$ of the data will be used for testing.\ This ensures that the model is trained on past data and tested on future data, which is a more realistic scenario.
 
     The training set will be used to train the reinforcement learning model, while the testing set will be used to evaluate its performance.\ By splitting the dataset, we can avoid overfitting, which is when the model memorizes the training data and performs poorly on new, unseen data.\ The testing set provides a way to measure the model's generalization performance on unseen data, which is an important metric for evaluating the model's effectiveness.
 
@@ -223,19 +223,13 @@
     \end{figure}
 
     \subsection{Portfolio Management Task}\label{subsec:portfolio-management-task}
-    Portfolio allocation or management refers to the process of selecting and distributing investments in a way that meets the investor's goals and risk tolerance.\ It involves diversifying the portfolio across different asset classes, such as stocks, bonds, and real estate, to reduce risk and increase returns.\ In our thesis we focus on diversifying the capital between \textbf{$N$ stocks}, where $N$ is the number of stocks in the portfolio.\ The ultimate goal of portfolio management is to maximize the returns while minimizing the risk for the investor~\cite{finrl-portfolio-allocation-2020}.
+    Portfolio allocation or management refers to the process of selecting and distributing investments in a way that meets the investor's goals and risk tolerance.\ It involves diversifying the portfolio across different asset classes, such as stocks, bonds, and real estate, to reduce risk and increase returns.\ In our thesis we focus on diversifying the capital between \textbf{$N$ stocks}, where $N$ is the number of stocks in the portfolio.\ The ultimate goal of portfolio management is to maximize the returns while minimizing the risk for the investor. The risk can be evaluated as variance of the portfolio returns~\cite{finrl-portfolio-allocation-2020}.
 
-    %
-
-    \subsubsection{Risk of Portfolio}\label{subsubsec:risk-of-portfolio}
-    Risk is evaluated as the variance of the portfolio returns, according to~\cref{eq:risk}.
-    \begin{equation}
-        \label{eq:risk}
-        \text{Risk}(t)=\text{Var}(\rho(t))=\text{Var}(\bm{w}(t)^\top \bm{y}(t) - 1)
-    \end{equation}
-    where $\rho(t)$ is the return of portfolio at time step $t$ and is further explained in~\cref{subsubsec:reward-function-portfolio} with relation to \emph{Reward function}. $\bm{w}(t)$ is the weight vector of the portfolio at time step $t$, and $\bm{y}(t)$ is the vector of stock prices change at time step $t$ relative to time step $t-1$, according to~\cref{eq:price-relative-vector}.
-
-    %
+%    \begin{equation}
+%        \label{eq:risk}
+%        \text{Risk}(t)=\text{Var}(\rho(t))=\text{Var}(\bm{w}(t)^\top \bm{y}(t) - 1)
+%    \end{equation}
+%    where $\rho(t)$ is the return of portfolio at time step $t$ and is further explained in~\cref{subsubsec:reward-function-portfolio} with relation to \emph{Reward function}. $\bm{w}(t)$ is the weight vector of the portfolio at time step $t$, and $\bm{y}(t)$ is the vector of stock prices change at time step $t$ relative to time step $t-1$, according to~\cref{eq:price-relative-vector}.
 
     \subsubsection{State and Observation Space}\label{subsubsec:state-space}
     In the context of portfolio management, the \emph{State Space} and \emph{Observation space} refer to the same set of variables.\ The state space is a matrix with dimensions $N\times K$, where $N$ represents the number of risky assets, or stocks, and $K$ represents the number of features used to describe the environment.\ These features were discussed in detail in the previous section~\cref{sec:data-engineering}, and consist of fundamental or technical indicators that describe the current condition of each stock at a specific time step $t$.\ In our case, the time step is defined as one day, so we use \textbf{daily data} representing one day of stock market activity.
@@ -260,10 +254,10 @@
             &= [w_1(t), w_2(t), \ldots, w_N(t), w_{cash}(t)]
         \end{split}
     \end{equation}
-    where $w_i(t)$ is the normalized weight for stock $i$ at time step $t$ and $w_{cash}(t)$ is for cash at time step $t$.\ All weights vectors must summed to 1, and it directly implies the second constrained that each weight must be bounded between 0 and 1:
+    where $w_i(t)$ is the normalized weight for stock $i$ at time step $t$ and $w_{cash}(t)$ is for cash at time step $t$.\ All weights vectors must summed to 1, that is the first constraint, and it directly implies the second constrained that each weight must be bounded between 0 and 1:
     \begin{equation}
         \label{eq:equation-constraint}
-        \sum_{i=1}^{N}w_i(t)=1,\quad w_i(t)\in[0,1],\quad t=1,\ldots,T
+        \sum_{i=1}^{N}w_i(t)=1;\quad w_i(t)\in[0,1];\quad\text{ for }t=1,\ldots,T
     \end{equation}
 
     %
@@ -296,4 +290,25 @@
     \end{equation}
     where $\rho(t)$ is change in portfolio value (\emph{Reward}) at time step $t$.
 
+    \subsection{How we determine agent performance}\label{subsec:how_we_calculate_agent_performance}
+    The agent's performance is assessed using the \emph{test/total\_reward} attribute.\ To compute the value of \emph{test/total\_reward}, we initialize the portfolio value $v$ at time step $t=0$ to value 1, so $v(0)=1$ and then further calculate it as the cumulative product of the rewards obtained by the agent during the testing phase, as shown in~\cref{eq:portfolio-value}.
+
+    For example, if the agent's received a reward at time step $t=1$ is $\rho(1)=-0.1$, which implies that the portfolio is currently worth $0.9$ or 90\% from its previous value, in other words portfolio value decreased by 10\%, then the value of \emph{test/total\_reward} would be at the start of the times step $t=2$:
+    \begin{equation}
+        \label{eq:portfolio-value-example}
+        \begin{split}
+            v(1) &= (CurrentReturn+1)\times CurrentPortfolioValue  \\
+            &= (\rho(1)+1)\times v(0) \\
+            &= (-0.1+1)\times 1 = 0.9
+        \end{split}
+    \end{equation}
+    Let now consider the second time step $t=2$.\ If in the second time step the agent receives a reward of $0.1$, the value of \emph{test/total\_reward} would be at start of the time step $t=3$:
+    \begin{equation}
+        \begin{split}
+            v(2) &= (CurrentReturn+1)\times CurrentPortfolioValue  \\
+            &= (\rho(2)+1)\times v(1) \\
+            &= (0.1+1) \times 0.9 = 0.99
+        \end{split}
+    \end{equation}
+    Therefore, if the final value of \emph{test/total\_reward} is $1.9$, it indicates that the agent obtained a \emph{total cumulative reward} of $0.9$ throughout all the steps, which is equivalent to a portfolio return of $90\%$ over the certain period.
 \end{document}

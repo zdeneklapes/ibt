@@ -24,7 +24,7 @@
 
 
     \section{Q-Learning Off-policy TD Control}\label{sec:q-learning-off-policy-td-control}
-    \begin{algorithm}[h!]
+    \begin{algorithm}[H]
         \caption{Q-learning (Off-policy TD Control)}
         \label{alg:q_learning}
 
@@ -47,7 +47,7 @@
 
 
     \section{REINFORCE: Monte-Carlo Policy-Gradient Control}\label{sec:reinforce:-monte-carlo-policy-gradient-control}
-    \begin{algorithm}[h!]
+    \begin{algorithm}[H]
         \SetKwComment{Comment}{/* }{ */}
         \caption{REINFORCE Algorithm}
         \label{alg:REINFORCE}
@@ -245,37 +245,26 @@ PYTHONPATH=$PWD/investai python3 \
 
 
     \chapter{Graphs}\label{ch:graphs}
-
-
     \section{Hyperparameters Tuning Results}\label{sec:hyperparameters-tuning-results}
-    \begin{figure}
-        \begin{subfigure}[t]{\textwidth}
-            \centering
-            \includegraphics[width=\linewidth]{image/wandb/wb1}
-            \caption{W\&B Chart of parameters and their performance}
-            \label{fig:wb-chart1}
-        \end{subfigure}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=\linewidth]{image/wandb/wb1}
+        \caption{W\&B Chart of parameters and their performance}
+        \label{fig:wb-chart1}
+    \end{figure}
 
-        \vspace{0.5cm}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=\linewidth]{image/wandb/wb2}
+        \caption{W\&B Chart of parameters and their performance}
+        \label{fig:wb-chart2}
+    \end{figure}
 
-        \begin{subfigure}[t]{\textwidth}
-            \centering
-            \includegraphics[width=\linewidth]{image/wandb/wb2}
-            \caption{W\&B Chart of parameters and their performance}
-            \label{fig:wb-chart2}
-        \end{subfigure}
-
-        \vspace{0.5cm}
-
-        \begin{subfigure}[t]{\textwidth}
-            \centering
-            \includegraphics[width=\linewidth]{image/wandb/wb3}
-            \caption{W\&B Chart of parameters and their performance}
-            \label{fig:wb-chart3}
-        \end{subfigure}
-
-        \caption{The W\&B charts of the hyperparameter sweep.}
-        \label{fig:wb-charts}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=\linewidth]{image/wandb/wb3}
+        \caption{W\&B Chart of parameters and their performance}
+        \label{fig:wb-chart3}
     \end{figure}
 
 \end{document}

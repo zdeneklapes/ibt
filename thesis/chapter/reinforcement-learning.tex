@@ -116,7 +116,7 @@
     The Markov property, which is defined using conditional probability, states that ``The future is independent of the past, given the present.''
     The stochastic process has the Markov property if and only if, for all time steps $t \in I$, where $I$ is some (totally ordered) set, the conditional probability of the next state given the current state is equal to the conditional probability of the next state given all the previous states: $\Pr\left[X_{t+1}|X_t\right] = \Pr\left[X_{t+1}|X_1,\ldots,X_t\right]$
 
-    This property has several advantages in practical reinforcement learning, including the uniqueness and distinctiveness of states, as well as the ability to precisely formulate the probability of state transitions, defined as~\cite{FITMT25127}:
+    This property has several advantages in practical reinforcement learning, including the uniqueness and distinctiveness of states, as well as the ability to precisely formulate the probability of state transitions, defined as~\cite{sutton2018reinforcement, FITMT25127}:
     \begin{equation}
         \label{eq:markov-property}
         \mathcal{P}(x'|x)=\Pr\left[X_{t+1}=x'|X_t=x\right]
@@ -143,7 +143,7 @@
     \subsubsection{Terminal States}
     Markov Processes can terminate at specific state (e.g., based on rules for winning or losing in games).\ Termination can occur after a variable number of time steps (episodic) or after a fixed number of time steps (as in many financial applications).\ If all sampling traces of the Markov Process reach a terminal state, they are called episodic sequences.\ The notion of episodic sequences is important in Reinforcement Learning.\ In some financial applications, the Markov Process terminates after a fixed number of time steps $T$, and states with time index $t = T$ are labeled as terminal states.\ States with time index $t < T$ transition to states $S_{t+1}$ with time index $t + 1$~\cite{rao2022foundations}.
 
-    \begin{figure}[h!]
+    \begin{figure}[H]
         \begin{center}
             \begin{tikzpicture}
                 [->,>=stealth,shorten >=1pt,auto,node distance=3cm,
@@ -408,7 +408,7 @@
     \subsubsection{Generalized Policy Iteration}\label{subsubsec:generalized-policy-iteration}
     If Policy Evaluation and Policy Improvement steps are executed enough times and no more improvement of the old policy over the new policy is found, then optimal $q_*$ and $\pi_*$ are found.\ Well-known algorithms in DP which implement this Generalized Policy Iteration are the Policy Iteration algorithm and its special case the Value Iteration algorithm,defined above in~\cref{subsubsec:value-iteration}.\ They use the equations Bellman's equations for $v_*(s)$ and $q_*(s,a)$ and a variant of the Generalized Policy Iteration method, where $v_{\pi}(s)$ does not have to be determined.\ The iteration in the Policy Evaluation step is immediately followed by the Policy Improvement step~\cite{sutton2018reinforcement, 7110602}.
 
-    \begin{figure}[h!]
+    \begin{figure}[H]
         \centering
         \begin{minipage}[b]{0.5\textwidth}
             \includegraphics[width=\textwidth]{image/gpi2}
@@ -429,7 +429,7 @@
 
     MC methods allow an agent to infer the optimal policy $\pi_*$ from the optimal action-value function $q_*(s,a)$ estimated through experience.\ MC methods use the iterative procedure Generalized Policy Iteration to incrementally infer $\pi_*$.\ First, a finite trajectory $(S_0,A_0,R_1,S_1,A_1,\cdots,R_n,S_n)$ is generated, where actions are selected according to a stochastic policy $\pi(a|s)$ and states and rewards come from the unknown environmental dynamics.\ From this episode, the return $G_t$ is computed for all state-action pairs reached.\ Then, the policy evaluation step is performed using the update equation~\cite{sutton2018reinforcement, FITMT25127, rao2022foundations}:
 
-%    \begin{wrapfigure}[h!]
+%    \begin{wrapfigure}[H]
 %        \includegraphics[width=\textwidth]
 %        \caption{Monte Carlo convergence.}
 %        \label{fig:mc}
@@ -546,7 +546,7 @@
 
     In this case, the learned action-value function, $Q$, directly approximates $q_*$, the optimal action-value function, independent of the policy being followed.\ This dramatically simplifies the analysis of the algorithm and enables early convergence proofs.\ The policy still has an effect in that it determines which state-action pairs are visited and updated.\ However, all that is required for correct convergence is that all pairs (transition matrix) continue to be updated.\ This is a minimal requirement in the sense that any method guaranteed to find optimal behavior in the general case must require it.\ The Q-learning algorithm is show in~\cref{alg:q_learning}~\cite{rl-course-david-silver, sutton2018reinforcement}.
 
-%    \begin{figure}[h!]
+%    \begin{figure}[H]
 %        \centering
 %        \includegraphics[width=0.9\textwidth]{image/q-learning}
 %        \caption{Q-learning table. How the training process updates the Q-table~\cite{article}.}
