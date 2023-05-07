@@ -48,7 +48,8 @@ pack:
 
 # Pozor, vlna neresi vse (viz popis.txt) / Warning - vlna is not solving all problems (see description.txt)
 vlna:
-	vlna -l $(CO)-*.tex
+#	vlna -l $(CO)*.tex
+	vlna -l chapter/*.tex
 
 # Spocita normostrany / Count of standard pages
 normostrany:
