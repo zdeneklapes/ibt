@@ -74,13 +74,13 @@
 
 
     \chapter{Setting up and running the program}\label{ch:setting-up-and-running-the-program}
-    The root directory of the thesis code contains a \texttt{README.md} file that provides instructions for installing the program.\ Following the steps outlined in this file should be sufficient for completing the installation process.
+    The root directory of the implementation code contains a \texttt{README.md} file that provides instructions for installing the program.\ Following the steps outlined in this file should be sufficient for completing the installation process.
 
     The program has been tested on both MacOS 13.2.1 and Ubuntu 20.04.6 LTS (GNU/Linux 5.4.0-146-generic x86\_64), using Python version 3.10.11.
 
 
     \section{Prepare Environment}\label{sec:prepare-environment}
-    Run these commands from the root directory of the thesis code.\ It will create a virtual environment and install the required packages:
+    Run these commands from the root directory of the implementation code.\ It will create a virtual environment and install the required packages:
     \begin{lstlisting}[language=bash,label={lst:prepare-environment}]
 mkdir -p out/baseline out/dataset out/model # create directories for results
 python3 -m venv venv # create virtual environment
@@ -108,10 +108,10 @@ pip3 install -r requirements.txt # install required packages
 
 
     \section{Examples of running Train/Test program}\label{sec:examples-of-running-train/test-program}
-    All examples assume that the current working directory is the root directory of the thesis code.
+    All examples assume that the current working directory is the root directory of the implementation code.
 
     \subsection{\texttt{.env} file}\label{subsec:texttt{.env}-file}
-    The scripts expect the \emph{.env} file in the root directory of the thesis code.\ This file contains the following variables, please fill the \texttt{WANDB\_API\_KEY} with your API key:
+    The scripts expect the \emph{.env} file in the root directory of the implementation code.\ This file contains the following variables, please fill the \texttt{WANDB\_API\_KEY} with your API key:
     \begin{lstlisting}[language=bash,label={lst:env-file}]
 # W&B
 WANDB_API_KEY=''
