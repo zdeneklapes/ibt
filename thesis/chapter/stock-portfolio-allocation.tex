@@ -3,7 +3,7 @@
     \chapter{Stock Portfolio Allocation}\label{ch:stock-portfolio-allocation}
     In this chapter, our primary objective is to present the methodology we used to tackle the Reinforcement Learning problem, with a main focus on the Portfolio Allocation task.\ We will provide a detailed explanation of the entire pipeline~\cref{fig:pipeline}, starting from the \emph{Data Engineering Step}.\ In this step, the data is prepared for use in reinforcement learning.\ This involves collecting raw data from various sources, transforming the data into features suitable for reinforcement learning, and splitting the dataset into training and testing sets~\cref{sec:data-engineering}.\ Then go on the \emph{Environment Modeling Step}.\ This step involves configuring the environment in which the RL model will operate, including setting up the state and action spaces and defining the reward function, this is described in~\cref{sec:environment-modeling}.\ In the next chapter we also explain the \emph{Agent Layer}, where the model itself is developed here.\ It includes training the model on the training set, evaluating the model's performance on the testing set, fine-tuning the model's hyperparameters to optimize its performance, and conducting robustness testing on unseen data multiple times to ensure that the model can generalize well, this is discussed in~\cref{ch:experiments-and-results}.
 
-    \begin{figure}[ht!]
+    \begin{figure}[H]
         \centering
         \includegraphics[width=0.8\textwidth]{./image/pipeline}
         \caption{The pipeline for solving the RL problem in the stock market~\cite{liu2022finrlmeta}}
@@ -211,7 +211,7 @@
     \section{Environment Modeling}\label{sec:environment-modeling}
     In the preceding section, we explained the process of creating datasets and selecting features to represent the state of the environment.\ This section delves deeper into the modeling of the entire environment, encompassing the \emph{Action Space}, \emph{State Space}, and \emph{Reward function}.\ The action space is defined as a vector of weights, where each weight denotes the percentage amount that a particular stock is represented in the portfolio.\ This is discussed in detail in~\cref{subsubsec:action-space}.\ The state space is a matrix of $K$ features of each stock ($N$ stocks) that reflects the state of the environment at each time step $t$, as explained in~\cref{subsubsec:state-space}.\ The reward function is employed to calculate the reward for each action taken in the current state at time step $t$, as elaborated in~\cref{subsubsec:reward-function-portfolio}.\ The objective of the agent is to maximize the reward by selecting the best action/weights for each state, which involves reallocating the stock weights in the portfolio.\ In other words, the agent aims to determine the optimal weights for each stock in the portfolio at a particular time step $t$ to obtain maximum portfolio appreciation.\ The ~\cref{fig:state_agent_weights} illustrates how the agent generates the weights for the portfolio.
 
-    \begin{figure}[ht!]
+    \begin{figure}[H]
         \centering
         \includegraphics[width=0.8\textwidth]{./image/state_agent_weightss}
         \caption{How the agent produces the weights for the portfolio~\cite{finrl-portfolio-allocation-2020}.}
