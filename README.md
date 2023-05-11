@@ -1,14 +1,14 @@
-# Reinforcement Learning for Automated Stock Portfolio Allocation (Bachelor Thesis)
+# INVESTAI - Reinforcement Learning for Automated Stock Portfolio Allocation
 
 ## Authors
 
-- **Zdeněk Lapeš** <lapes.zdenek@gmail.com>
+- **Zdeněk Lapeš** (xlapes02) <lapes.zdenek@gmail.com>
 
 ## Supervisor
 
 - **Milan Češka** <ceskam@fit.vut.cz>
 
-## ABOUT
+## DESCRIPTION
 
 ### Folder structure `thesis/`:
 

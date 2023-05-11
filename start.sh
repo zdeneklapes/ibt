@@ -10,6 +10,7 @@ AUTHOR='Zdenek Lapes'
 EMAIL='lapes.zdenek@gmail.com'
 
 PROJECT_NAME='ibt'
+LOGIN="thesis"
 
 ##### FUNCTIONS
 function error_exit() {
@@ -39,10 +40,15 @@ function make_all() {
 }
 
 function pack_thesis() {
-    zip -r thesis.zip \
-        thesis \
+    zip -r ${LOGIN}.zip \
+        ${LOGIN} \
+        README.md \
+        .editorconfig \
+        start.sh \
         -x "*out*" \
         -x "*others*"
+    mv "${LOGIN}.zip" "${HOME}/Downloads/"
+    unzip -d "${HOME}/Downloads/${LOGIN}" "${HOME}/Downloads/${LOGIN}.zip"
 }
 function pack_itt() {
     zip -r itt.zip \
