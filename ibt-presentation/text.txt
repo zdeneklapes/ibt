@@ -1,0 +1,45 @@
+Dobry den,
+
+jsem moc rad ze Vam dneska muzu ukazat cemu se spolecne s mim
+vedoucim panem doktorem Ceskou venujeme.
+
+Jmenuji se Zdenek Lapes a v prubehu studia na teto fakulte me
+zaujalo skoro vsechno co jsme se ucili, avsak pro neco mam vasem
+uz hodne dlouho a myslim ze nejsu sam v teto mistnosti a to
+jsou penize. :D
+
+No takze uprimne ikdyz temata, ktera byla vypsana me zaujala
+jsem se rozhodl jit za panem doktorem Ceskou a zeptat se ho
+zda by mi nevedl takovouhle bakalarskou praci. A on s tim
+souhlasil.
+
+Takze motivace na zacatku byla jednoducha,
+chtel jsem se dozvedet jak funguje Reinforcement Learning.
+A jelikoz jsem uz asi 2 roky investoval do akcii a jinych
+podobnych veci, tak jsem se rozhodl se o tomto tematu
+vzdelat jeste vice.
+
+Cile:
+1. Zjistit jak funguje Reinforcement Learning
+2. Nasledne provest experimenty s volne dostupnymi knihovnami
+    a zjistit jak se chovaji.
+3. Vytvorit dataset z historickych dat a nasledne provest
+    trenovani a testovani na tomto datasetu.
+4. Vylepsit stavajici agenty a nasledne provest trenovani
+    a testovani na mnou vytvorenych datasetech.
+
+Aktualni stav:
+1. Zjistil jsem a pochopil jsem jak funguje Reinforcement Learning
+    a dulezitost MDP.
+2. Experimentoval jsem s volne dostupnymi knihovnami a zjistil
+    jsem ze se chovaji dostatecne.
+3. Vytvoril jsem dataset z historickych dat a nasledne provadel
+    trenovani a testovani na tomto datasetu.
+4. Volne dostupna reseni jsem zkousil preimplementovat a natrenovat
+    na datasetech, ktere jsem vytvoril.
+
+Ukazat a popsat grafy:
+TODO
+
+Navrh budouciho reseni:
+TODO

@@ -19,19 +19,8 @@ function error_exit() {
     exit 1
 }
 
-function usage() {
-    echo "USAGE:
-    '-c' | '--clean') clean ;;
-        #
-    '-sc' | '--sync-code') upload_code ;;
-        #
-    '-t' | '--tags') tags ;;
-    '-h' | '--help') usage ;;
-    '-p' | '--pack') pack ;;"
-}
-
 function make_all() {
-    for folder in "ibt-presentation" "thesis" "itt-presentation"; do
+    for folder in "itt-presentation" "ibt-presentation" "thesis"; do
         cd $folder || error_exit "Cannot cd to $folder"
         make
         cd - || error_exit "Cannot cd to -"
@@ -61,6 +50,16 @@ function pack_ibt() {
         ibt-presentation \
         -x "*out*" \
         -x "*others*"
+}
+
+function usage() {
+    echo "USAGE:
+    '-ma' | '--make-all') make_all ;;
+    '-h' | '--help') usage ;;
+    '-pt' | '--pack-thesis') pack_thesis ;;
+    '--pack-ibt') pack_ibt ;;
+    '--pack-itt') pack_itt ;;
+"
 }
 
 ##### PARSE CLI-ARGS
