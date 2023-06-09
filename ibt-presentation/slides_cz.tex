@@ -32,8 +32,8 @@
         \itemsep1em
         \item Reinforcement Learning, Markov Decision Processes a frameworky od AI4Finance-Foundation
         \item Datasety pro trénování RL agentů
-        \item Prostředí pro RL agenty
-        \item RL agenty s novými datasety
+        \item Navrhnout vylepsene Prostředí pro RL agenty
+        \item Natrenovat RL agenty s novými datasety
         \item Testovat a porovnávat natrénované agenty
     \end{enumerate}
 \end{frame}
@@ -85,10 +85,22 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Vylepseni, slaba mista}
-    \begin{center}
-        TODO
-    \end{center}
+    \frametitle{Vylepseni a slaba mista}
+
+    Slaba mista
+    \begin{itemize}
+        \item Prostredi
+        \item Datasety
+%        \item Reward function
+    \end{itemize}
+    % Reward function: aktualne dava 30+1 akci
+
+    Vylepseni
+    \begin{itemize}
+        \item Prostredi
+        \item Datasety pomoci fundamentalni a technicke analyzy spolecnosti
+        \item Experimentalni Vyhodnocovani s nekolika algoritmy, datasety a hyperparametry
+    \end{itemize}
 \end{frame}
 
 
@@ -115,16 +127,39 @@
         \Large
         Děkuji za pozornost
     }
-    TODO: Obrazky na ktere budu chtit aby se komise mohla ptat
+    % TODO: Obrazky na ktere budu chtit aby se komise mohla ptat
+    % Kde se muj agent chova lepe nez benchmarky
 \end{frame}
 
 \begin{frame}
     \frametitle{1. Otázka oponenta}
     \large{Charakterizujte DRL algoritmy A2C, SAC, DDPG, PPO a TD3, které jste použil k nastavení hyperparametrů.}
 
-    \begin{enumerate}
-        \item TODO
-    \end{enumerate}
+    TODO
+%    \begin{table}[H]
+%        \centering
+%        {\footnotesize
+%            \begin{tabular}{|c|c|c|c|c|}
+%                \hline
+%%                Advantage Actor Critic & Soft Actor Critic & Deep Deterministic Policy Gradient & Proximal Policy Optimization & Twin Delayed DDPG \\ \hline
+%                \textbf{A2C}            & \textbf{SAC}      & \textbf{DDPG}                      & \textbf{TD3}                 & \textbf{PPO (motivován TRPO)} \\ \hline % algorithm
+%
+%                on-policy                    & off-policy              & off-policy                         &  off-policy                            & on-policy                     \\ \hline % on/off policy
+%%                todo                    & todo              & spojitý akční prostor              & spojitý akční prostor        &                               \\ \hline % action space
+%                todo                    & todo              & Q-funkce                           & Q-funkce                     &                               \\ \hline % Q-function
+%                todo                    & todo              &                                    &                              & KL-penalty                    \\ \hline %
+%            \end{tabular}
+%        }
+%        \caption{Hyperparameters range/values to select from, for the hyperparameter sweep.}
+%        \label{tab:hyperparameters}
+%    \end{table}
+
+    % TODO:
+    % A2C: on-policy, Actor-Critic, policy gradient algorithm (parameterized policy)
+    % SAC: off-policy, stochastic policy
+    % DDPG: off-policy, spojity akcni prostor, actor-critic, deterministic policy, target networks
+    % TD3: off-policy, twin-critics + actor networks,
+    % PPO: on-policy, vice stabilni nez TRPO (KL-penalty),
 \end{frame}
 
 \begin{frame}
