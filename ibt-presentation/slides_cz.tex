@@ -17,20 +17,20 @@
 % Odolejte pokušení říkat banality a všeobecně známé informace.
 % "Žijeme v době rozvoje mobilní výpočetní techniky, kdy každý má v kapse mobil" - je dokonale prázdné a hloupé sdělení, nic takového neříkejte, fakt to nikoho nezajímá.
 
-%\begin{frame}
-%    \frametitle{Motivace}
-%    \begin{itemize}
-%        \itemsep1em
-%        \item Fondy, Banky, Společnosti s velkým objemem peněz, jednotlivci
-%        \item Zhodnocení peněz
-%    \end{itemize}
-%\end{frame}
+\begin{frame}
+    \frametitle{Motivace}
+    \begin{itemize}
+        \itemsep1em
+        \item Zhodnocovani majetku
+        \item Verejne zpracovani teto tematiky je velmi malo
+    \end{itemize}
+\end{frame}
 
 \begin{frame}
     \frametitle{Cíle práce}
     \begin{enumerate}
         \itemsep1em
-        \item Reinforcement Learning, Markov Decision Processes a frameworky od AI4Finance-Foundation
+        \item Reinforcement Learning, Markov Decision Processes a AI4Finance-Foundation
         \item Datasety pro trénování RL agentů
         \item Navrhnout vylepsene Prostředí pro RL agenty
         \item Natrenovat RL agenty s novými datasety
@@ -39,69 +39,90 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Řešení - Pipeline}
-
-    \begin{center}
-        \centering
-        \includegraphics[width=\textwidth]{img/navrh_reseni}
-    \end{center}
-    {\Large 3 Fáze:}
-    \begin{enumerate}
-        \item Data Engineering
-        \item Environment Modeling
-        \item Agent Training \& Testing
-    \end{enumerate}
+    \frametitle{Řešení - Datasety}
+    \begin{multicols}{2}
+        \textbf{Fundamentalni analýza společnosti}
+        \begin{itemize}
+            \item ROE
+            \item ROA
+            \item Current Ratio
+            \item Cash Ratio
+            \item \ldots
+        \end{itemize}
+        \columnbreak
+        \textbf{Technická analýza společnosti}
+        \begin{center}
+            \centering
+            \includegraphics[width=0.5\textwidth]{img/corr}
+        \end{center}
+    \end{multicols}
 \end{frame}
 
 \begin{frame}
-    \frametitle{Řešení - Stavový prostor a jak se v něm agent pohybuje}
+    \frametitle{Řešení - Agent a prostředí}
 
     \begin{center}
         \centering
-        \includegraphics[width=\textwidth]{img/env}
+        \includegraphics[width=0.9\textwidth]{img/env}
     \end{center}
 \end{frame}
 
-%\begin{frame}
-%    \frametitle{Aktuální stav}
-%    \begin{enumerate}
-%        \itemsep1em
-%        \item Nastudováno RL, MDP a potřebné knihovny
-%        \item Provedeny experimenty a zjistěna výkonnost aktuální implementace od \textbf{AI4Finance-Foundation}
-%        \item Data
-%        \begin{itemize}
-%            \item Vice jak 63000 symbolu z celého světa (historie 30+ let)
-%            \item 1.Dataset (fundamentální analýza společnosti)
-%        \end{itemize}
-%    \end{enumerate}
-%\end{frame}
+\begin{frame}
+    Testovano na datech od 2017-01-25 do 2022-12-16
+    \frametitle{Experimenty a výsledky}
+
+    \textbf{Hyperparameter Tuning}
+
+    \textbf{Vliv datasetu}
+
+    \textbf{Robustnost}
+
+    \textbf{Baselines (indexy, strategie)}
+
+\end{frame}
 
 \begin{frame}
-    \frametitle{Experimenty}
+    \frametitle{Experimenty a výsledky: DJI vs. Model}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{img/dji-month-year}
+%        \caption{Dow Jones Index}
+%        \label{fig:dji}
+    \end{figure}
+    \begin{figure}
+        \centering
+        \includegraphics[width=0.7\textwidth]{img/model-month-year}
+%        \caption{Nejlepsi model}
+%        \label{fig:best-model}
+    \end{figure}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Experimenty a výsledky}
     \begin{center}
         \centering
         \includegraphics[width=0.7\textwidth]{img/returns}
     \end{center}
 \end{frame}
 
-\begin{frame}
-    \frametitle{Vylepseni a slaba mista}
-
-    Slaba mista
-    \begin{itemize}
-        \item Prostredi
-        \item Datasety
-%        \item Reward function
-    \end{itemize}
-    % Reward function: aktualne dava 30+1 akci
-
-    Vylepseni
-    \begin{itemize}
-        \item Prostredi
-        \item Datasety pomoci fundamentalni a technicke analyzy spolecnosti
-        \item Experimentalni Vyhodnocovani s nekolika algoritmy, datasety a hyperparametry
-    \end{itemize}
-\end{frame}
+%\begin{frame}
+%    \frametitle{Vylepseni a slaba mista}
+%
+%    Slaba mista
+%    \begin{itemize}
+%        \item Prostredi
+%        \item Datasety
+%%        \item Reward function
+%    \end{itemize}
+%    % Reward function: aktualne dava 30+1 akci
+%
+%    Vylepseni
+%    \begin{itemize}
+%        \item Prostredi
+%        \item Datasety pomoci fundamentalni a technicke analyzy spolecnosti
+%        \item Experimentalni Vyhodnocovani s nekolika algoritmy, datasety a hyperparametry
+%    \end{itemize}
+%\end{frame}
 
 
 %\begin{frame}
@@ -122,13 +143,25 @@
 
 
 \begin{frame}
+    \frametitle{Pipeline}
+    \begin{center}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.9\textwidth]{img/navrh_reseni}
+        \end{figure}
+    \end{center}
+\end{frame}
+
+\begin{frame}
     \frametitle{Poděkování}
-    {
-        \Large
-        Děkuji za pozornost
-    }
-    % TODO: Obrazky na ktere budu chtit aby se komise mohla ptat
-    % Kde se muj agent chova lepe nez benchmarky
+    \begin{center}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.7\textwidth]{img/navrh_reseni}
+        \end{figure}
+        \vspace{1cm}
+        \Huge Děkuji za pozornost
+    \end{center}
 \end{frame}
 
 \begin{frame}
@@ -165,10 +198,6 @@
 \begin{frame}
     \frametitle{2. Otázka oponenta}
     \large{Jaká slabá místa stávajících přístupů jste identifikoval (2. bod zadání)? Jaká konkrétní vylepšení jste navrhl (3. bod zadání)? Odpověď doporučuji zmínit již při prezentaci.}
-
-    \begin{enumerate}
-        \item TODO
-    \end{enumerate}
 \end{frame}
 
 %%%%%%%%                       02 - Cíle práce                      %%%%%%%%
