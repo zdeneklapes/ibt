@@ -21,32 +21,22 @@
     \frametitle{Motivace}
     \begin{itemize}
         \itemsep1em
-        \item Zhodnocovani majetku
-        \item Verejne zpracovani teto tematiky je velmi malo
+        \item Zhodnocení majetku
+        \item Veřejného zpracování v této tematice je velmi málo
+        \item Rozhodovací system
     \end{itemize}
 \end{frame}
 
 \begin{frame}
-    \frametitle{Cíle práce}
-    \begin{enumerate}
-        \itemsep1em
-        \item Reinforcement Learning, Markov Decision Processes a AI4Finance-Foundation
-        \item Datasety pro trénování RL agentů
-        \item Navrhnout vylepsene Prostředí pro RL agenty
-        \item Natrenovat RL agenty s novými datasety
-        \item Testovat a porovnávat natrénované agenty
-    \end{enumerate}
-\end{frame}
-
-\begin{frame}
-    \frametitle{Řešení - Datasety}
+    \frametitle{Datasety}
     \begin{multicols}{2}
         \textbf{Fundamentalni analýza společnosti}
         \begin{itemize}
-            \item ROE
-            \item ROA
+            \item Return on Equity
+            \item Return on Assets
             \item Current Ratio
             \item Cash Ratio
+            \item Price Earnings Ratio
             \item \ldots
         \end{itemize}
         \columnbreak
@@ -59,7 +49,7 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Řešení - Agent a prostředí}
+    \frametitle{Agent a prostředí}
 
     \begin{center}
         \centering
@@ -68,21 +58,34 @@
 \end{frame}
 
 \begin{frame}
-    Testovano na datech od 2017-01-25 do 2022-12-16
-    \frametitle{Experimenty a výsledky}
-
-    \textbf{Hyperparameter Tuning}
-
-    \textbf{Vliv datasetu}
-
+    \frametitle{Výsledky}
+    \textbf{Hyperparameter Sweep}
+    \begin{itemize}
+        \item A2C, SAC, DDPG, PPO, TD3
+        \item Datasety: Fundamentalni, Technicka, Kombinovana
+    \end{itemize}
+    \textbf{Porovnání výkonnosti na datasetech}
+    \begin{table}[H]
+        \centering
+        {\footnotesize
+            \begin{tabular}{|l|l|l|}
+                \hline
+                \textbf{Model ID} & \textbf{Dataset Type} & \textbf{test/total\_reward}                \\ \hline
+                p3irnh80          & Combined              & \textcolor[RGB]{50,150,50}{\textbf{1.972}} \\ \hline
+                8tml2ozg          & Combined              & \textcolor[RGB]{50,150,50}{\textbf{1.970}} \\ \hline
+                \midrule
+                \midrule
+                zfjr0ks0          & Fundamental           & \textcolor[RGB]{150,50,50}{\textbf{1.620}} \\ \hline
+                2161deh4          & Technical             & \textcolor[RGB]{150,50,50}{\textbf{1.642}} \\ \hline
+            \end{tabular}
+        }
+        \label{tab:datasets-comparison}
+    \end{table}
     \textbf{Robustnost}
-
-    \textbf{Baselines (indexy, strategie)}
-
 \end{frame}
 
 \begin{frame}
-    \frametitle{Experimenty a výsledky: DJI vs. Model}
+    \frametitle{DJI vs. Model}
     \begin{figure}
         \centering
         \includegraphics[width=0.7\textwidth]{img/dji-month-year}
@@ -98,49 +101,12 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Experimenty a výsledky}
+    \frametitle{Baselines (indexy, strategie)}
     \begin{center}
         \centering
         \includegraphics[width=0.7\textwidth]{img/returns}
     \end{center}
 \end{frame}
-
-%\begin{frame}
-%    \frametitle{Vylepseni a slaba mista}
-%
-%    Slaba mista
-%    \begin{itemize}
-%        \item Prostredi
-%        \item Datasety
-%%        \item Reward function
-%    \end{itemize}
-%    % Reward function: aktualne dava 30+1 akci
-%
-%    Vylepseni
-%    \begin{itemize}
-%        \item Prostredi
-%        \item Datasety pomoci fundamentalni a technicke analyzy spolecnosti
-%        \item Experimentalni Vyhodnocovani s nekolika algoritmy, datasety a hyperparametry
-%    \end{itemize}
-%\end{frame}
-
-
-%\begin{frame}
-%    \frametitle{Plán na letní semestr}
-%    \begin{enumerate}
-%        \itemsep1em
-%        \item Data
-%        \begin{itemize}
-%            \itemsep1em
-%            \item 2.Dataset (technická analýza)
-%            \item 3.Dataset (kombinace technické + fundamentalní analyzy)
-%        \end{itemize}
-%        \item Upravit prostředí od \textbf{AI4Finance-Foundation} pro naše datasety
-%        \item Testovat výkonnost nátrenovaných agentů pomocí vícero algoritmů:
-%        \textbf{PPO}, \textbf{DQN}, \textbf{DDPG}, \textbf{TD3}, \textbf{SAC}, \textbf{A2C},...
-%    \end{enumerate}
-%\end{frame}
-
 
 \begin{frame}
     \frametitle{Pipeline}
@@ -159,7 +125,7 @@
             \centering
             \includegraphics[width=0.7\textwidth]{img/navrh_reseni}
         \end{figure}
-        \vspace{1cm}
+        \vspace{0.5cm}
         \Huge Děkuji za pozornost
     \end{center}
 \end{frame}
@@ -168,35 +134,25 @@
     \frametitle{1. Otázka oponenta}
     \large{Charakterizujte DRL algoritmy A2C, SAC, DDPG, PPO a TD3, které jste použil k nastavení hyperparametrů.}
 
-    TODO
-%    \begin{table}[H]
-%        \centering
-%        {\footnotesize
-%            \begin{tabular}{|c|c|c|c|c|}
-%                \hline
-%%                Advantage Actor Critic & Soft Actor Critic & Deep Deterministic Policy Gradient & Proximal Policy Optimization & Twin Delayed DDPG \\ \hline
-%                \textbf{A2C}            & \textbf{SAC}      & \textbf{DDPG}                      & \textbf{TD3}                 & \textbf{PPO (motivován TRPO)} \\ \hline % algorithm
-%
-%                on-policy                    & off-policy              & off-policy                         &  off-policy                            & on-policy                     \\ \hline % on/off policy
-%%                todo                    & todo              & spojitý akční prostor              & spojitý akční prostor        &                               \\ \hline % action space
-%                todo                    & todo              & Q-funkce                           & Q-funkce                     &                               \\ \hline % Q-function
-%                todo                    & todo              &                                    &                              & KL-penalty                    \\ \hline %
-%            \end{tabular}
-%        }
-%        \caption{Hyperparameters range/values to select from, for the hyperparameter sweep.}
-%        \label{tab:hyperparameters}
-%    \end{table}
+    \begin{table}
+        \centering
+        {\footnotesize
+            \begin{tabular}{lllll}
+                Jmeno Algoritmu          & Zkratka       & On/Off-policy & policy-based \\
 
-    % TODO:
-    % A2C: on-policy, Actor-Critic, policy gradient algorithm (parameterized policy)
-    % SAC: off-policy, stochastic policy
-    % DDPG: off-policy, spojity akcni prostor, actor-critic, deterministic policy, target networks
-    % TD3: off-policy, twin-critics + actor networks,
-    % PPO: on-policy, vice stabilni nez TRPO (KL-penalty),
-\end{frame}
+                Advantage Actor Critic   & \textbf{A2C}  & on-policy     & policy-based \\
+                Soft Actor Critic        & \textbf{SAC}  & off-policy    & policy-based \\
+                Deep Deter. Policy Grad. & \textbf{DDPG} & off-policy    & policy-based \\
+                Proximal Policy Opt.     & \textbf{PPO}  & on-policy     & policy-based \\
+                Twin Delayed DDPG        & \textbf{TD3}  & off-policy    & policy-based \\
+            \end{tabular}
+        }
+%        \caption{}
+        \label{tab:algo}
+    \end{table}
 
-\begin{frame}
-    \frametitle{2. Otázka oponenta}
+    \vspace{1cm}
+
     \large{Jaká slabá místa stávajících přístupů jste identifikoval (2. bod zadání)? Jaká konkrétní vylepšení jste navrhl (3. bod zadání)? Odpověď doporučuji zmínit již při prezentaci.}
 \end{frame}
 
