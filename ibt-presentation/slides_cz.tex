@@ -21,9 +21,14 @@
     \frametitle{Motivace}
     \begin{itemize}
         \itemsep1em
+        \item Reinforcement Learning, Markov Decision Processes a AI4Finance-Foundation
+        \item Datasety pro trénování RL agentů
+        \item Navrhnout vylepsene Prostředí pro RL agenty
+        \item Natrenovat RL agenty s novými datasety
+        \item Testovat a porovnávat natrénované agenty
         \item Zhodnocení majetku
-        \item Veřejného zpracování v této tematice je velmi málo
         \item Rozhodovací system
+        \item Veřejného zpracování v této tematice je velmi málo
     \end{itemize}
 \end{frame}
 
@@ -65,23 +70,34 @@
         \item Datasety: Fundamentalni, Technicka, Kombinovana
     \end{itemize}
     \textbf{Porovnání výkonnosti na datasetech}
+    \begin{table}
+        \centering
+        {\footnotesize
+            \begin{tabular}{|l|l|l|}
+                \hline
+                \textbf{Model ID} & \textbf{Dataset Type} & \textbf{Portfolio Value}                   \\ \hline
+                p3irnh80          & Combined              & \textcolor[RGB]{50,150,50}{\textbf{1.972}} \\ \hline
+                zfjr0ks0          & Fundamental           & \textcolor[RGB]{150,50,50}{\textbf{1.620}} \\ \hline
+            \end{tabular}
+
+            Spread: 0.352
+        }
+        \label{tab:datasets-comparison}
+    \end{table}
+    \textbf{Robustnost}
     \begin{table}[H]
         \centering
         {\footnotesize
             \begin{tabular}{|l|l|l|}
                 \hline
-                \textbf{Model ID} & \textbf{Dataset Type} & \textbf{test/total\_reward}                \\ \hline
-                p3irnh80          & Combined              & \textcolor[RGB]{50,150,50}{\textbf{1.972}} \\ \hline
-                8tml2ozg          & Combined              & \textcolor[RGB]{50,150,50}{\textbf{1.970}} \\ \hline
-                \midrule
-                \midrule
-                zfjr0ks0          & Fundamental           & \textcolor[RGB]{150,50,50}{\textbf{1.620}} \\ \hline
-                2161deh4          & Technical             & \textcolor[RGB]{150,50,50}{\textbf{1.642}} \\ \hline
+                \textbf{Model ID}  & \textbf{Dataset Type} & \textbf{Portfolio Value}                   \\ \hline
+                \bfseries p3irnh80 & Combined              & \textcolor[RGB]{50,150,50}{\textbf{1.972}} \\ \hline
+                \bfseries kyr89ols & Combined              & \textcolor[RGB]{150,50,50}{\textbf{1.723}} \\ \hline
             \end{tabular}
+
+            Spread: 0.249
         }
-        \label{tab:datasets-comparison}
     \end{table}
-    \textbf{Robustnost}
 \end{frame}
 
 \begin{frame}
@@ -89,14 +105,10 @@
     \begin{figure}
         \centering
         \includegraphics[width=0.7\textwidth]{img/dji-month-year}
-%        \caption{Dow Jones Index}
-%        \label{fig:dji}
     \end{figure}
     \begin{figure}
         \centering
         \includegraphics[width=0.7\textwidth]{img/model-month-year}
-%        \caption{Nejlepsi model}
-%        \label{fig:best-model}
     \end{figure}
 \end{frame}
 
@@ -137,21 +149,21 @@
     \begin{table}
         \centering
         {\footnotesize
-            \begin{tabular}{lllll}
+            \begin{tabular}{llcc}
                 Jmeno Algoritmu          & Zkratka       & On/Off-policy & policy-based \\
 
-                Advantage Actor Critic   & \textbf{A2C}  & on-policy     & policy-based \\
-                Soft Actor Critic        & \textbf{SAC}  & off-policy    & policy-based \\
-                Deep Deter. Policy Grad. & \textbf{DDPG} & off-policy    & policy-based \\
-                Proximal Policy Opt.     & \textbf{PPO}  & on-policy     & policy-based \\
-                Twin Delayed DDPG        & \textbf{TD3}  & off-policy    & policy-based \\
+                Advantage Actor Critic   & \textbf{A2C}  & on-policy     & ano \\
+                Soft Actor Critic        & \textbf{SAC}  & off-policy    & ano \\
+                Deep Deter. Policy Grad. & \textbf{DDPG} & off-policy    & ano \\
+                Proximal Policy Opt.     & \textbf{PPO}  & on-policy     & ano \\
+                Twin Delayed DDPG        & \textbf{TD3}  & off-policy    & ano \\
             \end{tabular}
         }
 %        \caption{}
         \label{tab:algo}
     \end{table}
 
-    \vspace{1cm}
+    \vspace{0.5cm}
 
     \large{Jaká slabá místa stávajících přístupů jste identifikoval (2. bod zadání)? Jaká konkrétní vylepšení jste navrhl (3. bod zadání)? Odpověď doporučuji zmínit již při prezentaci.}
 \end{frame}
