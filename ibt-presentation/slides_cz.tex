@@ -41,15 +41,21 @@
             \includegraphics[width=0.9\textwidth]{img/navrh_reseni}
         \end{figure}
     \end{center}
+    {\Large Fáze:}
+    \begin{enumerate}
+        \item Data Engineering
+        \item Environment Modeling
+        \item Agent Training \& Testing
+    \end{enumerate}
 \end{frame}
 
 \begin{frame}
     \frametitle{Datasety}
     \begin{multicols}{2}
-        \textbf{Fundamentalni analýza společnosti}
+        \textbf{Fundamentalní analýza společnosti}
         \begin{itemize}
             \item Return on Equity
-            \item Return on Assets
+%            \item Return on Assets
             \item Current Ratio
             \item Cash Ratio
             \item Price Earnings Ratio
@@ -74,7 +80,10 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{Výsledky}
+    \frametitle{Testování a Vyhodnocení}
+    Testovácí období 6 let (2017-2022)
+    \newline
+    \newline
     \textbf{Hyperparameter Sweep}
     \begin{itemize}
         \item A2C, SAC, DDPG, PPO, TD3
@@ -86,9 +95,12 @@
         {\footnotesize
             \begin{tabular}{|l|l|l|}
                 \hline
-                \textbf{Model ID} & \textbf{Dataset Type} & \textbf{Portfolio Value}                   \\ \hline
-                p3irnh80          & Combined              & \textcolor[RGB]{50,150,50}{\textbf{1.972}} \\ \hline
-                zfjr0ks0          & Fundamental           & \textcolor[RGB]{150,50,50}{\textbf{1.620}} \\ \hline
+                \textbf{Dataset Type} & \textbf{Portfolio Value}                                       \\ \hline
+                Combined              & \textcolor[RGB]{50,150,50}{\textbf{1.972} (zhodnocení 97.2\%)} \\ \hline
+                Fundamental           & \textcolor[RGB]{150,50,50}{\textbf{1.620} (zhodnocení 62.0\%)} \\ \hline
+%                \textbf{Model ID} & \textbf{Dataset Type} & \textbf{Portfolio Value}                   \\ \hline
+%                p3irnh80          & Combined              & \textcolor[RGB]{50,150,50}{\textbf{1.972} (zhodnocení 97.2\%)} \\ \hline
+%                zfjr0ks0          & Fundamental           & \textcolor[RGB]{150,50,50}{\textbf{1.620} (zhodnocení 62.0\%)} \\ \hline
             \end{tabular}
 
 %            Spread: 0.352
@@ -101,9 +113,12 @@
         {\footnotesize
             \begin{tabular}{|l|l|l|}
                 \hline
-                \textbf{Model ID}  & \textbf{Dataset Type} & \textbf{Portfolio Value}                   \\ \hline
-                p3irnh80 & Combined              & \textcolor[RGB]{50,150,50}{\textbf{1.972}} \\ \hline
-                kyr89ols & Combined              & \textcolor[RGB]{150,50,50}{\textbf{1.723}} \\ \hline
+                \textbf{Dataset Type} & \textbf{Portfolio Value}                                       \\ \hline
+                Combined              & \textcolor[RGB]{50,150,50}{\textbf{1.972} (zhodnocení 97.2\%)} \\ \hline
+                Combined              & \textcolor[RGB]{150,50,50}{\textbf{1.723} (zhodnocení 72.3\%)} \\ \hline
+%                \textbf{Model ID} & \textbf{Dataset Type} & \textbf{Portfolio Value}                   \\ \hline
+%                p3irnh80          & Combined              & \textcolor[RGB]{50,150,50}{\textbf{1.972}} \\ \hline
+%                kyr89ols          & Combined              & \textcolor[RGB]{150,50,50}{\textbf{1.723}} \\ \hline
             \end{tabular}
 
 %            Spread: 0.249
@@ -113,14 +128,31 @@
 
 \begin{frame}
     \frametitle{DJI vs. Model}
-    \begin{figure}
-        \centering
-        \includegraphics[width=0.7\textwidth]{img/dji-month-year}
-    \end{figure}
-    \begin{figure}
-        \centering
-        \includegraphics[width=0.7\textwidth]{img/model-month-year}
-    \end{figure}
+    \begin{multicols}{2}
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.5\textwidth]{img/annual_returns_dji}
+%            \caption{DJI: Annual Avg. Return: 9.8\%}
+
+            DJI: Průměrné roční zhodnocení: 9.8\%
+        \end{figure}
+        \columnbreak
+        \begin{figure}
+            \centering
+            \includegraphics[width=0.5\textwidth]{img/annual_returns_max}
+%            \caption{Model: Annual Avg. Return: 12.5\%}
+
+            Model: Průměrné roční zhodnocení: 12.5\%
+        \end{figure}
+    \end{multicols}
+%    \begin{figure}
+%        \centering
+%        \includegraphics[width=0.1\textwidth]{img/annual_returns_dji}
+%    \end{figure}
+%    \begin{figure}
+%        \centering
+%        \includegraphics[width=0.1\textwidth]{img/annual_returns_max}
+%    \end{figure}
 \end{frame}
 
 \begin{frame}
@@ -154,11 +186,11 @@
             \begin{tabular}{llcc}
                 Jmeno Algoritmu          & Zkratka       & On/Off-policy & policy-based \\
 
-                Advantage Actor Critic   & \textbf{A2C}  & on-policy     & ano \\
-                Soft Actor Critic        & \textbf{SAC}  & off-policy    & ano \\
-                Deep Deter. Policy Grad. & \textbf{DDPG} & off-policy    & ano \\
-                Proximal Policy Opt.     & \textbf{PPO}  & on-policy     & ano \\
-                Twin Delayed DDPG        & \textbf{TD3}  & off-policy    & ano \\
+                Advantage Actor Critic   & \textbf{A2C}  & on-policy     & ano          \\
+                Soft Actor Critic        & \textbf{SAC}  & off-policy    & ano          \\
+                Deep Deter. Policy Grad. & \textbf{DDPG} & off-policy    & ano          \\
+                Proximal Policy Opt.     & \textbf{PPO}  & on-policy     & ano          \\
+                Twin Delayed DDPG        & \textbf{TD3}  & off-policy    & ano          \\
             \end{tabular}
         }
 %        \caption{}
